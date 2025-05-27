@@ -7,17 +7,20 @@ const useGetUser = () => {
 
   const token = localStorage.getItem('token');
 
-  return useQuery<AuthResponse['user'], Error>({
+  const query = useQuery<AuthResponse['user'], Error>({
     queryKey: ['user'],
     queryFn: getCurrentUser,
     enabled: !!token,
     retry: false,
     staleTime: 1000 * 60 * 5,
-    onError: () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      queryClient.removeQueries({ queryKey: ['user'] });
-    },
   });
+
+  if (query.isError) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    queryClient.removeQueries({ queryKey: ['user'] });
+  }
+
+  return query;
 };
 export { useGetUser };
