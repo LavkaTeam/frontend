@@ -12,3 +12,9 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.navLink {
+  text-decoration: none;
+  color: #fff;
+  font-size: 22px;
+}
