@@ -2,12 +2,6 @@ import { Link } from 'react-router';
 import styles from './Header.module.css';
 
 const Header = () => {
-  // const user = {
-  //   name: 'admin',
-  // };
-
-  const user = null;
-
   return (
     <header className={styles.wrapper}>
       <div className={styles.header}>
@@ -17,13 +11,9 @@ const Header = () => {
           </Link>
         </div>
         <div>
-          {user ? (
-            <span>Welcome, {user.name}</span>
-          ) : (
-            <Link to={'/register'} className={styles.navLink}>
-              Register
-            </Link>
-          )}
+          <Link to={'/register'} className={styles.navLink}>
+            Register
+          </Link>
         </div>
       </div>
     </header>
