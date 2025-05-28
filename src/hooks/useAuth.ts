@@ -13,6 +13,9 @@ const useLogin = () => {
 
   return useMutation<AuthResponse, Error, AuthPayload>({
     mutationFn: loginUser,
+
+    //КОД КОТОРЫЙ ИДЁТ ДАЛЬШЕ НУЖНО СЕПАРИРОВАТЬ ДЛЯ ОТДЕЛЬНОЙ ЛОГИКИ LOGIN
+
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
       queryClient.invalidateQueries({ queryKey: ['user'] });
@@ -25,6 +28,9 @@ const useLogOut = () => {
 
   return useMutation({
     mutationFn: logOutUser,
+
+    //КОД КОТОРЫЙ ИДЁТ ДАЛЬШЕ НУЖНО СЕПАРИРОВАТЬ ДЛЯ ОТДЕЛЬНОЙ ЛОГИКИ LOGOUT
+
     onSuccess: () => {
       localStorage.removeItem('token');
       queryClient.clear();

@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 
 const Register = () => {
+  const queryClient = useQueryClient();
+  const register = useRegister();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState<AuthPayload>({
     name: '',
     email: '',
@@ -13,11 +17,6 @@ const Register = () => {
     telephoneNumber: '',
     role: 'BUYER',
   });
-
-  const queryClient = useQueryClient();
-
-  const register = useRegister();
-  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
