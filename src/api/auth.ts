@@ -22,13 +22,5 @@ const logOutUser = (): Promise<void> => {
   });
 };
 
-const getCurrentUser = (): Promise<AuthResponse['user']> => {
-  const token = localStorage.getItem('token');
-  if (!token) return Promise.reject(new Error('No token'));
-  return fetchData<AuthResponse['user']>('/user', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-};
-export { registerUser, loginUser, logOutUser, getCurrentUser };
+
+export { registerUser, loginUser, logOutUser };

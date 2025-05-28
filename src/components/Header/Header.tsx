@@ -2,8 +2,11 @@ import { Link } from 'react-router';
 import styles from './Header.module.css';
 
 const Header = () => {
-  const userJson = localStorage.getItem('user');
-  const user = userJson ? JSON.parse(userJson) : null;
+  // const user = {
+  //   name: 'admin',
+  // };
+
+  const user = null;
 
   return (
     <header className={styles.wrapper}>
