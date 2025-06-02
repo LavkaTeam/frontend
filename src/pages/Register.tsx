@@ -3,11 +3,14 @@ import type { AuthPayload } from '../types/auth';
 import { useRegister } from '../hooks/useAuth';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../features/auth/authSlice';
 
 const Register = () => {
   const queryClient = useQueryClient();
   const register = useRegister();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [form, setForm] = useState<AuthPayload>({
     name: '',
@@ -32,6 +35,7 @@ const Register = () => {
     register.mutate(form, {
       onSuccess: (data) => {
         localStorage.setItem('token', data.token);
+        dispatch(setUser(data.user));
         queryClient.invalidateQueries({ queryKey: ['user'] });
         navigate('/');
       },
