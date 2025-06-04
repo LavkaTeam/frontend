@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { Logo } from '../Logo';
 import styles from './Header.module.css';
 
 const Header = () => {
@@ -7,9 +8,7 @@ const Header = () => {
       <div className="container">
         <div className={styles.container}>
 
-          <Link to={'/'} className={styles.logo}>
-            <img src="/icons/logo.svg" alt="B2Bar logo" />
-          </Link>
+          <Logo />
 
           <div className={styles.searchBox}>
             <input

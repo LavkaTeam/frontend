@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Logo } from '../Logo';
 import styles from './Footer.module.css';
 
 const Footer = () => {
@@ -7,9 +8,7 @@ const Footer = () => {
       <div className="container">
         <div className={styles.container}>
           <div className={styles.topSection}>
-            <Link to={'/'} className={styles.logo}>
-              <img src="/icons/logo.svg" alt="B2Bar logo" />
-            </Link>
+            <Logo />
             <ul className={styles.linkBlock}>
               <li>
                 <Link to="/" className={styles.link}>
