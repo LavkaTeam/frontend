@@ -4,19 +4,44 @@ import styles from './Header.module.css';
 const Header = () => {
   return (
     <header className={styles.wrapper}>
-      <div className={styles.header}>
-        <div>
-          <Link to={'/'} className={styles.navLink}>
-            <p className={styles.header_logo}>Logo</p>
+      <div className="container">
+        <div className={styles.container}>
+
+          <Link to={'/'} className={styles.logo}>
+            <img src="/icons/logo.svg" alt="B2Bar logo" />
           </Link>
-        </div>
-        <div>
-          <Link to={'/register'} className={styles.navLink}>
-            Register
-          </Link>
+
+          <div className={styles.searchBox}>
+            <input
+              name='text'
+              type="text"
+              placeholder='Search'
+              className={styles.searchInput} />
+              <img src="/icons/searchIcon.svg" alt="search" />
+          </div>
+
+          <div className={styles.buttons}>
+            <div className={styles.authButtons}>
+              <Link to={'/register'}>
+                <button className={styles.loginButton}>
+                  Log in
+                </button>
+              </Link>
+              <Link to={'/register'}>
+                <button className={styles.signupButton}>
+                  Sign up
+                </button>
+              </Link>
+            </div>
+
+            <Link to={'/'} className={styles.cartButton}>
+              <img src="/icons/cartIcon.svg" alt="Go to cart" />
+            </Link>
+          </div>
         </div>
       </div>
     </header>
   );
 };
+
 export { Header };

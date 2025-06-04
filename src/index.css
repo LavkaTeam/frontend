@@ -1,5 +1,62 @@
+/* General styles */
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    max-width: 1392px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Fonts */
+@font-face {
+    font-display: swap;
+    font-family: 'Inter';
+    font-weight: 400;
+    src: url('../public/fonts/inter-regular-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Inter';
+    font-weight: 600;
+    src: url('../public/fonts/inter-semi-bold-600.woff2') format('woff2');
+}
+
+
+/* Variables */
+:root {
+  --color-brand-dark-burgundy: #57181E;
+  --color-brand-deep-auburn: #2A0A09;
+  --color-brand-orange: #C8721B;
+  --color-brand-burgundy: #AF261F;
+  --color-brand-wood-bark: #27211C;
+
+  --color-gray-300: #D5D7DA;
+  --color-gray-200: #E9EAEB;
+  --color-gray-600: #535862;
+  --color-gray-500: #717680;
+  --color-gray-800: #252B37;
+
+  --color-primary-white: #FFF;
+  --color-background-lightgray: #F5F5F5;
+  --color-border-purple: #D6BBFB;
 }
