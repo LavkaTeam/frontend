@@ -22,15 +22,11 @@ const Header = () => {
 
           <div className={styles.buttons}>
             <div className={styles.authButtons}>
-              <Link to={'/register'}>
-                <button className={styles.loginButton}>
-                  Log in
-                </button>
+              <Link to={'/register'} className={styles.loginButton}>
+                Log in
               </Link>
-              <Link to={'/register'}>
-                <button className={styles.signupButton}>
-                  Sign up
-                </button>
+              <Link to={'/register'} className={styles.signupButton}>
+                Sign up
               </Link>
             </div>
 
