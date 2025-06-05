@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "@tanstack/react-query": "^5.76.1",
     "git-cz": "^4.9.0",
     "pnpm": "^10.11.1",
