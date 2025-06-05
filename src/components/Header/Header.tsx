@@ -5,23 +5,23 @@ import styles from './Header.module.css';
 const Header = () => {
   return (
     <header className={styles.wrapper}>
-      <div className="container">
+      <div className='container'>
         <div className={styles.container}>
-
           <Logo />
 
           <div className={styles.searchBox}>
             <input
               name='text'
-              type="text"
+              type='text'
               placeholder='Search'
-              className={styles.searchInput} />
-              <img src="/icons/searchIcon.svg" alt="search" />
+              className={styles.searchInput}
+            />
+            <img src='/icons/searchIcon.svg' alt='search' />
           </div>
 
           <div className={styles.buttons}>
             <div className={styles.authButtons}>
-              <Link to={'/register'} className={styles.loginButton}>
+              <Link to={'/login'} className={styles.loginButton}>
                 Log in
               </Link>
               <Link to={'/register'} className={styles.signupButton}>
@@ -30,7 +30,7 @@ const Header = () => {
             </div>
 
             <Link to={'/'} className={styles.cartButton}>
-              <img src="/icons/cartIcon.svg" alt="Go to cart" />
+              <img src='/icons/cartIcon.svg' alt='Go to cart' />
             </Link>
           </div>
         </div>
