@@ -1,6 +1,13 @@
-const Home = () => {
+import { CardList } from '../components/CardList';
+import { Heading } from '../components/Heading';
 
-  return <div>Home</div>;
+const Home = () => {
+  return (
+    <div>
+      <Heading>Bestsellers</Heading>
+      <CardList />
+    </div>
+  );
 };
 
 export { Home };
