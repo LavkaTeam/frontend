@@ -7,7 +7,7 @@
 
 .container {
     width: 100%;
-    max-width: 1392px;
+    max-width: 1440px;
     margin: 0 auto;
     padding: 0 24px;
 }
@@ -31,14 +31,20 @@ body {
     font-display: swap;
     font-family: 'Inter';
     font-weight: 400;
-    src: url('../public/fonts/inter-regular-400.woff2') format('woff2');
+    src: url('../fonts/inter-regular-400.woff2') format('woff2');
 }
 
 @font-face {
     font-display: swap;
     font-family: 'Inter';
     font-weight: 600;
-    src: url('../public/fonts/inter-semi-bold-600.woff2') format('woff2');
+    src: url('../fonts/inter-semi-bold-600.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Inter';
+    font-weight: 500;
+    src: url('../fonts/inter-medium-500.woff2') format('woff2');
 }
 
 
@@ -50,8 +56,9 @@ body {
   --color-brand-burgundy: #AF261F;
   --color-brand-wood-bark: #27211C;
 
-  --color-gray-300: #D5D7DA;
+  --color-gray-50: #FAFAFA;
   --color-gray-200: #E9EAEB;
+  --color-gray-300: #D5D7DA;
   --color-gray-600: #535862;
   --color-gray-500: #717680;
   --color-gray-800: #252B37;

@@ -1,6 +1,13 @@
-const Home = () => {
+import { HeaderMenu } from '../components/HeaderMenu';
+import { HeroSection } from '../components/HeroSection';
 
-  return <div>Home</div>;
+const Home = () => {
+  return (
+    <div>
+      <HeaderMenu />
+      <HeroSection />
+    </div>
+  );
 };
 
 export { Home };
