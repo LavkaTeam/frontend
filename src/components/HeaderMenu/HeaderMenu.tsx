@@ -1,7 +1,6 @@
 import styles from './HeaderMenu.module.css';
 import { AllCategoriesDropdown } from '../AllCategoriesDropdown';
 
-
 const HeaderMenu = () => {
   // Підтягувати з беку
   const userName = 'guest';
@@ -10,8 +9,7 @@ const HeaderMenu = () => {
     <section className={styles.HeaderMenu}>
       <div className='container'>
         <div className={styles.HeaderMenuContainer}>
-          <AllCategoriesDropdown/>
-        
+          <AllCategoriesDropdown />
           <ul className={styles.brandList}>
             <li className={styles.brandLogo}>
               <img src='/icons/bacardiLogo.svg' alt='Bacardi Logo' />
@@ -24,16 +22,15 @@ const HeaderMenu = () => {
             </li>
             <li className={styles.brandLogo}>
               <img src='/icons/absolutLogo.svg' alt='Absolut Logo' />
-           </li>
-           <li className={styles.brandLogo}>
+            </li>
+            <li className={styles.brandLogo}>
               <img src='/icons/remymartinLogo.svg' alt='Remy Martin Logo' />
             </li>
             <li className={styles.brandLogo}>
               <img src='/icons/campariLogo.svg' alt='Campari Logo' />
             </li>
           </ul>
-
-          <div className={styles.userInfo}>
+          <div className={styles.userinfo}>
             <img src='/icons/bellIcon.svg' alt='Bell icon' />
             <p className={styles.userMessage}>
               Welcome {userName}
@@ -41,7 +38,6 @@ const HeaderMenu = () => {
           </div>
         </div>
       </div>
-
     </section>
   );
 };

@@ -29,7 +29,7 @@ const Header = () => {
               </Link>
             </div>
 
-            <Link to={'/'} className={styles.cartButton}>
+            <Link to={'/cart'} className={styles.cartButton}>
               <img src='/icons/cartIcon.svg' alt='Go to cart' />
             </Link>
           </div>
