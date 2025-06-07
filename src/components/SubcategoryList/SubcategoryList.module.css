@@ -1,0 +1,51 @@
+.subcategoriesList {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 212px;
+  padding: 4px 0;
+  background: var(--color-primary-white);
+  border-radius: 8px;
+  width: 212px;
+  border: 1px solid var(--color-gray-50);
+  animation: slideRight 0.3s ease-in-out;
+}
+
+.subCollapsing {
+  animation: slideLeft 0.3s ease-in-out;
+}
+
+.subcategoryItem {
+  padding: 10px 14px;
+  color: var(--color-gray-800);
+  font-weight: 500;
+  transition: background-color 0.2s;
+  position: relative;
+  text-decoration: none;
+}
+
+.subcategoryItem:hover {
+  background-color: var(--color-gray-50);
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+}

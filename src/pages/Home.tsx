@@ -1,20 +1,17 @@
-import { useProducts } from "../hooks/useProducts";
-import type { Product } from "../types/products";
+import { HeaderMenu } from '../components/HeaderMenu';
+import { HeroSection } from '../components/HeroSection';
+import { CardList } from '../components/CardList';
+import { Heading } from '../components/Heading';
 
 const Home = () => {
-
-  const {products, isLoading} = useProducts({page: 0, size: 10})
-  
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
-
   return (
-    <>
-      {products?.content.map((product : Product) => {
-        return <div>{product.name}</div>
-      })}
-    </>
-  )};
+    <div>
+      <HeaderMenu />
+      <HeroSection />
+      <Heading>Bestsellers</Heading>
+      <CardList />
+    </div>
+  );
+};
 
 export { Home };
