@@ -1,0 +1,1 @@
+export { CardDiscover } from './CardDiscover';

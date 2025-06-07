@@ -1,0 +1,9 @@
+.discoverSection {
+  margin: 80px 0;
+}
+
+.cardContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
