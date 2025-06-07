@@ -1,0 +1,12 @@
+.HeroSection {
+  margin: 32px 0 80px 0;
+}
+
+.heroSectionContainer {
+  background-color: var(--color-primary-white);
+  position: relative;
+  width: 100%;
+  max-width: 1392px;
+  height: 307px;
+  overflow: hidden;
+}

@@ -1,4 +1,7 @@
 .wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   width: 100%;
   background-color: var(--color-background-lightgray);
   border-bottom: 1px solid #000;
@@ -82,6 +85,9 @@
 }
 
 .signupButton {
+  display: flex;
+  align-items: center;
+
   width: 95px;
   height: 44px;
   padding: 10px 17px;
