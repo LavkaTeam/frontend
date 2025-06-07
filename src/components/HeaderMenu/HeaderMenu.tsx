@@ -1,10 +1,8 @@
+import { getUserName } from '../../data/userNameData.tsx';
 import styles from './HeaderMenu.module.css';
 import { AllCategoriesDropdown } from '../AllCategoriesDropdown';
 
 const HeaderMenu = () => {
-  // Підтягувати з беку
-  const userName = 'guest';
-
   return (
     <section className={styles.HeaderMenu}>
       <div className='container'>
@@ -33,7 +31,7 @@ const HeaderMenu = () => {
           <div className={styles.userinfo}>
             <img src='/icons/bellIcon.svg' alt='Bell icon' />
             <p className={styles.userMessage}>
-              Welcome {userName}
+              Welcome {getUserName()}
             </p>
           </div>
         </div>
