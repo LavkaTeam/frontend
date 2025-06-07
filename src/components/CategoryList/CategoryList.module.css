@@ -1,0 +1,29 @@
+.categoriesList {
+  padding: 4px 0;
+  background: var(--color-primary-white);
+  border-radius: 8px;
+  width: 212px;
+  border: 1px solid var(--color-gray-50);
+}
+
+.categoryItem {
+  padding: 10px 14px;
+  color: var(--color-gray-800);
+  font-weight: 500;
+  transition: background-color 0.2s;
+  position: relative;
+  text-decoration: none;
+}
+
+.categoryItem:hover {
+  background-color: var(--color-gray-50);
+}
+
+.checkmarkIcon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+}
