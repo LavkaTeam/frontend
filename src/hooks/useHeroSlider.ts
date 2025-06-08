@@ -3,11 +3,12 @@ import { useState, useEffect, useRef } from 'react';
 export const useHeroSlider = (cards: { length: number }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const SliderTime = 6000; // 6 sec
 
   const startSlider = () => {
     intervalRef.current = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % cards.length);
-    }, 6000);
+    }, SliderTime);
   };
 
   const stopSlider = () => {
