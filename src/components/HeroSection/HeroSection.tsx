@@ -1,6 +1,6 @@
 import styles from './HeroSection.module.css';
-import { heroCards } from '@data/heroSliderData';
-import { useHeroSlider } from '@hooks/useHeroSlider';
+import { heroCards } from '@/data/heroSliderData';
+import { useHeroSlider } from '@/hooks/useHeroSlider';
 import { CardHero } from '../CardHero/CardHero';
 
 const HeroSection = () => {

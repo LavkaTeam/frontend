@@ -1,4 +1,4 @@
-import { getUserName } from '@data/userNameData.tsx';
+import { getUserName } from '@/data/userNameData.tsx';
 import styles from './HeaderMenu.module.css';
 import { AllCategoriesDropdown } from '../AllCategoriesDropdown';
 

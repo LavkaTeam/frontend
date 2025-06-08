@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styles from './SubcategoryList.module.css';
-import type { Category } from '@types/categoryTypes';
+import type { Category } from '@/types/categoryTypes';
 
 interface SubcategoryListProps {
   selectedCategory: Category;
