@@ -1,6 +1,6 @@
 import styles from './CategoryList.module.css';
-import { categories } from '../../data/categoriesData';
-import type { Category } from '../../types/categoryTypes';
+import { categories } from '@/data/categoriesData';
+import type { Category } from '@/types/categoryTypes';
 
 interface CategoryListProps {
   categoryRefs: React.MutableRefObject<(HTMLDivElement | null)[]>;
@@ -8,7 +8,11 @@ interface CategoryListProps {
   handleCategoryClick: (category: Category) => void;
 }
 
-const CategoryList = ({ categoryRefs, selectedCategory, handleCategoryClick }: CategoryListProps) => {
+const CategoryList = ({
+  categoryRefs,
+  selectedCategory,
+  handleCategoryClick,
+}: CategoryListProps) => {
   return (
     <div className={styles.categoriesList}>
       {categories.map((category, index) => (
@@ -23,8 +27,8 @@ const CategoryList = ({ categoryRefs, selectedCategory, handleCategoryClick }: C
           {category.name}
           {selectedCategory?.id === category.id && (
             <img
-              src="/icons/checkTick.svg"
-              alt="Selected"
+              src='/icons/checkTick.svg'
+              alt='Selected'
               className={styles.checkmarkIcon}
             />
           )}
