@@ -1,5 +1,5 @@
 import styles from './CardHero.module.css';
-import type { HeroCard } from '../../data/heroSliderData';
+import type { HeroCard } from '@data/heroSliderData';
 
 interface CardHeroProps {
   card: HeroCard;
@@ -10,12 +10,19 @@ interface CardHeroProps {
   onMouseUp: () => void;
 }
 
-const CardHero = ({ card, isActive, isPrev, isInactive, onMouseDown, onMouseUp }: CardHeroProps) => {
+const CardHero = ({
+  card,
+  isActive,
+  isPrev,
+  isInactive,
+  onMouseDown,
+  onMouseUp,
+}: CardHeroProps) => {
   return (
     <div
-      className={`${styles.cardHero} ${isActive ? styles.active : ''} ${isPrev ? styles.prev : ''} ${
-        isInactive ? styles.inactive : ''
-      }`}
+      className={`${styles.cardHero} ${isActive ? styles.active : ''} ${
+        isPrev ? styles.prev : ''
+      } ${isInactive ? styles.inactive : ''}`}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
     >

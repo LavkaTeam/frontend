@@ -8,6 +8,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@images': path.resolve(__dirname, 'src/assets/images'),
+      '@data': path.resolve(__dirname, 'src/data'),
+      '@types': path.resolve(__dirname, 'src/types'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@hooks': path.resolve(__dirname, 'src/hooks'),
     },
   },
   server: {

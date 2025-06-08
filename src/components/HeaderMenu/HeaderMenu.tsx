@@ -1,4 +1,4 @@
-import { getUserName } from '../../data/userNameData.tsx';
+import { getUserName } from '@data/userNameData.tsx';
 import styles from './HeaderMenu.module.css';
 import { AllCategoriesDropdown } from '../AllCategoriesDropdown';
 
@@ -30,9 +30,7 @@ const HeaderMenu = () => {
           </ul>
           <div className={styles.userinfo}>
             <img src='/icons/bellIcon.svg' alt='Bell icon' />
-            <p className={styles.userMessage}>
-              Welcome {getUserName()}
-            </p>
+            <p className={styles.userMessage}>Welcome {getUserName()}</p>
           </div>
         </div>
       </div>
