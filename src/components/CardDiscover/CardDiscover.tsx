@@ -1,6 +1,7 @@
-import styles from './CardDiscover.module.css';
 import { Link } from 'react-router-dom';
-import type { DiscoverCard } from '../../data/discoverData';
+import type { DiscoverCard } from '@/data/discoverData';
+
+import styles from './CardDiscover.module.css';
 
 interface CardDiscoverProps {
   card: DiscoverCard;

@@ -1,11 +1,13 @@
-import type { ProductsPayload, ProductsResponse } from "../types/products";
-import { fetchData } from "./fetchData";
+import type { ProductsPayload, ProductsResponse } from '@/types/products';
+import { fetchData } from './fetchData';
 
 const getProducts = (data: ProductsPayload): Promise<ProductsResponse> => {
+  return fetchData<ProductsResponse>(
+    `/products?page=${data.page}&size=${data.size}`,
+    {
+      method: 'GET',
+    },
+  );
+};
 
-    return fetchData<ProductsResponse>(`/products?page=${data.page}&size=${data.size}`, {
-        method: 'GET'
-    });
-}
-
-export {getProducts};
+export { getProducts };

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { loginUser, logOutUser, registerUser } from '../api/auth';
-import type { AuthPayload, AuthResponse } from '../types/auth';
+import type { AuthPayload, AuthResponse } from '@/types/auth';
 
 const useRegister = () => {
   return useMutation<AuthResponse, Error, AuthPayload>({

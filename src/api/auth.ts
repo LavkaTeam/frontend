@@ -1,6 +1,6 @@
 import { fetchData } from './fetchData';
 
-import type { AuthPayload, AuthResponse, LoginPayload } from '../types/auth';
+import type { AuthPayload, AuthResponse, LoginPayload } from '@/types/auth';
 
 const registerUser = (data: AuthPayload): Promise<AuthResponse> => {
   return fetchData<AuthResponse>('/auth/register', {
@@ -21,6 +21,5 @@ const logOutUser = (): Promise<void> => {
     method: 'POST',
   });
 };
-
 
 export { registerUser, loginUser, logOutUser };
