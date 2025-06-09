@@ -1,7 +1,8 @@
-import styles from './DiscoverSection.module.css';
 import { Heading } from '../Heading/Heading';
 import { CardDiscover } from '../CardDiscover/CardDiscover';
-import { discoverCards } from '../../data/discoverData';
+import { discoverCards } from '@/data/discoverData';
+
+import styles from './DiscoverSection.module.css';
 
 const DiscoverSection = () => {
   return (

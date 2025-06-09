@@ -1,7 +1,8 @@
-import styles from './HeroSection.module.css';
 import { heroCards } from '@/data/heroSliderData';
 import { useHeroSlider } from '@/hooks/useHeroSlider';
 import { CardHero } from '../CardHero/CardHero';
+
+import styles from './HeroSection.module.css';
 
 const HeroSection = () => {
   const { currentIndex, handleMouseDown, handleMouseUp } =

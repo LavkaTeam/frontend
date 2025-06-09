@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { StarRating } from '../Star';
-import styles from './CardBestseller.module.css';
 import { Button } from '../Button';
+
+import styles from './CardBestseller.module.css';
 
 const rateNumber = 3;
 const formatNumber = rateNumber.toFixed(1);

@@ -1,7 +1,8 @@
-import styles from './AllCategoriesDropdown.module.css';
 import { useDropdown } from '@/hooks/useDropdown';
 import CategoryList from '../CategoryList/CategoryList';
 import SubcategoryList from '../SubcategoryList/SubcategoryList';
+
+import styles from './AllCategoriesDropdown.module.css';
 
 const AllCategoriesDropdown = () => {
   const {
