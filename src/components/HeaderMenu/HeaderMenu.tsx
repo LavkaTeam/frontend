@@ -1,8 +1,15 @@
-import { getUserName } from '@data/userNameData.tsx';
-import styles from './HeaderMenu.module.css';
 import { AllCategoriesDropdown } from '../AllCategoriesDropdown';
+import { useUser } from '@/hooks/useUser';
+
+import styles from './HeaderMenu.module.css';
 
 const HeaderMenu = () => {
+  const { user } = useUser();
+
+  const getUserName = () => {
+    return user?.name || 'guest';
+  };
+
   return (
     <section className={styles.HeaderMenu}>
       <div className='container'>

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { StarRating } from '../Star';
-import styles from './CardBestseller.module.css';
 import { Button } from '../Button';
+
+import styles from './CardBestseller.module.css';
 
 const rateNumber = 3;
 const formatNumber = rateNumber.toFixed(1);
@@ -26,7 +27,7 @@ const CardBestseller = () => {
           </div>
           <div className={styles.cardProductDetails}>
             <span className={styles.heading}>Absolut</span>
-            <span className={styles.subHeading}>0.5 l, 0.7 l, 1 l</span>
+            <span className={styles.capacity}>0.5 l, 0.7 l, 1 l</span>
             <span className={styles.subHeading}>Sweden / Absolut</span>
             <div className={styles.cardRates}>
               <StarRating rate={rateNumber} />

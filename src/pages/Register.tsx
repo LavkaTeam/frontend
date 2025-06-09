@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { AuthPayload } from '../types/auth';
-import { useRegister } from '../hooks/useAuth';
+import type { AuthPayload } from '@/types/auth';
+import { useRegister } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 

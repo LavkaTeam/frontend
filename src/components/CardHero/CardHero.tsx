@@ -1,5 +1,6 @@
+import type { HeroCard } from '@/data/heroSliderData';
+
 import styles from './CardHero.module.css';
-import type { HeroCard } from '@data/heroSliderData';
 
 interface CardHeroProps {
   card: HeroCard;

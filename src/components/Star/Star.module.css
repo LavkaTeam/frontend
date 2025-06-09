@@ -1,3 +1,6 @@
 .star {
   margin-right: 3px;
+  height: 18px;
+  display: flex;
+  align-items: center;
 }

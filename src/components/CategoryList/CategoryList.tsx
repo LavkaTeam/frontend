@@ -1,6 +1,7 @@
+import { categories } from '@/data/categoriesData';
+import type { Category } from '@/types/categoryTypes';
+
 import styles from './CategoryList.module.css';
-import { categories } from '@data/categoriesData';
-import type { Category } from '@types/categoryTypes';
 
 interface CategoryListProps {
   categoryRefs: React.MutableRefObject<(HTMLDivElement | null)[]>;
