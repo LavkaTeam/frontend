@@ -22,7 +22,7 @@
   transition: color .3s;
 }
 .link:hover {
-  color: var(--color-gray-600);
+  color: var(--color-brand-burgundy);
 }
 
 .bottomSection {
@@ -60,5 +60,5 @@
 }
 
 .privacy:hover {
-  color: var(--color-gray-800)
+  color: var(--color-brand-burgundy);
 }

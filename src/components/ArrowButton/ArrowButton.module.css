@@ -1,0 +1,29 @@
+.arrowButton {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--color-primary-white);
+  border: 2px solid var(--color-gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.arrowButton:hover {
+  border-color: var(--color-brand-burgundy);
+}
+
+.left {
+  transform: rotate(0deg);
+}
+
+.right {
+  transform: rotate(180deg);
+}
+
+.arrowIcon {
+  width: 16px;
+  height: 28px;
+}

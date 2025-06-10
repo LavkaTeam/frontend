@@ -33,7 +33,12 @@ body {
     font-weight: 400;
     src: url('../fonts/inter-regular-400.woff2') format('woff2');
 }
-
+@font-face {
+    font-display: swap;
+    font-family: 'Inter';
+    font-weight: 500;
+    src: url('../fonts/inter-medium-500.woff2') format('woff2');
+}
 @font-face {
     font-display: swap;
     font-family: 'Inter';
@@ -43,8 +48,8 @@ body {
 @font-face {
     font-display: swap;
     font-family: 'Inter';
-    font-weight: 500;
-    src: url('../fonts/inter-medium-500.woff2') format('woff2');
+    font-weight: 700;
+    src: url('../fonts/inter-bold-700.woff2') format('woff2');
 }
 
 
@@ -56,6 +61,7 @@ body {
   --color-brand-burgundy: #AF261F;
   --color-brand-wood-bark: #27211C;
 
+  --color-grey: #87827E;
   --color-gray-50: #FAFAFA;
   --color-gray-200: #E9EAEB;
   --color-gray-300: #D5D7DA;
@@ -66,4 +72,6 @@ body {
   --color-primary-white: #FFF;
   --color-background-lightgray: #F5F5F5;
   --color-border-purple: #D6BBFB;
+
+  --color-green: #5D923C;
 }

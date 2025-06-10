@@ -1,0 +1,35 @@
+.bestsellersSection {
+  position: relative;
+  height: 651px;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 36px;
+  margin-bottom: 12px;
+}
+
+.bestsellersContainer {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 575px;
+}
+
+.Button {
+  border-radius: 50%;
+  position: absolute;
+  top: 188px;
+  z-index: 2;
+}
+
+.leftButton {
+  left: -20px;
+}
+
+.rightButton {
+  right: -20px;
+}
