@@ -1,7 +1,7 @@
 .button {
-  display: flex;
+  display: inline-flex;
   width: 100%;
-  padding: 10px 18px 10px 36px;
+  padding: 10px 18px;
   justify-content: center;
   align-items: center;
   gap: 8px;
@@ -16,4 +16,15 @@
   font-weight: 600;
   line-height: 24px;
   cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button:hover {
+  background: #57181e;
 }

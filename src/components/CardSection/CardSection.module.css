@@ -1,0 +1,37 @@
+.CardSection {
+  margin-bottom: 80px;
+}
+
+.cardContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.gridLayout {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.sliderContainer {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.button {
+  border-radius: 50%;
+  position: absolute;
+  top: 188px;
+  z-index: 2;
+}
+
+.leftButton {
+  left: -5px;
+}
+
+.rightButton {
+  right: -5px;
+}

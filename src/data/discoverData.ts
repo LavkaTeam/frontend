@@ -1,10 +1,4 @@
-export interface DiscoverCard {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  link: string;
-}
+import type { DiscoverCard } from '@/types/discoverCard';
 
 export const discoverCards: DiscoverCard[] = [
   {
