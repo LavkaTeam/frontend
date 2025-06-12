@@ -33,37 +33,33 @@ const CardSection = <T extends WithId>({
     : cards || [];
 
   return (
-    <section className={styles.CardSection}>
+    <section className={styles.cardSection}>
       <div className='container'>
         {title ? <Heading>{title}</Heading> : null}
-        <div
-          className={
-            withSlider
-              ? styles.cardContainer
-              : `${styles.cardContainer} ${styles.gridLayout}`
-          }
-        >
+        <div className={styles.sliderWrapper}>
           {withSlider && (
-            <div className={styles.sliderContainer}>
-              <div className={`${styles.button} ${styles.leftButton}`}>
-                <ArrowButton direction='left' onClick={handlePrev} />
-              </div>
+            <div className={`${styles.arrowButton} ${styles.leftButton}`}>
+              <ArrowButton direction='left' onClick={handlePrev} />
             </div>
           )}
 
           {visibleCards && visibleCards.length > 0 ? (
-            visibleCards.map((card) => (
-              <CardComponent key={card.id} card={card} />
-            ))
+            <div
+              className={
+                withSlider ? styles.cardContainer : styles.gridCardContainer
+              }
+            >
+              {visibleCards.map((card) => (
+                <CardComponent key={card.id} card={card} />
+              ))}
+            </div>
           ) : (
             <p>No cards available</p>
           )}
 
           {withSlider && (
-            <div className={styles.sliderContainer}>
-              <div className={`${styles.button} ${styles.rightButton}`}>
-                <ArrowButton direction='right' onClick={handleNext} />
-              </div>
+            <div className={`${styles.arrowButton} ${styles.rightButton}`}>
+              <ArrowButton direction='right' onClick={handleNext} />
             </div>
           )}
         </div>

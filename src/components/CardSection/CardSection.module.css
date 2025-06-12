@@ -1,37 +1,37 @@
-.CardSection {
+.cardSection {
   margin-bottom: 80px;
 }
 
 .cardContainer {
   display: flex;
+  position: relative;
   justify-content: space-between;
-  gap: 10px;
+  gap: 24px;
 }
 
-.gridLayout {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+.gridCardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
-.sliderContainer {
+.sliderWrapper {
   position: relative;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
 }
 
-.button {
-  border-radius: 50%;
-  position: absolute;
+.arrowButton {
+  z-index: 100;
   top: 188px;
-  z-index: 2;
+  position: absolute;
 }
 
 .leftButton {
-  left: -5px;
+  z-index: 2;
+  left: -8px;
 }
 
 .rightButton {
-  right: -5px;
+  z-index: 2;
+  right: -8px;
 }

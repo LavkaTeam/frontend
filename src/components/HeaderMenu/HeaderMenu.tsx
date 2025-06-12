@@ -1,4 +1,4 @@
-import { AllCategoriesDropdown } from '../AllCategoriesDropdown';
+import { AllCategoriesDropdown } from '../Category/AllCategoriesDropdown';
 
 import styles from './HeaderMenu.module.css';
 

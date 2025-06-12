@@ -6,11 +6,11 @@ const useSlider = (totalItems: number, itemsPerPage: number) => {
   const maxIndex = Math.max(0, totalItems - itemsPerPage);
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, maxIndex));
+    setCurrentIndex((prevIndex) => (prevIndex >= maxIndex ? 0 : prevIndex + 1));
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    setCurrentIndex((prevIndex) => (prevIndex <= 0 ? maxIndex : prevIndex - 1));
   };
 
   return {
