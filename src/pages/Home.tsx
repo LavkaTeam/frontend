@@ -1,15 +1,40 @@
 import { HeaderMenu } from '../components/HeaderMenu';
 import { HeroSection } from '../components/HeroSection';
-import { BestsellersSection } from '../components/BestsellersSection';
-import { DiscoverSection } from '../components/DiscoverSection';
+import { CardSection } from '@/components/CardSection';
+import { discoverCards } from '@/data/discoverData';
+import { CardDiscover } from '@/components/CardDiscover';
+import { CardProduct } from '@/components/CardProduct';
+import { productData } from '@/data/productData';
+import { Divider } from '@/components/Divider';
 
 const Home = () => {
   return (
     <div>
       <HeaderMenu />
       <HeroSection />
-      <BestsellersSection />
-      <DiscoverSection />
+      <CardSection
+        title='Bestsellers'
+        cards={productData}
+        CardComponent={CardProduct}
+        withSlider={true}
+      />
+      <CardSection
+        title='Discover'
+        cards={discoverCards}
+        CardComponent={CardDiscover}
+      />
+      <CardSection
+        title='Related products'
+        cards={productData}
+        CardComponent={CardProduct}
+        withSlider={true}
+      />
+      <Divider />
+      <CardSection
+        title={false}
+        cards={productData}
+        CardComponent={CardProduct}
+      />
     </div>
   );
 };

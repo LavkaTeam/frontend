@@ -9,7 +9,7 @@ const StarRating = ({ rate }: StarRatingProps) => {
   return (
     <>
       {Array.from({ length: 5 }, (_, index) =>
-        index < Math.floor(rate) ? (
+        index < Math.round(rate) ? (
           <FilledStar key={index} />
         ) : (
           <EmptyStar key={index} />

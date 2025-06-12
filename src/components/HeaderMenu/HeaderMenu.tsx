@@ -1,15 +1,8 @@
 import { AllCategoriesDropdown } from '../AllCategoriesDropdown';
-import { useUser } from '@/hooks/useUser';
 
 import styles from './HeaderMenu.module.css';
 
 const HeaderMenu = () => {
-  const { user } = useUser();
-
-  const getUserName = () => {
-    return user?.name || 'guest';
-  };
-
   return (
     <section className={styles.HeaderMenu}>
       <div className='container'>
@@ -35,10 +28,6 @@ const HeaderMenu = () => {
               <img src='/icons/campariLogo.svg' alt='Campari Logo' />
             </li>
           </ul>
-          <div className={styles.userinfo}>
-            <img src='/icons/bellIcon.svg' alt='Bell icon' />
-            <p className={styles.userMessage}>Welcome {getUserName()}</p>
-          </div>
         </div>
       </div>
     </section>

@@ -1,1 +1,0 @@
-export { BestsellersSection } from './BestsellersSection';

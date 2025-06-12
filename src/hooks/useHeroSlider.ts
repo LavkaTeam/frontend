@@ -21,7 +21,7 @@ export const useHeroSlider = (cards: { length: number }) => {
   useEffect(() => {
     startSlider();
     return () => stopSlider();
-  }, [cards.length]);
+  });
 
   const handleMouseDown = () => stopSlider();
   const handleMouseUp = () => startSlider();

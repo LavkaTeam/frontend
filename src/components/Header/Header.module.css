@@ -8,15 +8,16 @@
 }
 
 .container {
+  display: flex;
+  justify-content: space-between;
   padding: 8px 0;
   align-items: center;
-  display: grid;
-  gap:10px;
-  grid-template-columns: 1fr 3fr 1fr;
 }
 
-.logo {
-  justify-self: start;
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .searchBox {
@@ -25,13 +26,12 @@
   align-items: center;
   position: relative;
   box-sizing: border-box;
-  max-width: 684px;
+  max-width: 566px;
   width: 100%;
   height: 44px;
 }
 
-.searchBox input{
-  max-width: 684px;
+.searchBox input {
   width: 100%;
   display: flex;
   justify-self: center;
@@ -54,21 +54,13 @@
   transform: translateY(-50%);
 }
 
-.buttons {
-  display: flex;
-  gap: 50px;
-  align-items: center;
-  justify-self: end;
-}
-
 .authButtons {
   display: flex;
+  align-items: center;
   gap: 12px;
 }
 
 .loginButton {
-  width: 95px;
-  height: 44px;
   padding: 10px 17px;
   border-radius: 8px;
   border: transparent;
@@ -84,34 +76,22 @@
   cursor: pointer;
 }
 
-.signupButton {
+.actions {
   display: flex;
   align-items: center;
-
-  width: 95px;
-  height: 44px;
-  padding: 10px 17px;
-  border-radius: 8px;
-  border: 1px solid var(--color-brand-burgundy);
-  background: var(--color-brand-burgundy);
-
-  text-decoration: none;
-  color: var(--color-primary-white);
-  font-weight: 600;
-  transition: color .3s, background-color .3s, border .3s;
-
+  gap: 24px;
 }
 
-.signupButton:hover {
-  border: 1px solid var(--color-brand-burgundy);
-  background: var(--color-primary-white);
-  color: var(--color-brand-burgundy);
-  cursor: pointer;
-}
-
-.cartButton {
-  height: 24px;
+.headerContent {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1157px;
+}
+
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: 50px;
 }
