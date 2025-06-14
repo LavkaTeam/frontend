@@ -19,10 +19,16 @@ const HeaderMenu = () => {
               <img src='/icons/patronLogo.svg' alt='Patron Logo' />
             </li>
             <li className={styles.brandLogo}>
+              <img src='/icons/jameson.svg' alt='Jameson Logo' />
+            </li>
+            <li className={styles.brandLogo}>
               <img src='/icons/absolutLogo.svg' alt='Absolut Logo' />
             </li>
             <li className={styles.brandLogo}>
               <img src='/icons/remymartinLogo.svg' alt='Remy Martin Logo' />
+            </li>
+            <li className={styles.brandLogo}>
+              <img src='/icons/jackDaniels.svg' alt='Jack-Daniels Logo' />
             </li>
             <li className={styles.brandLogo}>
               <img src='/icons/campariLogo.svg' alt='Campari Logo' />
