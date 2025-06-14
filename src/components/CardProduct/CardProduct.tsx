@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import { Button } from '../Button';
 import { StarRating } from '../Star';
 import { OutlineHeart, SolidHeart } from '../Heart';
@@ -20,27 +21,31 @@ const CardProduct = ({ card }: any) => {
       >
         {isFavorite ? <SolidHeart /> : <OutlineHeart />}
       </div>
-      <div className={styles.cardImageWrapper}>
-        <img src={card.image} alt={card.title} />
-      </div>
+      <Link to={`product/${card.id}`}>
+        <div className={styles.cardImageWrapper}>
+          <img src={card.image} alt={card.title} />
+        </div>
+      </Link>
       <div className={styles.cardProductInfo}>
-        <div className={styles.cardInStock}>
-          <span className={styles.inStock}>In Stock</span>
-          <span className={styles.sku}>{card.sku}</span>
-        </div>
-        <div className={styles.cardProductDetails}>
-          <span className={styles.heading}>{card.title}</span>
-          {card.capacity && (
-            <span className={styles.capacity}>{card.capacity}</span>
-          )}
-          <span className={styles.subHeading}>{card.description}</span>
-          <div className={styles.cardRates}>
-            <StarRating rate={card.rating.rate} />
-            <span className={styles.rateNumber}>{formatRate}</span>
+        <Link to={`product/${card.id}`}>
+          <div className={styles.cardInStock}>
+            <span className={styles.inStock}>In Stock</span>
+            <span className={styles.sku}>{card.sku}</span>
           </div>
-          <span className={styles.divider}></span>
-          <span className={styles.price}>{card.price}</span>
-        </div>
+          <div className={styles.cardProductDetails}>
+            <span className={styles.heading}>{card.title}</span>
+            {card.capacity && (
+              <span className={styles.capacity}>{card.capacity}</span>
+            )}
+            <span className={styles.subHeading}>{card.description}</span>
+            <div className={styles.cardRates}>
+              <StarRating rate={card.rating.rate} />
+              <span className={styles.rateNumber}>{formatRate}</span>
+            </div>
+            <span className={styles.divider}></span>
+            <span className={styles.price}>{card.price}</span>
+          </div>
+        </Link>
         <Button icon={<ShoppingCart />}>Add to cart</Button>
       </div>
     </div>
