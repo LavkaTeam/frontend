@@ -5,7 +5,7 @@ import { discoverCards } from '@/data/discoverData';
 import { CardDiscover } from '@/components/CardDiscover';
 import { CardProduct } from '@/components/CardProduct';
 import { productData } from '@/data/productData';
-import { Divider } from '@/components/Divider';
+import { Pagination } from '@/components/Pagination';
 
 const Home = () => {
   return (
@@ -29,12 +29,12 @@ const Home = () => {
         CardComponent={CardProduct}
         withSlider={true}
       />
-      <Divider />
       <CardSection
         title={false}
         cards={productData}
         CardComponent={CardProduct}
       />
+      <Pagination />
     </div>
   );
 };
