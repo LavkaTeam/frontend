@@ -95,3 +95,7 @@
   align-items: center;
   gap: 50px;
 }
+
+.userMessage {
+  font-weight: 600;
+}
