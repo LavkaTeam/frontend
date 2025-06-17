@@ -57,6 +57,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
             label='Name'
             placeholder='Enter your name'
             autoComplete='given-name'
+            error={errors.name?.message}
             {...register('name')}
           />
           <InputField
@@ -64,6 +65,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
             label='Last Name'
             placeholder='Enter your last name'
             autoComplete='family-name'
+            error={errors.lastName?.message}
             {...register('lastName')}
           />
           <InputField
@@ -72,6 +74,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
             type='email'
             placeholder='Enter your email'
             autoComplete='email'
+            error={errors.email?.message}
             {...register('email')}
           />
           <InputField
@@ -80,6 +83,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
             type='password'
             placeholder='Enter your password'
             autoComplete='new-password'
+            error={errors.password?.message}
             {...register('password')}
           />
           <InputField
@@ -87,6 +91,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
             label='Company name'
             placeholder='Enter your company name'
             autoComplete='organization'
+            error={errors.companyName?.message}
             {...register('companyName')}
           />
           <InputField
@@ -95,10 +100,9 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
             type='tel'
             placeholder='Enter your phone number'
             autoComplete='tel'
+            error={errors.telephoneNumber?.message}
             {...register('telephoneNumber')}
           />
-
-          {errors.telephoneNumber && <p>{errors.telephoneNumber.message}</p>}
 
           <div style={{ marginTop: '16px' }}>
             <p>Select your role:</p>
