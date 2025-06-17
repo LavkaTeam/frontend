@@ -20,7 +20,6 @@ const Register = () => {
         navigate('/');
       },
       onError: (error: any) => {
-        console.error('Registration error:', error);
         if (error.email) {
           setError('email', { message: error.email });
         }
@@ -31,7 +30,7 @@ const Register = () => {
           setError('telephoneNumber', { message: error.telephoneNumber });
         }
         if (!error.email && !error.password && !error.telephoneNumber) {
-          console.log('Something went wrong');
+          alert('Something went wrong');
         }
       },
     });
