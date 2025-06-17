@@ -1,119 +1,44 @@
-import { useState } from 'react';
 import type { AuthPayload } from '@/types/auth';
 import { useRegister } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
+import { RegisterForm } from '@/components/Form/RegisterForm';
 
 const Register = () => {
   const queryClient = useQueryClient();
   const register = useRegister();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState<AuthPayload>({
-    name: '',
-    email: '',
-    password: '',
-    companyName: '',
-    telephoneNumber: '',
-    role: 'BUYER',
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    register.mutate(form, {
-      onSuccess: (data) => {
-        localStorage.setItem('token', data.token);
+  const handleSubmit = (
+    data: AuthPayload,
+    setError: (field: keyof AuthPayload, error: { message: string }) => void,
+  ) => {
+    register.mutate(data, {
+      onSuccess: (response) => {
+        localStorage.setItem('token', response.token);
         queryClient.invalidateQueries({ queryKey: ['user'] });
         navigate('/');
       },
-      onError: (error: Error) => {
-        alert(error.message);
+      onError: (error: any) => {
+        console.error('Registration error:', error);
+        if (error.email) {
+          setError('email', { message: error.email });
+        }
+        if (error.password) {
+          setError('password', { message: error.password });
+        }
+        if (error.telephoneNumber) {
+          setError('telephoneNumber', { message: error.telephoneNumber });
+        }
+        if (!error.email && !error.password && !error.telephoneNumber) {
+          console.log('Something went wrong');
+        }
       },
     });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input
-          name='name'
-          value={form.name}
-          onChange={handleChange}
-          type='text'
-          placeholder='Type Your name'
-          required
-        />
-        <input
-          name='email'
-          value={form.email}
-          onChange={handleChange}
-          type='email'
-          placeholder='Email'
-          autoComplete='email'
-          required
-        />
-        <input
-          name='password'
-          value={form.password}
-          onChange={handleChange}
-          type='password'
-          placeholder='Password'
-          autoComplete='new-password'
-          required
-        />
-        <input
-          name='companyName'
-          value={form.companyName}
-          onChange={handleChange}
-          type='text'
-          placeholder='Company name'
-          required
-        />
-        <input
-          name='telephoneNumber'
-          value={form.telephoneNumber}
-          onChange={handleChange}
-          type='tel'
-          placeholder='Telephone number'
-          autoComplete='tel'
-          required
-        />
-        <div>
-          <label>
-            <input
-              type='radio'
-              name='role'
-              value='BUYER'
-              checked={form.role === 'BUYER'}
-              onChange={handleChange}
-            />
-            Buyer
-          </label>
-          <label>
-            <input
-              type='radio'
-              name='role'
-              value='SELLER'
-              checked={form.role === 'SELLER'}
-              onChange={handleChange}
-            />
-            Seller
-          </label>
-        </div>
-      </div>
-      <button type='submit' disabled={register.isPending}>
-        {register.isPending ? 'Registering...' : 'Register'}
-      </button>
-    </form>
+    <RegisterForm onSubmit={handleSubmit} isLoading={register.isPending} />
   );
 };
 

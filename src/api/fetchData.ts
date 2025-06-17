@@ -19,9 +19,9 @@ const fetchData = async <T = unknown>(
 
   if (!response.ok) {
     const errorData = await response.json();
-
-    throw new Error(errorData.message || 'Something went wrong');
+    throw errorData;
   }
+
   return response.json();
 };
 

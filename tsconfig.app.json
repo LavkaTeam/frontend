@@ -5,6 +5,7 @@
       "@/*": ["src/*"],
       "@icons/*": ["../public/icons/*"],
       "@components/*": ["src/components/*"],
+      "@ui/*": ["src/components/ui/*"],
       "@data/*": ["src/data/*"],
       "@hooks/*": ["src/hooks/*"],
       "@utils/*": ["src/utils/*"],

@@ -1,9 +1,9 @@
 import { Link } from 'react-router';
 import { Logo } from '../Logo';
-import { Button } from '../Button';
+import { Button } from '../ui/Button';
 import { ShoppingCart } from '../ShoppingCart';
 import { OutlineHeart } from '../Heart';
-
+import { Input } from '../ui/Input';
 import { useUser } from '@/hooks/useUser';
 
 import styles from './Header.module.css';
@@ -23,12 +23,7 @@ const Header = () => {
 
           <div className={styles.headerContent}>
             <div className={styles.searchBox}>
-              <input
-                name='text'
-                type='text'
-                placeholder='Search'
-                className={styles.searchInput}
-              />
+              <Input name='text' type='text' placeholder='Search' />
               <img src='/icons/searchIcon.svg' alt='search' />
             </div>
 

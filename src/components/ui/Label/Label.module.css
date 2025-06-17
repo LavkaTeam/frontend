@@ -1,0 +1,7 @@
+.label {
+  color: var(--color-gray-700);
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
