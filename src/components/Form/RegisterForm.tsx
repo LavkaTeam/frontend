@@ -53,54 +53,51 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           autoComplete='on'
         >
           <InputField
+            id='name'
             label='Name'
             placeholder='Enter your name'
             autoComplete='given-name'
             {...register('name')}
           />
-          {errors.name && <p>{errors.name.message}</p>}
-
           <InputField
+            id='lastName'
             label='Last Name'
             placeholder='Enter your last name'
-            autoComplete='given-lastName'
+            autoComplete='family-name'
             {...register('lastName')}
           />
-          {errors.lastName && <p>{errors.lastName.message}</p>}
-
           <InputField
+            id='email'
             label='Email'
             type='email'
             placeholder='Enter your email'
             autoComplete='email'
             {...register('email')}
           />
-          {errors.email && <p>{errors.email.message}</p>}
-
           <InputField
+            id='password'
             label='Password'
             type='password'
             placeholder='Enter your password'
             autoComplete='new-password'
             {...register('password')}
           />
-          {errors.password && <p>{errors.password.message}</p>}
-
           <InputField
+            id='companyName'
             label='Company name'
             placeholder='Enter your company name'
             autoComplete='organization'
             {...register('companyName')}
           />
-          {errors.companyName && <p>{errors.companyName.message}</p>}
-
           <InputField
+            id='telephoneNumber'
             label='Phone'
             type='tel'
             placeholder='Enter your phone number'
             autoComplete='tel'
             {...register('telephoneNumber')}
           />
+
           {errors.telephoneNumber && <p>{errors.telephoneNumber.message}</p>}
 
           <div style={{ marginTop: '16px' }}>
