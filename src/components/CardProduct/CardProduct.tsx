@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { Button } from '../Button';
+import { Button } from '../ui/Button';
 import { StarRating } from '../Star';
 import { OutlineHeart, SolidHeart } from '../Heart';
 import { ShoppingCart } from '../ShoppingCart';
