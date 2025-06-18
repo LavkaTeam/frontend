@@ -13,11 +13,13 @@
     "@hookform/resolvers": "^5.1.1",
     "@reduxjs/toolkit": "^2.8.2",
     "@tanstack/react-query": "^5.76.1",
+    "cleave.js": "^1.6.0",
     "git-cz": "^4.9.0",
     "pnpm": "^10.11.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.58.0",
+    "react-input-mask": "^2.0.4",
     "react-router": "^7.6.0",
     "react-router-dom": "^7.6.0",
     "zod": "^3.25.67"

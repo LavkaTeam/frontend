@@ -98,7 +98,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
             id='telephoneNumber'
             label='Phone'
             type='tel'
-            placeholder='+1 (555) 000-0000'
+            placeholder='+380 (00) 000-00 00'
             autoComplete='tel'
             error={errors.telephoneNumber?.message}
             {...register('telephoneNumber')}
