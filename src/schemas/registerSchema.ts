@@ -20,7 +20,7 @@ const registerSchema = z.object({
 
   password: z
     .string({ required_error: 'Password is required' })
-    .min(6, 'Password must be at least 6 characters')
+    .min(8, 'Password must be at least 8 characters')
     .regex(
       /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
       'Password must contain at least 1 uppercase letter and 1 number',
