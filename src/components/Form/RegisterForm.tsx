@@ -54,6 +54,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
         >
           <InputField
             id='name'
+            label='Name'
             placeholder='Оlivia'
             autoComplete='given-name'
             error={errors.name?.message}
@@ -61,6 +62,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           />
           <InputField
             id='lastName'
+            label='Last Name'
             placeholder='Sandra'
             autoComplete='family-name'
             error={errors.lastName?.message}
@@ -68,6 +70,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           />
           <InputField
             id='email'
+            label='Email'
             type='email'
             placeholder='olivia@untitledui.com'
             autoComplete='email'
@@ -76,6 +79,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           />
           <InputField
             id='password'
+            label='Password'
             type='password'
             placeholder='••••••••'
             autoComplete='new-password'
@@ -84,6 +88,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           />
           <InputField
             id='companyName'
+            label='Company name'
             placeholder='Craft and Style'
             autoComplete='organization'
             error={errors.companyName?.message}
@@ -91,6 +96,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           />
           <InputField
             id='telephoneNumber'
+            label='Phone'
             type='tel'
             placeholder='+1 (555) 000-0000'
             autoComplete='tel'
