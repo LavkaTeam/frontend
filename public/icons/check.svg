@@ -1,0 +1,30 @@
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="14" height="14" fill="#5C5C5C"/>
+<g id="UI Sing up" clip-path="url(#clip0_624_4750)">
+<rect width="1440" height="1272" transform="translate(-874 -755)" fill="#F5F5F5"/>
+<g id="Sing up">
+<g id="Sing up grid">
+<g id="Input">
+<g id="Buyer/Seller">
+<g id="Seller">
+<g id="Checkbox">
+<g id="_Checkbox base">
+<rect x="-2.5" y="-2.5" width="19" height="19" rx="5.5" fill="#FCFAFF"/>
+<rect x="-2.5" y="-2.5" width="19" height="19" rx="5.5" stroke="#57181E"/>
+<g id="check">
+<path id="Icon" d="M11.6693 3.5L5.2526 9.91667L2.33594 7" stroke="#AF261F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_624_4750">
+<rect width="1440" height="1272" fill="white" transform="translate(-874 -755)"/>
+</clipPath>
+</defs>
+</svg>

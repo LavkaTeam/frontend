@@ -54,59 +54,51 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
         >
           <InputField
             id='name'
-            label='Name'
-            placeholder='Enter your name'
+            placeholder='Оlivia'
             autoComplete='given-name'
             error={errors.name?.message}
             {...register('name')}
           />
           <InputField
             id='lastName'
-            label='Last Name'
-            placeholder='Enter your last name'
+            placeholder='Sandra'
             autoComplete='family-name'
             error={errors.lastName?.message}
             {...register('lastName')}
           />
           <InputField
             id='email'
-            label='Email'
             type='email'
-            placeholder='Enter your email'
+            placeholder='olivia@untitledui.com'
             autoComplete='email'
             error={errors.email?.message}
             {...register('email')}
           />
           <InputField
             id='password'
-            label='Password'
             type='password'
-            placeholder='Enter your password'
+            placeholder='••••••••'
             autoComplete='new-password'
             error={errors.password?.message}
             {...register('password')}
           />
           <InputField
             id='companyName'
-            label='Company name'
-            placeholder='Enter your company name'
+            placeholder='Craft and Style'
             autoComplete='organization'
             error={errors.companyName?.message}
             {...register('companyName')}
           />
           <InputField
             id='telephoneNumber'
-            label='Phone'
             type='tel'
-            placeholder='Enter your phone number'
+            placeholder='+1 (555) 000-0000'
             autoComplete='tel'
             error={errors.telephoneNumber?.message}
             {...register('telephoneNumber')}
           />
 
-          <div style={{ marginTop: '16px' }}>
-            <p>Select your role:</p>
-
+          <div className={styles.checkBoxContainer}>
             <Checkbox
               label='Seller'
               checked={role === 'SELLER'}
