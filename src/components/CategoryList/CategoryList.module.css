@@ -13,6 +13,7 @@
   transition: background-color 0.2s;
   position: relative;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .categoryItem:hover {

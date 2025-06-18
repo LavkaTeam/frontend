@@ -26,7 +26,7 @@ export const useDropdown = () => {
     }
   };
 
-  const handleCategoryClick = (category: Category) => {
+  const handleCategoryHover = (category: Category) => {
     if (selectedCategory?.id === category.id) {
       setIsSubCollapsing(true);
       setTimeout(() => {
@@ -83,6 +83,6 @@ export const useDropdown = () => {
     categoryRefs,
     menuRef,
     toggleDropdown,
-    handleCategoryClick,
+    handleCategoryHover,
   };
 };
