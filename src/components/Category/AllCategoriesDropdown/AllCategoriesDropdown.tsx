@@ -14,7 +14,7 @@ const AllCategoriesDropdown = () => {
     categoryRefs,
     menuRef,
     toggleDropdown,
-    handleCategoryClick,
+    handleCategoryHover,
   } = useDropdown();
 
   return (
@@ -39,7 +39,7 @@ const AllCategoriesDropdown = () => {
           <CategoryList
             categoryRefs={categoryRefs}
             selectedCategory={selectedCategory}
-            handleCategoryClick={handleCategoryClick}
+            handleCategoryHover={handleCategoryHover}
           />
           {selectedCategory && (
             <SubcategoryList

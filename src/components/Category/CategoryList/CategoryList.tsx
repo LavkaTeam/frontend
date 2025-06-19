@@ -6,13 +6,13 @@ import styles from './CategoryList.module.css';
 interface CategoryListProps {
   categoryRefs: React.MutableRefObject<(HTMLDivElement | null)[]>;
   selectedCategory: Category | null;
-  handleCategoryClick: (category: Category) => void;
+  handleCategoryHover: (category: Category) => void;
 }
 
 const CategoryList = ({
   categoryRefs,
   selectedCategory,
-  handleCategoryClick,
+  handleCategoryHover,
 }: CategoryListProps) => {
   return (
     <div className={styles.categoriesList}>
@@ -23,7 +23,7 @@ const CategoryList = ({
             categoryRefs.current[index] = el;
           }}
           className={styles.categoryItem}
-          onClick={() => handleCategoryClick(category)}
+          onMouseEnter={() => handleCategoryHover(category)}
         >
           {category.name}
           {selectedCategory?.id === category.id && (
