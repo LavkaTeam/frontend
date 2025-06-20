@@ -2,9 +2,9 @@ import { LoginForm } from '@/components/Form';
 import { useLoginHandler } from '@/hooks/useLoginHandler';
 
 const Login = () => {
-  const { handleSubmit, isLoading: login } = useLoginHandler();
+  const { handleSubmit, isLoading } = useLoginHandler();
 
-  return <LoginForm onSubmit={handleSubmit} isLoading={login.isPending} />;
+  return <LoginForm onSubmit={handleSubmit} isLoading={isLoading} />;
 };
 
 export { Login };

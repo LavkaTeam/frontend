@@ -11,7 +11,7 @@ import { useUser } from '@/hooks/useUser';
 import styles from './Header.module.css';
 
 const Header = () => {
-  const { data: user } = useUser();
+  const { data: user } = useUser() as { data: UserResponse | null };
   const [userNameFromLocal] = useState(() => {
     return JSON.parse(localStorage.getItem('userName') || 'null');
   });
