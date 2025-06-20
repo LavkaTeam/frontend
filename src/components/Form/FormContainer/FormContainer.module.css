@@ -16,9 +16,3 @@
   max-width: 360px;
   width: 100%;
 }
-
-.checkBoxContainer {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 0 40px;
-}

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { loginUser, logOutUser, registerUser } from '../api/auth';
-import type { AuthPayload, AuthResponse } from '@/types/auth';
+import type { AuthPayload, AuthResponse, LoginPayload } from '@/types/auth';
 
 const useRegister = () => {
   return useMutation<AuthResponse, Error, AuthPayload>({
@@ -9,17 +9,8 @@ const useRegister = () => {
 };
 
 const useLogin = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<AuthResponse, Error, AuthPayload>({
+  return useMutation<AuthResponse, Error, LoginPayload>({
     mutationFn: loginUser,
-
-    //КОД КОТОРЫЙ ИДЁТ ДАЛЬШЕ НУЖНО СЕПАРИРОВАТЬ ДЛЯ ОТДЕЛЬНОЙ ЛОГИКИ LOGIN
-
-    onSuccess: (data) => {
-      localStorage.setItem('token', data.token);
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-    },
   });
 };
 

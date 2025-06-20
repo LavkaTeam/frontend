@@ -1,6 +1,6 @@
 import { ArrowButton } from '../ArrowButton';
-import { useSlider } from '@/hooks/useSlider';
-import { Heading } from '../ui/Heading';
+import { useSlider } from '@hooks/useSlider';
+import { Heading } from '@ui/Heading';
 
 import styles from './CardSection.module.css';
 
