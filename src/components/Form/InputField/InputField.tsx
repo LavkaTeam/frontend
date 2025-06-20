@@ -1,5 +1,5 @@
-import { Input } from '../ui/Input';
-import { Label } from '../ui/Label';
+import { Input } from '@ui/Input';
+import { Label } from '@ui/Label';
 
 import styles from './InputField.module.css';
 

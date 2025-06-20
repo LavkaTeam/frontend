@@ -1,16 +1,20 @@
-// export interface User {
+import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/api/user';
 
-interface User {
-  name: string;
-}
+const useUser = () => {
+  const initialUser = (() => {
+    const userString = localStorage.getItem('user');
+    return userString ? JSON.parse(userString) : null;
+  })();
 
-function useUser(): { user: User } {
-  const user = {
-    name: 'guest',
-  };
-
-  // Тимчасове значення, потім підтягнемо з беку
-  return { user };
-}
+  return useQuery({
+    queryKey: ['user'],
+    queryFn: getUser,
+    initialData: initialUser,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+    retry: false,
+  });
+};
 
 export { useUser };

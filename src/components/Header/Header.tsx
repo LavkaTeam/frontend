@@ -1,19 +1,22 @@
+import { useState } from 'react';
+
 import { Link } from 'react-router';
 import { Logo } from '../Logo';
-import { Button } from '../ui/Button';
+import { Button } from '@ui/Button';
 import { ShoppingCart } from '../ShoppingCart';
 import { OutlineHeart } from '../Heart';
-import { Input } from '../ui/Input';
+import { Input } from '@ui/Input';
 import { useUser } from '@/hooks/useUser';
 
 import styles from './Header.module.css';
 
 const Header = () => {
-  const { user } = useUser();
+  const { data: user } = useUser();
+  const [userNameFromLocal] = useState(() => {
+    return JSON.parse(localStorage.getItem('userName') || 'null');
+  });
 
-  const getUserName = () => {
-    return user?.name || 'guest';
-  };
+  const isAuthenticated = Boolean(user || userNameFromLocal);
 
   return (
     <header className={styles.wrapper}>
@@ -30,28 +33,38 @@ const Header = () => {
             <div className={styles.userActions}>
               <div className={styles.userInfo}>
                 <img src='/icons/bellIcon.svg' alt='Bell icon' />
-                <p className={styles.userMessage}>Welcome {getUserName()}</p>
+                <p className={styles.userMessage}>
+                  Welcome {user?.name || userNameFromLocal || 'guest'}
+                </p>
               </div>
 
-              <div className={styles.authButtons}>
-                <Link to={'/login'} className={styles.loginButton}>
-                  Log in
-                </Link>
-
+              {isAuthenticated ? (
                 <Link to={'/register'}>
-                  <Button>Sign up</Button>
+                  <Button>Log out</Button>
                 </Link>
-              </div>
+              ) : (
+                <>
+                  {' '}
+                  <div className={styles.authButtons}>
+                    <Link to={'/login'} className={styles.loginButton}>
+                      Log in
+                    </Link>
 
-              <div className={styles.actions}>
-                <Link to={'/favorites'}>
-                  <OutlineHeart />
-                </Link>
+                    <Link to={'/register'}>
+                      <Button>Sign up</Button>
+                    </Link>
+                  </div>
+                  <div className={styles.actions}>
+                    <Link to={'/favorites'}>
+                      <OutlineHeart />
+                    </Link>
 
-                <Link to={'/cart'}>
-                  <ShoppingCart currentColor='#252B37' />
-                </Link>
-              </div>
+                    <Link to={'/cart'}>
+                      <ShoppingCart currentColor='#252B37' />
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
