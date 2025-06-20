@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { loginUser, logOutUser, registerUser } from '../api/auth';
 import type { AuthPayload, AuthResponse, LoginPayload } from '@/types/auth';
 
@@ -15,17 +15,8 @@ const useLogin = () => {
 };
 
 const useLogOut = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: logOutUser,
-
-    //КОД КОТОРЫЙ ИДЁТ ДАЛЬШЕ НУЖНО СЕПАРИРОВАТЬ ДЛЯ ОТДЕЛЬНОЙ ЛОГИКИ LOGOUT
-
-    onSuccess: () => {
-      localStorage.removeItem('token');
-      queryClient.clear();
-    },
   });
 };
 

@@ -9,14 +9,18 @@ import { Input } from '@ui/Input';
 import { useUser } from '@/hooks/useUser';
 
 import styles from './Header.module.css';
+import { useLogOutHandler } from '@/hooks/useLogOutHandler';
+import { AccountIcon } from '../AccountIcon';
 
 const Header = () => {
   const { data: user } = useUser() as { data: UserResponse | null };
+
   const [userNameFromLocal] = useState(() => {
     return JSON.parse(localStorage.getItem('userName') || 'null');
   });
-
   const isAuthenticated = Boolean(user || userNameFromLocal);
+
+  const { handleSubmit: handleLogOut } = useLogOutHandler();
 
   return (
     <header className={styles.wrapper}>
@@ -38,10 +42,25 @@ const Header = () => {
                 </p>
               </div>
 
-              {isAuthenticated ? (
-                <Link to={'/register'}>
-                  <Button>Log out</Button>
+              <div className={styles.actions}>
+                {isAuthenticated && (
+                  <Link to={'/account'}>
+                    <AccountIcon />
+                  </Link>
+                )}
+
+                <Link to={'/favorites'}>
+                  <OutlineHeart />
                 </Link>
+
+                <Link to={'/cart'}>
+                  <ShoppingCart currentColor='#252B37' />
+                </Link>
+              </div>
+              {isAuthenticated ? (
+                <div>
+                  <Button onClick={handleLogOut}>Log out</Button>
+                </div>
               ) : (
                 <>
                   {' '}
@@ -52,15 +71,6 @@ const Header = () => {
 
                     <Link to={'/register'}>
                       <Button>Sign up</Button>
-                    </Link>
-                  </div>
-                  <div className={styles.actions}>
-                    <Link to={'/favorites'}>
-                      <OutlineHeart />
-                    </Link>
-
-                    <Link to={'/cart'}>
-                      <ShoppingCart currentColor='#252B37' />
                     </Link>
                   </div>
                 </>
