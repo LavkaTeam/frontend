@@ -82,4 +82,7 @@ a {
   --color-border-purple: #d6bbfb;
 
   --color-green: #5d923c;
+
+  --color-error-300: #fda29b;
+  --color-error-500: #f04438;
 }
