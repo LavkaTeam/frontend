@@ -3,6 +3,7 @@ import { useUser } from '@/hooks/useUser';
 
 const Account = () => {
   const { data: user, error, isLoading } = useUser();
+
   if (isLoading) return <Loader />;
   if (error) return <div>Сталася помилка: {error?.message}</div>;
 
