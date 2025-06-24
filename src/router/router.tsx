@@ -1,43 +1,76 @@
 import { createBrowserRouter } from 'react-router';
-
-import { NotFound } from '@/pages/NotFound';
 import { Layout } from '@/Layout';
-import { Register } from '@/pages/Register';
-import { Cart } from '@/pages/Cart';
-import { Product } from '@/pages/Product';
-import { Login } from '@/pages/Login';
-import { Home } from '@/pages/Home';
-import { Account } from '@/pages/Account';
+import { Loader } from '@/components/ui/Loader';
+import { lazy, Suspense } from 'react';
+
+const Home = lazy(() => import('@/pages/Home'));
+const Register = lazy(() => import('@/pages/Register'));
+const Login = lazy(() => import('@/pages/Login'));
+const Account = lazy(() => import('@/pages/Account'));
+const Cart = lazy(() => import('@/pages/Cart'));
+const Product = lazy(() => import('@/pages/Product'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> },
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Home />
+          </Suspense>
+        ),
+      },
       {
         path: '/register',
-        element: <Register />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Register />
+          </Suspense>
+        ),
       },
       {
         path: '/login',
-        element: <Login />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Login />
+          </Suspense>
+        ),
       },
       {
         path: '/account',
-        element: <Account />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Account />
+          </Suspense>
+        ),
       },
       {
         path: '/cart',
-        element: <Cart />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Cart />
+          </Suspense>
+        ),
       },
       {
         path: '/product/:productId',
-        element: <Product />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Product />
+          </Suspense>
+        ),
       },
       {
         path: '*',
-        element: <NotFound />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <NotFound />
+          </Suspense>
+        ),
       },
     ],
   },

@@ -15,8 +15,7 @@ export const useRegisterHandler = () => {
     register.mutate(data, {
       onSuccess: (response) => {
         localStorage.setItem('token', response.token);
-        localStorage.setItem('userName', JSON.stringify(response.user.name));
-        queryClient.setQueryData(['user'], response.user);
+        queryClient.invalidateQueries({ queryKey: ['user'] });
 
         navigate('/');
       },

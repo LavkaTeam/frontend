@@ -1,5 +1,6 @@
 import { Input } from '@ui/Input';
 import { Label } from '@ui/Label';
+import { ErrorIcon } from '@/components/ui/icons/ErrorIcon';
 
 import styles from './InputField.module.css';
 
@@ -28,7 +29,20 @@ const InputField = ({
   return (
     <div className={styles.field}>
       <Label htmlFor={id}>{label}</Label>
-      <Input id={id} {...rest} onFocus={handleFocus} onChange={onChange} />
+      <div className={styles.inputWrapper}>
+        <Input
+          id={id}
+          {...rest}
+          onFocus={handleFocus}
+          onChange={onChange}
+          error={!!error}
+        />
+        {error && (
+          <span className={styles.icon}>
+            <ErrorIcon />
+          </span>
+        )}
+      </div>
       {error && <p className={styles.error}>{error}</p>}
     </div>
   );

@@ -7,4 +7,4 @@ const Login = () => {
   return <LoginForm onSubmit={handleSubmit} isLoading={isLoading} />;
 };
 
-export { Login };
+export default Login;
