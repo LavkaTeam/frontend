@@ -1,16 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '@/api/user';
+import type { UserResponse } from '@/types/user';
 
 const useUser = () => {
-  const initialUser = (() => {
-    const userString = localStorage.getItem('user');
-    return userString ? JSON.parse(userString) : null;
-  })();
+  const token = localStorage.getItem('token');
 
-  return useQuery({
+  return useQuery<UserResponse>({
     queryKey: ['user'],
     queryFn: getUser,
-    initialData: initialUser,
+    enabled: !!token,
     staleTime: 5 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
     retry: false,

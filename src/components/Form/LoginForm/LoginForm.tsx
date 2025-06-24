@@ -23,6 +23,7 @@ const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
     formState: { errors },
   } = useForm<LoginFormSchema>({
     resolver: zodResolver(loginSchema),
+    mode: 'onChange',
   });
 
   return (

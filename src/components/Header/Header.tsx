@@ -1,24 +1,17 @@
-import { useState } from 'react';
-
 import { Link } from 'react-router';
 import { Logo } from '../Logo';
 import { Button } from '@ui/Button';
 import { ShoppingCart } from '../ShoppingCart';
 import { OutlineHeart } from '../Heart';
 import { Input } from '@ui/Input';
-import { useUser } from '@/hooks/useUser';
 
-import styles from './Header.module.css';
 import { useLogOutHandler } from '@/hooks/useLogOutHandler';
 import { AccountIcon } from '../AccountIcon';
 
-const Header = () => {
-  const { data: user } = useUser() as { data: UserResponse | null };
+import styles from './Header.module.css';
 
-  const [userNameFromLocal] = useState(() => {
-    return JSON.parse(localStorage.getItem('userName') || 'null');
-  });
-  const isAuthenticated = Boolean(user || userNameFromLocal);
+const Header = () => {
+  const isAuthenticated = Boolean(localStorage.getItem('token'));
 
   const { handleSubmit: handleLogOut } = useLogOutHandler();
 
@@ -35,13 +28,6 @@ const Header = () => {
             </div>
 
             <div className={styles.userActions}>
-              <div className={styles.userInfo}>
-                <img src='/icons/bellIcon.svg' alt='Bell icon' />
-                <p className={styles.userMessage}>
-                  Welcome {user?.name || userNameFromLocal || 'guest'}
-                </p>
-              </div>
-
               <div className={styles.actions}>
                 {isAuthenticated && (
                   <Link to={'/account'}>

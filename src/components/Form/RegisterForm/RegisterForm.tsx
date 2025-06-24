@@ -31,6 +31,7 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
     formState: { errors },
   } = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerSchema),
+    mode: 'onChange',
     defaultValues: {
       role: 'BUYER',
     },
