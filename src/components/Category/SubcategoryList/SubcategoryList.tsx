@@ -7,25 +7,25 @@ interface SubcategoryListProps {
   selectedCategory: Category;
   isSubCollapsing: boolean;
   subcategoriesTop: number;
+  closeDropdown: () => void;
 }
 
 const SubcategoryList = ({
   selectedCategory,
-  isSubCollapsing,
   subcategoriesTop,
+  closeDropdown,
 }: SubcategoryListProps) => {
   return (
     <div
-      className={`${styles.subcategoriesList} ${
-        isSubCollapsing ? styles.subCollapsing : ''
-      }`}
+      className={`${styles.subcategoriesList}`}
       style={{ top: `${subcategoriesTop}px` }}
     >
       {selectedCategory.subcategories.map((subcategory) => (
         <Link
           key={subcategory.id}
-          to={`/categories/${selectedCategory.id}/subcategories/${subcategory.id}`}
+          to={`/products/${encodeURIComponent(selectedCategory.name.toLowerCase().replace(/\s/g, '-'))}/${encodeURIComponent(subcategory.name.toLowerCase().replace(/\s/g, '-'))}`} // More SEO-friendly URL
           className={styles.subcategoryItem}
+          onClick={closeDropdown}
         >
           {subcategory.name}
         </Link>

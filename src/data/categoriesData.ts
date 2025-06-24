@@ -17,6 +17,8 @@ export const categories: Category[] = [
       { id: 1, name: 'Lager' },
       { id: 2, name: 'Ale' },
       { id: 3, name: 'Stout' },
+      { id: 4, name: 'Craft Beer' },
+      { id: 5, name: 'Pale Beer' },
     ],
   },
   {
@@ -42,8 +44,17 @@ export const categories: Category[] = [
     name: 'Soft Drinks',
     subcategories: [
       { id: 1, name: 'Cola' },
-      { id: 2, name: 'Lemonade' },
-      { id: 3, name: 'Ice tea' },
+      { id: 2, name: 'Fresh' },
+      { id: 3, name: 'Orange juice' },
+      { id: 4, name: 'Lemonade' },
+      { id: 5, name: 'Ice tea' },
+    ],
+  },
+  {
+    id: 6,
+    name: '*No subcategories*',
+    subcategories: [
+
     ],
   },
 ];
