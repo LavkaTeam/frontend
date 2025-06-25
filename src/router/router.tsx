@@ -9,6 +9,7 @@ const Login = lazy(() => import('@/pages/Login'));
 const Account = lazy(() => import('@/pages/Account'));
 const Cart = lazy(() => import('@/pages/Cart'));
 const Product = lazy(() => import('@/pages/Product'));
+const Products = lazy(() => import('@/pages/Products'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
@@ -61,6 +62,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <Product />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/products',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Products />
           </Suspense>
         ),
       },

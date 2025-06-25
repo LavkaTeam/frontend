@@ -30,7 +30,7 @@ const AllCategoriesDropdown = () => {
         >
         <p className={styles.label}>All</p>
         <img
-          src='/icons/AllCategoriesDropdown.svg'
+          src='/icons/dropdown-arrow.svg'
           alt='Dropdown arrow'
           className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}
         />
