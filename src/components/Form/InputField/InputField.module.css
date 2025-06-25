@@ -19,7 +19,6 @@
 
 .inputWrapper span {
   position: absolute;
-  display: block;
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
@@ -31,4 +30,11 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
+}
+
+.icon {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  user-select: none;
 }
