@@ -1,48 +1,48 @@
-import { useState, useEffect, useRef } from 'react';
-import type { Category } from '@/types/categoryTypes';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { categories } from '../data/categoriesData';
+import type { Category } from '@/types/categoryTypes';
 
 export const useDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null,
-  );
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [subcategoriesTop, setSubcategoriesTop] = useState(0);
-  const [isCollapsing, setIsCollapsing] = useState(false);
-  const [isSubCollapsing, setIsSubCollapsing] = useState(false);
+
   const categoryRefs = useRef<(HTMLDivElement | null)[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const toggleDropdown = () => {
-    if (isOpen) {
-      setIsCollapsing(true);
-      setTimeout(() => {
-        setIsOpen(false);
-        setIsCollapsing(false);
-        setSelectedCategory(null);
-      }, 300);
-    } else {
-      setIsOpen(true);
-    }
-  };
+  const openDropdown = useCallback(() => {
+    setIsOpen(true);
+  }, []);
 
-  const handleCategoryHover = (category: Category) => {
-    if (selectedCategory?.id === category.id) {
-      setIsSubCollapsing(true);
-      setTimeout(() => {
-        setSelectedCategory(null);
-        setIsSubCollapsing(false);
-      }, 300);
-    } else if (selectedCategory) {
-      setIsSubCollapsing(true);
-      setTimeout(() => {
-        setSelectedCategory(category);
-        setIsSubCollapsing(false);
-      }, 300);
+  const closeDropdown = useCallback(() => {
+    setIsOpen(false);
+    setSelectedCategory(null);
+  }, []);
+
+  const toggleDropdown = useCallback(() => {
+    if (isOpen) {
+      closeDropdown();
     } else {
-      setSelectedCategory(category);
+      openDropdown();
     }
-  };
+  }, [isOpen, closeDropdown, openDropdown]);
+
+  const handleCategoryHover = useCallback((category: Category) => {
+    setSelectedCategory(category);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        closeDropdown();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, closeDropdown]);
 
   useEffect(() => {
     if (selectedCategory && isOpen) {
@@ -56,33 +56,14 @@ export const useDropdown = () => {
     }
   }, [selectedCategory, isOpen]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsCollapsing(true);
-        setTimeout(() => {
-          setIsOpen(false);
-          setIsCollapsing(false);
-          setSelectedCategory(null);
-        }, 300);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return {
     isOpen,
     selectedCategory,
     subcategoriesTop,
-    isCollapsing,
-    isSubCollapsing,
     categoryRefs,
     menuRef,
     toggleDropdown,
     handleCategoryHover,
+    closeDropdown,
   };
 };
