@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useFilterPriceDropdown } from '@/hooks/useFilterPriceDropdown';
+import { useFilterDropdown } from '@/hooks/useFilterDropdown';
 import styles from './PriceDropdownMenu.module.css';
 
 interface PriceDropdownMenuProps {
@@ -15,7 +15,7 @@ const PriceDropdownMenu: React.FC<PriceDropdownMenuProps> = ({
   selectedValue,
   onSelect,
 }) => {
-  const { isOpen, toggle, close } = useFilterPriceDropdown();
+  const { isOpen, toggle, close } = useFilterDropdown();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = (option: string) => {

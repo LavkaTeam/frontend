@@ -73,7 +73,9 @@ const Footer = () => {
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <img src='/icons/facebookIcon.svg' alt='B2Bar Facebook' />
+                    <svg width="24" height="24">
+                      <use href="/icons/socials.svg#icon-facebook" />
+                    </svg>
                   </a>
                 </li>
                 <li>
@@ -82,7 +84,9 @@ const Footer = () => {
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <img src='/icons/twitterIcon.svg' alt='B2Bar Twitter' />
+                    <svg width="24" height="24">
+                      <use href="/icons/socials.svg#icon-twitter" />
+                    </svg>
                   </a>
                 </li>
                 <li>
@@ -91,7 +95,9 @@ const Footer = () => {
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <img src='/icons/instagramIcon.svg' alt='B2Bar Instagram' />
+                    <svg width="24" height="24">
+                      <use href="/icons/socials.svg#icon-instagram" />
+                    </svg>
                   </a>
                 </li>
                 <li>
@@ -100,7 +106,9 @@ const Footer = () => {
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <img src='/icons/linkedinIcon.svg' alt='B2Bar LinkedIn' />
+                    <svg width="24" height="24">
+                      <use href="/icons/socials.svg#icon-linkedin" />
+                    </svg>
                   </a>
                 </li>
               </ul>
@@ -111,7 +119,9 @@ const Footer = () => {
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <img src='/icons/visaIcon.svg' alt='B2Bar Visa' />
+                    <svg width="46" height="32">
+                      <use href="/icons/socials.svg#icon-visa" />
+                    </svg>
                   </a>
                 </li>
                 <li>
@@ -120,10 +130,9 @@ const Footer = () => {
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <img
-                      src='/icons/mastercardIcon.svg'
-                      alt='B2Bar MasterCard'
-                    />
+                    <svg width="46" height="32">
+                      <use href="/icons/socials.svg#icon-mastercard" />
+                    </svg>
                   </a>
                 </li>
               </ul>

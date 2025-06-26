@@ -36,12 +36,10 @@ export const countries = [
   { value: 'Spain', iconId: 'flag-spain' },
   { value: 'Germany', iconId: 'flag-germany' },
   { value: 'Portugal', iconId: 'flag-portugal' },
-  { value: 'Argentina', iconId: 'flag-argentina' },
   { value: 'Czech Republic', iconId: 'flag-czech-republic' },
+  { value: 'Argentina', iconId: 'flag-argentina' },
   { value: 'Norway', iconId: 'flag-norway' },
   { value: 'Greece', iconId: 'flag-greece' },
-  { value: 'Austria', iconId: 'flag-austria' },
-  { value: 'Belgium', iconId: 'flag-belgium' },
 ];
 
 export const capacityOptions = [

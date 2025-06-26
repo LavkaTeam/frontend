@@ -1,8 +1,10 @@
-import styles from './FilterBlock.module.css';
+import { useState } from 'react';
 import { SelectFilter } from '../SelectFilter';
 import { PriceDropdownMenu } from '../PriceDropdownMenu';
+import { CountryDropdownMenu } from '../CountryDropdownMenu'; 
+import { countries } from '@/data/filtersData';
 import { priceFromOptions, priceToOptions, capacityOptions, strengthOptions } from '@/data/filtersData';
-import { useState } from 'react';
+import styles from './FilterBlock.module.css';
 
 const FilterBlock = () => {
   const [fromValue, setFromValue] = useState('');
@@ -28,6 +30,11 @@ const FilterBlock = () => {
         </div>
       </div>
       <span className={styles.divider}></span>
+      <div className={styles.FilterBox}>
+        <CountryDropdownMenu
+          countries={countries}
+        />   
+      </div>
       <div className={styles.FilterBox}>
         <span className={styles.label}>Capacity:</span>
         <div className={styles.SelectFilterBox}>

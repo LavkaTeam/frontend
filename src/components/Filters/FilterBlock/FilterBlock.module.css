@@ -4,6 +4,7 @@
   background-color: var(--color-primary-white);
   max-width: 330px;
   width: 100%;
+  height: 100%;
 }
 
 .label {

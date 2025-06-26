@@ -10,28 +10,44 @@ const HeaderMenu = () => {
           <AllCategoriesDropdown />
           <ul className={styles.brandList}>
             <li className={styles.brandLogo}>
-              <img src='/icons/bacardiLogo.svg' alt='Bacardi Logo' />
+              <svg height='20' width='88'>
+                <use href="/icons/partners.svg#icon-bacardiLogo" />
+              </svg>
             </li>
             <li className={styles.brandLogo}>
-              <img src='/icons/bigwinesLogo.svg' alt='Big Wines Logo' />
+              <svg height='31' width='78'>
+                <use href="/icons/partners.svg#icon-bigwinesLogo" />
+              </svg>
             </li>
             <li className={styles.brandLogo}>
-              <img src='/icons/patronLogo.svg' alt='Patron Logo' />
+              <svg height='45' width='76'>
+                <use href="/icons/partners.svg#icon-patronLogo" />
+              </svg>
             </li>
             <li className={styles.brandLogo}>
-              <img src='/icons/jameson.svg' alt='Jameson Logo' />
+              <svg height='24' width='100'>
+                <use href="/icons/partners.svg#icon-jamesonLogo" />
+              </svg>
+              </li>
+            <li className={styles.brandLogo}>
+              <svg height='16' width='86'>
+                <use href="/icons/partners.svg#icon-absolutLogo" />
+              </svg>
             </li>
             <li className={styles.brandLogo}>
-              <img src='/icons/absolutLogo.svg' alt='Absolut Logo' />
+              <svg height='21' width='112'>
+                <use href="/icons/partners.svg#icon-remymartinLogo" />
+              </svg>
             </li>
             <li className={styles.brandLogo}>
-              <img src='/icons/remymartinLogo.svg' alt='Remy Martin Logo' />
+              <svg height='45' width='74'>
+                <use href="/icons/partners.svg#icon-jackDaniels" />
+              </svg>            
             </li>
             <li className={styles.brandLogo}>
-              <img src='/icons/jackDaniels.svg' alt='Jack-Daniels Logo' />
-            </li>
-            <li className={styles.brandLogo}>
-              <img src='/icons/campariLogo.svg' alt='Campari Logo' />
+              <svg height='19' width='88'>
+                <use href="/icons/partners.svg#icon-campariLogo" />
+              </svg>                  
             </li>
           </ul>
         </div>

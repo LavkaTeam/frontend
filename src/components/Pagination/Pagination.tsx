@@ -3,9 +3,13 @@ import { ArrowRightPagination } from './ArrowPagination/ArrowRightPagination';
 
 import styles from './Pagination.module.css';
 
-const Pagination = () => {
+interface PaginationProps {
+  noPaddings?: boolean;
+}
+
+const Pagination = ({ noPaddings = false }: PaginationProps) => {
   return (
-    <div className='container'>
+    <div className={noPaddings ? '' : 'container'}>
       <div className={styles.buttonContainer}>
         <div className={styles.buttonWrapper}>
           <span className={styles.arrow}>

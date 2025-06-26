@@ -13,6 +13,7 @@ interface CardSectionProps<T extends WithId> {
   cards?: T[];
   CardComponent: React.ComponentType<{ card: T }>;
   withSlider?: boolean;
+  noPaddings?: boolean;
 }
 
 const CARDS_PER_PAGE = 4;
@@ -22,6 +23,7 @@ const CardSection = <T extends WithId>({
   cards,
   withSlider = false,
   CardComponent,
+  noPaddings = false,
 }: CardSectionProps<T>) => {
   const { currentIndex, handleNext, handlePrev } = useSlider(
     cards?.length || 0,
@@ -34,7 +36,7 @@ const CardSection = <T extends WithId>({
 
   return (
     <section className={styles.cardSection}>
-      <div className='container'>
+      <div className={noPaddings ? '' : 'container'}>
         {title ? <Heading>{title}</Heading> : null}
         <div className={styles.sliderWrapper}>
           {withSlider && (

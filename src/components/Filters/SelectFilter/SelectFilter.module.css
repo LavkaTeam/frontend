@@ -5,6 +5,7 @@
   background-color: var(--color-gray-50);
   padding: 11px 24px;
   width: 298px;
+  cursor: pointer;
 }
 
 .box.has-subtitle {

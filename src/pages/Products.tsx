@@ -1,11 +1,12 @@
 import { HeaderMenu } from "@/components/HeaderMenu";
-import { FilterBlock } from '@components/Filters/FilterBlock'
+import { ProductsCatalogView } from '@components/ProductsCatalogView'
+
 
 const Products = () => {
   return (
     <div className='container'>
       <HeaderMenu />
-      <FilterBlock />
+      <ProductsCatalogView />
     </div>
   );
 };
