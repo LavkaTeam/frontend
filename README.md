@@ -4,24 +4,29 @@ A modern and responsive React application
 
 ## 🚀 Features
 
-✅ List and detail pages for products
+✅ List and view product details
 
-✅ Users can create and browse listings
+✅ Create, edit, and browse listings
 
-✅ Responsive and mobile-friendly layout
+✅ Efficient data fetching with TanStack React Query
 
-✅ Modular, reusable React components
+✅ State management with Redux Toolkit
+
+✅ Modular, reusable component architecture
 
 ## 🧱 Technologies Used
 
-- React
-- TypeScript
-- React Query
-- Redux Toolkit
-- JavaScript (ES6+)
-- HTML & CSS
-- Fetch API
-- Vite (for fast dev server and build)
+⚛️ React + TypeScript
+
+⚡️ Vite — for a fast and optimized development experience
+
+🔥 TanStack React Query — for seamless async data fetching
+
+🗄️ Redux Toolkit — for global state management
+
+💻 HTML5, CSS3
+
+🌐 Fetch API for REST requests
 
 ## 📦 Getting Started
 
