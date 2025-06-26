@@ -43,13 +43,13 @@ export const countries = [
 ];
 
 export const capacityOptions = [
-  '0.02-0.02',
-  '0.25-0.375',
-  '0.5',
-  '0.7-0.75',
-  '1',
-  '1.5-2',
-  '2',
+  '0.02-0.02 l',
+  '0.25-0.375 l',
+  '0.5 l',
+  '0.7-0.75 l',
+  '1 l',
+  '1.5-2 l',
+  '2 l',
 ];
 
 export const strengthOptions = [
