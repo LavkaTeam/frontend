@@ -34,7 +34,7 @@ const CategoryList = ({
               {category.name}
               {category.subcategories && category.subcategories.length > 0 && (
               <img
-                src='/icons/AllCategoriesDropdown.svg'
+                src='/icons/dropdown-arrow.svg'
                 alt='Arrow'
                 className={styles.checkmarkIcon}
               />
