@@ -18,7 +18,7 @@ interface CardSectionProps<T extends WithId> {
 const CARDS_PER_PAGE = 4;
 
 const CardSection = <T extends WithId>({
-  title = 'Our title',
+  title,
   cards,
   withSlider = false,
   CardComponent,

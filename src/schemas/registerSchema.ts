@@ -28,7 +28,8 @@ const registerSchema = z.object({
 
   companyName: z
     .string()
-    .min(1, 'Company is required')
+    .min(2, 'Company name must be at least 2 characters long')
+    .max(100, 'Company name must be at most 100 characters long')
     .regex(/^[A-Za-z0-9&.\-'\s]{2,100}$/, 'Invalid company name'),
 
   telephoneNumber: z
