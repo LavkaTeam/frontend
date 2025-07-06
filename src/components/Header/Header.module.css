@@ -35,7 +35,9 @@
   padding: 10px 14px 10px 42px;
 }
 
-.searchBox img {
+.searchBoxIcon {
+  display: flex;
+  align-items: center;
   position: absolute;
   left: 10px;
   top: 50%;
@@ -60,7 +62,8 @@
   font-weight: 600;
 }
 
-.loginButton:hover {
+.loginButton:hover,
+.logoutButton:hover {
   cursor: pointer;
 }
 
@@ -81,7 +84,7 @@
 .userActions {
   display: flex;
   align-items: center;
-  gap: 50px;
+  gap: 56px;
 }
 
 .userMessage {

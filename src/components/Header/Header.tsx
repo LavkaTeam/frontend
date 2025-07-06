@@ -1,12 +1,14 @@
 import { Link } from 'react-router';
 import { Logo } from '../Logo';
-import { Button } from '@ui/Button';
 import { ShoppingCart } from '../ShoppingCart';
 import { OutlineHeart } from '../Heart';
 import { Input } from '@ui/Input';
 
 import { useLogOutHandler } from '@/hooks/useLogOutHandler';
-import { AccountIcon } from '../AccountIcon';
+import { SearchIcon } from '../ui/icons/SearchIcon';
+import { AccountIcon } from '../ui/icons/AccountIcon';
+import { LoginIcon } from '../ui/icons/LoginIcon';
+import { LogoutIcon } from '../ui/icons/LogoutIcon';
 
 import styles from './Header.module.css';
 
@@ -24,7 +26,9 @@ const Header = () => {
           <div className={styles.headerContent}>
             <div className={styles.searchBox}>
               <Input name='text' type='text' placeholder='Search' />
-              <img src='/icons/searchIcon.svg' alt='search' />
+              <div className={styles.searchBoxIcon}>
+                <SearchIcon />
+              </div>
             </div>
 
             <div className={styles.userActions}>
@@ -44,22 +48,13 @@ const Header = () => {
                 </Link>
               </div>
               {isAuthenticated ? (
-                <div>
-                  <Button onClick={handleLogOut}>Log out</Button>
+                <div className={styles.logoutButton} onClick={handleLogOut}>
+                  <LogoutIcon />
                 </div>
               ) : (
-                <>
-                  {' '}
-                  <div className={styles.authButtons}>
-                    <Link to={'/login'} className={styles.loginButton}>
-                      Log in
-                    </Link>
-
-                    <Link to={'/register'}>
-                      <Button>Sign up</Button>
-                    </Link>
-                  </div>
-                </>
+                <Link to={'/login'}>
+                  <LoginIcon />
+                </Link>
               )}
             </div>
           </div>

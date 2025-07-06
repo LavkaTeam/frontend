@@ -1,0 +1,27 @@
+.redirectContainer {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  max-width: 220px;
+  margin: 0 auto;
+  margin-top: 8px;
+}
+
+.redirectText {
+  color: var(--color-gray-600);
+  font-size: 14px;
+  font-style: normal;
+  line-height: 20px;
+}
+
+.redirectLink {
+  color: var(--color-brand-burgundy);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.redirectLink:hover {
+  color: var(--color-brand-dark-burgundy);
+}
