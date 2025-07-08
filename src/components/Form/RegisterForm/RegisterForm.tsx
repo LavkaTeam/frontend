@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { FormContainer, InputField } from '@/components/Form';
+import { FormContainer, InputField, AuthRedirect } from '@/components/Form';
 import { Button } from '@ui/Button';
 import { Loader } from '@ui/Loader';
 import { FormHeader } from '@ui/FormHeader';
@@ -16,7 +16,7 @@ import styles from './RegisterForm.module.css';
 interface RegisterFormProps {
   onSubmit: (
     data: RegisterFormSchema,
-    setError: ReturnType<typeof useForm<RegisterFormSchema>>['setError'],
+    setError: ReturnType<typeof useForm<RegisterFormSchema>>['setError']
   ) => void;
   isLoading?: boolean;
 }
@@ -121,7 +121,14 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           {errors.role && <p>{errors.role.message}</p>}
         </div>
 
-        {isLoading ? <Loader /> : <Button type='submit'>Sign Up</Button>}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <Button type='submit'>Sign Up</Button>
+            <AuthRedirect type='login' />
+          </>
+        )}
       </form>
     </FormContainer>
   );

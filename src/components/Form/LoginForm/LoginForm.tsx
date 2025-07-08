@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { FormContainer, InputField } from '@/components/Form';
+import { FormContainer, InputField, AuthRedirect } from '@/components/Form';
 import { Button } from '@ui/Button';
 import { Loader } from '@ui/Loader';
 import { FormHeader } from '@ui/FormHeader';
@@ -10,7 +10,7 @@ import { loginSchema, type LoginFormSchema } from '@/schemas/loginSchema';
 interface LoginFormProps {
   onSubmit: (
     data: LoginFormSchema,
-    setError: ReturnType<typeof useForm<LoginFormSchema>>['setError'],
+    setError: ReturnType<typeof useForm<LoginFormSchema>>['setError']
   ) => void;
   isLoading?: boolean;
 }
@@ -57,7 +57,14 @@ const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
           {...register('password')}
         />
 
-        {isLoading ? <Loader /> : <Button type='submit'>Log In</Button>}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <Button type='submit'>Log In</Button>
+            <AuthRedirect type='signup' />
+          </>
+        )}
       </form>
     </FormContainer>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useFilterDropdown } from '@/hooks/useFilterDropdown';
+import { SearchIcon } from '@/components/ui/icons/SearchIcon';
 import styles from './CountryDropdownMenu.module.css';
 
 interface Country {
@@ -7,7 +8,9 @@ interface Country {
   iconId: string;
 }
 
-const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({ countries }) => {
+const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({
+  countries,
+}) => {
   const { isOpen, toggle, close } = useFilterDropdown();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedCountry, setSelectedCountry] = useState('United States');
@@ -21,7 +24,10 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({ countries }) 
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         close();
         setSearch('');
       }
@@ -30,19 +36,22 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({ countries }) 
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [close]);
 
-  const filteredCountries = countries.filter(country =>
+  const filteredCountries = countries.filter((country) =>
     country.value.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className={styles.countryDropdown} ref={dropdownRef}>
-      <button onClick={toggle} className={`${styles.button} ${isOpen ? styles.buttonOpen : ''}`}>
+      <button
+        onClick={toggle}
+        className={`${styles.button} ${isOpen ? styles.buttonOpen : ''}`}
+      >
         {isOpen ? (
           <div className={styles.searchContainer}>
-            <img src="/icons/searchIcon.svg" alt="Search" className={styles.searchIcon} />
+            <SearchIcon />
             <input
-              type="text"
-              placeholder="Search"
+              type='text'
+              placeholder='Search'
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className={styles.searchInput}
@@ -53,23 +62,33 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({ countries }) 
           <div className={styles.buttonContent}>
             {selectedCountry && (
               <svg className={styles.flagIcon}>
-                <use href={`/icons/flags.svg#${countries.find(c => c.value === selectedCountry)?.iconId}`} />
+                <use
+                  href={`/icons/flags.svg#${
+                    countries.find((c) => c.value === selectedCountry)?.iconId
+                  }`}
+                />
               </svg>
             )}
             <span>{selectedCountry}</span>
           </div>
         )}
         <img
-          src="/icons/dropdown-arrow.svg"
-          alt="Dropdown arrow"
+          src='/icons/dropdown-arrow.svg'
+          alt='Dropdown arrow'
           className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}
         />
       </button>
-      <div className={`${styles.dropdownMenu} ${isOpen ? styles.open : styles.closed}`}>
+      <div
+        className={`${styles.dropdownMenu} ${
+          isOpen ? styles.open : styles.closed
+        }`}
+      >
         {filteredCountries.map((country) => (
           <div
             key={country.value}
-            className={`${styles.option} ${selectedCountry === country.value ? styles.selected : ''}`}
+            className={`${styles.option} ${
+              selectedCountry === country.value ? styles.selected : ''
+            }`}
             onClick={() => handleSelect(country.value)}
           >
             <svg className={styles.flagIcon}>
@@ -77,7 +96,11 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({ countries }) 
             </svg>
             <span>{country.value}</span>
             {selectedCountry === country.value && (
-              <img src="/icons/checkTick.svg" alt="Checkmark" className={styles.checkmark} />
+              <img
+                src='/icons/checkTick.svg'
+                alt='Checkmark'
+                className={styles.checkmark}
+              />
             )}
           </div>
         ))}
