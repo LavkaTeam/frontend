@@ -1,8 +1,7 @@
-import type { AllProducts } from '@/types/productCard';
 import { fetchData } from './fetchData';
 
-const getAllProducts = (): Promise<AllProducts[]> => {
-  return fetchData<AllProducts[]>(`/products/all`, {
+const getAllProducts = (): Promise<unknown[]> => {
+  return fetchData<unknown[]>(`/products/all`, {
     method: 'GET',
   });
 };
