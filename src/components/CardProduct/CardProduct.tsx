@@ -7,20 +7,9 @@ import { ShoppingCart } from '../ShoppingCart';
 
 import styles from './CardProduct.module.css';
 
-interface CardProductProps {
-  card: {
-    id: number;
-    image: string;
-    title: string;
-    description: string;
-    price: number | string;
-    sku?: string;
-    capacity?: string;
-    rating: { rate: number };
-  };
-}
+const CardProduct = ({ card }) => {
+  console.log(card);
 
-const CardProduct = ({ card }: CardProductProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const rate = card.rating.rate;

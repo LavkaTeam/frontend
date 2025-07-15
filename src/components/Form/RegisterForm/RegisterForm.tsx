@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -16,12 +17,14 @@ import styles from './RegisterForm.module.css';
 interface RegisterFormProps {
   onSubmit: (
     data: RegisterFormSchema,
-    setError: ReturnType<typeof useForm<RegisterFormSchema>>['setError']
+    setError: ReturnType<typeof useForm<RegisterFormSchema>>['setError'],
   ) => void;
   isLoading?: boolean;
 }
 
 const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
+  const [isConsent, setIsConsent] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -43,6 +46,10 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
     if (role !== value) {
       setValue('role', value);
     }
+  };
+
+  const handleConsentChange = () => {
+    setIsConsent((isConsent) => !isConsent);
   };
 
   return (
@@ -105,6 +112,14 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           {...register('telephoneNumber')}
         />
 
+        <div className={styles.consentWarning}>
+          <Checkbox
+            label='I consent to the processing of my personal data'
+            checked={isConsent}
+            onChange={handleConsentChange}
+          />
+        </div>
+
         <div className={styles.checkBoxContainer}>
           <Checkbox
             label='Seller'
@@ -125,7 +140,9 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           <Loader />
         ) : (
           <>
-            <Button type='submit'>Sign Up</Button>
+            <Button type='submit' disabled={!isConsent}>
+              Sign Up
+            </Button>
             <AuthRedirect type='login' />
           </>
         )}

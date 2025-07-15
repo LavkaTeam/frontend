@@ -28,3 +28,9 @@
 .button:hover {
   background: #57181e;
 }
+
+.button:disabled {
+  background: var(--burgundy, #af261f);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
