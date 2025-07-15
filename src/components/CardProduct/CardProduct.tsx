@@ -1,30 +1,18 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { Button } from '@ui/Button';
-import { StarRating } from '../ui/Star';
 import { OutlineHeart, SolidHeart } from '../Heart';
 import { ShoppingCart } from '../ShoppingCart';
+import type { ProductCard } from '@/types/productCard';
 
 import styles from './CardProduct.module.css';
 
-interface CardProductProps {
-  card: {
-    id: number;
-    image: string;
-    title: string;
-    description: string;
-    price: number | string;
-    sku?: string;
-    capacity?: string;
-    rating: { rate: number };
-  };
-}
+type CardProductProps = {
+  card: ProductCard;
+};
 
 const CardProduct = ({ card }: CardProductProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
-
-  const rate = card.rating.rate;
-  const formatRate = rate.toFixed(1);
 
   return (
     <div className={styles.cardProduct}>
@@ -43,7 +31,6 @@ const CardProduct = ({ card }: CardProductProps) => {
         <Link to={`product/${card.id}`}>
           <div className={styles.cardInStock}>
             <span className={styles.inStock}>In Stock</span>
-            <span className={styles.sku}>{card.sku}</span>
           </div>
           <div className={styles.cardProductDetails}>
             <span className={styles.heading}>{card.title}</span>
@@ -51,10 +38,7 @@ const CardProduct = ({ card }: CardProductProps) => {
               <span className={styles.capacity}>{card.capacity}</span>
             )}
             <span className={styles.subHeading}>{card.description}</span>
-            <div className={styles.cardRates}>
-              <StarRating rate={card.rating.rate} />
-              <span className={styles.rateNumber}>{formatRate}</span>
-            </div>
+            <span className={styles.sku}>{card.sku}</span>
             <span className={styles.divider}></span>
             <span className={styles.price}>{card.price}</span>
           </div>

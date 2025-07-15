@@ -8,7 +8,6 @@ export const productData = [
     capacity: '0.7 l, 1 l',
     sku: 'SKU. 70421',
     inStock: true,
-    rating: { rate: 4.2, count: 85 },
   },
   {
     id: 2,
@@ -19,7 +18,6 @@ export const productData = [
     capacity: '0.5 l, 0.7 l',
     sku: 'SKU. 80532',
     inStock: false,
-    rating: { rate: 4.8, count: 150 },
   },
   {
     id: 3,
@@ -30,7 +28,6 @@ export const productData = [
     capacity: '0.5 l, 0.7 l, 1 l',
     sku: 'SKU. 60215',
     inStock: true,
-    rating: { rate: 3.9, count: 65 },
   },
   {
     id: 4,
@@ -41,7 +38,6 @@ export const productData = [
     capacity: '0.7 l, 1 l',
     sku: 'SKU. 90112',
     inStock: true,
-    rating: { rate: 4.5, count: 90 },
   },
   {
     id: 5,
@@ -52,7 +48,6 @@ export const productData = [
     capacity: '0.5 l, 0.7 l',
     sku: 'SKU. 60711',
     inStock: false,
-    rating: { rate: 3.7, count: 70 },
   },
   {
     id: 6,
@@ -63,7 +58,6 @@ export const productData = [
     capacity: '0.5 l, 0.7 l',
     sku: 'SKU. 80941',
     inStock: true,
-    rating: { rate: 4.9, count: 110 },
   },
   {
     id: 7,
@@ -74,7 +68,6 @@ export const productData = [
     capacity: '0.7 l, 1 l',
     sku: 'SKU. 60522',
     inStock: true,
-    rating: { rate: 4.0, count: 55 },
   },
   {
     id: 8,
@@ -85,7 +78,6 @@ export const productData = [
     capacity: '0.7 l, 1 l',
     sku: 'SKU. 90213',
     inStock: true,
-    rating: { rate: 4.6, count: 95 },
   },
   {
     id: 9,
@@ -96,7 +88,6 @@ export const productData = [
     capacity: '0.7 l, 1 l',
     sku: 'SKU. 70345',
     inStock: true,
-    rating: { rate: 4.4, count: 80 },
   },
   {
     id: 10,
@@ -107,7 +98,6 @@ export const productData = [
     capacity: '0.5 l, 0.7 l',
     sku: 'SKU. 80776',
     inStock: false,
-    rating: { rate: 4.7, count: 120 },
   },
   {
     id: 11,
@@ -118,7 +108,6 @@ export const productData = [
     capacity: '0.5 l, 0.7 l, 1 l',
     sku: 'SKU. 60118',
     inStock: true,
-    rating: { rate: 3.8, count: 60 },
   },
   {
     id: 12,
@@ -129,6 +118,5 @@ export const productData = [
     capacity: '0.7 l, 1 l',
     sku: 'SKU. 90329',
     inStock: true,
-    rating: { rate: 4.3, count: 85 },
   },
 ];
