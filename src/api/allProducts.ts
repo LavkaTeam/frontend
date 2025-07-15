@@ -1,4 +1,4 @@
-import type { AllProducts } from '@/types/allProducts';
+import type { AllProducts } from '@/types/productCard';
 import { fetchData } from './fetchData';
 
 const getAllProducts = (): Promise<AllProducts[]> => {

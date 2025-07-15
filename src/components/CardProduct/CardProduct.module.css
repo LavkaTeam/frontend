@@ -61,9 +61,10 @@
 }
 
 .sku {
-  color: var(--color-grey);
+  color: var(--color-gray-800);
   font-size: 14px;
   line-height: 1.4;
+  padding-bottom: 16px;
 }
 
 .cardProductDetails {
