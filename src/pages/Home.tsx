@@ -33,6 +33,7 @@ const Home = () => {
         title={false}
         cards={productData}
         CardComponent={CardProduct}
+        cardsPerPage={12}
       />
       <Pagination />
     </div>

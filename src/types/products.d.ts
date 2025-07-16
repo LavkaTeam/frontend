@@ -1,6 +1,6 @@
 export interface ProductsPayload {
-    page: number;
-    size: number;
+  page: number;
+  size: number;
 }
 
 export interface ProductsResponse {
@@ -29,30 +29,32 @@ export interface ProductsResponse {
 }
 
 export interface Product {
-    id: string,
-    mainImage: Image,
-    images: Image[],
-    name: string,
-    producer: string,
-    price: number,
-    quantity: number,
-    description: string,
-    status: string,
-    category: string,
-    subcategory: string,
-    seller: {
-        id: string | null,
-        name: string,
-        email: string,
-        companyName: string,
-        telephoneNumber: string,
-        role: string | null,
-        products: Array
-    },
+  id: string;
+  mainImage: Image;
+  images: Image[];
+  name: string;
+  producer: string;
+  price: number;
+  volume: string; // As in backend
+  strength: string | number; // As in backend
+  quantity: number;
+  description: string;
+  status: string;
+  category: string;
+  subcategory: string;
+  seller: {
+    id: string | null;
+    name: string;
+    email: string;
+    companyName: string;
+    telephoneNumber: string;
+    role: string | null;
+    products: Array;
+  };
 }
 
 export interface Image {
-    id: string,
-    url: string,
-    publicId: string
+  id: string;
+  url: string;
+  publicId: string;
 }

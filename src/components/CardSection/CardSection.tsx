@@ -14,9 +14,10 @@ interface CardSectionProps<T extends WithId> {
   CardComponent: React.ComponentType<{ card: T }>;
   withSlider?: boolean;
   noPaddings?: boolean;
+  cardsPerPage?: number;
 }
 
-const CARDS_PER_PAGE = 4;
+const CARDS_PER_PAGE_DEFAULT = 4;
 
 const CardSection = <T extends WithId>({
   title,
@@ -24,15 +25,17 @@ const CardSection = <T extends WithId>({
   withSlider = false,
   CardComponent,
   noPaddings = false,
+  cardsPerPage = CARDS_PER_PAGE_DEFAULT,
 }: CardSectionProps<T>) => {
   const { currentIndex, handleNext, handlePrev } = useSlider(
     cards?.length || 0,
-    CARDS_PER_PAGE,
+    cardsPerPage
   );
 
+  const displayedCards = cards?.slice(0, cardsPerPage) || [];
   const visibleCards = withSlider
-    ? cards?.slice(currentIndex, currentIndex + CARDS_PER_PAGE) || []
-    : cards || [];
+    ? cards?.slice(currentIndex, currentIndex + cardsPerPage) || []
+    : displayedCards;
 
   return (
     <section className={styles.cardSection}>

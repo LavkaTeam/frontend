@@ -32,6 +32,10 @@
   transition: transform 0.3s ease;
 }
 
+.cardImageWrapper img {
+  height: 240px;
+}
+
 .cardProduct:hover .cardImageWrapper {
   transform: scale(1.05);
 }
