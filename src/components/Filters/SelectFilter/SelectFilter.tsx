@@ -8,11 +8,18 @@ interface SelectFilterProps {
 
 const SelectFilter = ({ title, subtitle }: SelectFilterProps) => {
   return (
-    <label className={`${styles.box} ${subtitle ? styles['has-subtitle'] : ''}`}>
-      <Checkbox label=''/>
-      <div className={`${styles.textContainer} ${subtitle ? styles['has-subtitle'] : ''}`}>        <span className={styles.title}>{title}</span>
-        {subtitle && 
-          <span className={styles.subtitle}>{subtitle}</span>}
+    <label
+      className={`${styles.box} ${subtitle ? styles['has-subtitle'] : ''}`}
+    >
+      <Checkbox label='' />
+      <div
+        className={`${styles.textContainer} ${
+          subtitle ? styles['has-subtitle'] : ''
+        }`}
+      >
+        {' '}
+        <span className={styles.title}>{title}</span>
+        {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
       </div>
     </label>
   );

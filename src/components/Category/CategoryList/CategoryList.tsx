@@ -18,30 +18,30 @@ const CategoryList = ({
   return (
     <div className={styles.categoriesList}>
       {categories.map((category, index) => (
-        <div>
-          <Link
-            to={`/products/${encodeURIComponent(category.name.toLowerCase().replace(/\s/g, '-'))}`}
-            onClick={() => handleCategoryClick(category)}
+        <Link
+          key={category.id}
+          to={`/products/${encodeURIComponent(
+            category.name.toLowerCase().replace(/\s/g, '-')
+          )}`}
+          onClick={() => handleCategoryClick(category)}
+        >
+          <div
+            ref={(el: HTMLDivElement | null) => {
+              categoryRefs.current[index] = el;
+            }}
+            className={styles.categoryItem}
+            onMouseEnter={() => handleCategoryHover(category)}
           >
-            <div
-              key={category.id}
-              ref={(el: HTMLDivElement | null) => {
-                categoryRefs.current[index] = el;
-              }}
-              className={styles.categoryItem}
-              onMouseEnter={() => handleCategoryHover(category)}
-            >
-              {category.name}
-              {category.subcategories && category.subcategories.length > 0 && (
+            {category.name}
+            {category.subcategories && category.subcategories.length > 0 && (
               <img
                 src='/icons/dropdown-arrow.svg'
                 alt='Arrow'
                 className={styles.checkmarkIcon}
               />
             )}
-            </div>
-          </Link>
-        </div>
+          </div>
+        </Link>
       ))}
     </div>
   );
