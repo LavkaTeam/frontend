@@ -12,7 +12,7 @@
 <rect x="-2.5" y="-2.5" width="19" height="19" rx="5.5" fill="#FCFAFF"/>
 <rect x="-2.5" y="-2.5" width="19" height="19" rx="5.5" stroke="#57181E"/>
 <g id="check">
-<path id="Icon" d="M11.6693 3.5L5.2526 9.91667L2.33594 7" stroke="#AF261F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Icon" d="M11.6693 3.5L5.2526 9.91667L2.33594 7" stroke="#AF261F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </g>
 </g>
