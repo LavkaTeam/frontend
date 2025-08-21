@@ -1,6 +1,6 @@
 import { ArrowButton } from '../ArrowButton';
 import { useSlider } from '@hooks/useSlider';
-import { Heading } from '@ui/Heading';
+import { HeadingH3 } from '@/components/ui/HeadingH3';
 
 import styles from './CardSection.module.css';
 
@@ -37,7 +37,7 @@ const CardSection = <T extends WithId>({
   return (
     <section className={styles.cardSection}>
       <div className={noPaddings ? '' : 'container'}>
-        {title ? <Heading>{title}</Heading> : null}
+        {title ? <HeadingH3>{title}</HeadingH3> : null}
         <div className={styles.sliderWrapper}>
           {withSlider && (
             <div className={`${styles.arrowButton} ${styles.leftButton}`}>
