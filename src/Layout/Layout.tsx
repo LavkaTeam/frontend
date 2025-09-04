@@ -4,12 +4,14 @@ import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 
 import styles from './Layout.module.css';
+import { ScrollToTop } from '@/components/ScrollToTop';
 
 const Layout = () => {
   return (
     <div className={styles.layout}>
       <Header />
       <main className={styles.layout_main}>
+        <ScrollToTop />
         <div className={styles.layout_content}>
           <Outlet />
         </div>

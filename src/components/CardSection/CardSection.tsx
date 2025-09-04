@@ -1,4 +1,4 @@
-import { ArrowButton } from '../ArrowButton';
+import { ArrowButton } from '../ui/icons/ArrowButton';
 import { useSlider } from '@hooks/useSlider';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 

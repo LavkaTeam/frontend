@@ -5,6 +5,9 @@ import { OutlineHeart, SolidHeart } from '../Heart';
 import { ShoppingCart } from '../ShoppingCart';
 import type { ProductCard } from '@/types/productCard';
 
+import { useAppDispatch } from '@/store/hooks';
+import { addItem } from '@/store/cartSlice';
+
 import styles from './CardProduct.module.css';
 
 type CardProductProps = {
@@ -13,6 +16,8 @@ type CardProductProps = {
 
 const CardProduct = ({ card }: CardProductProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   return (
     <div className={styles.cardProduct}>
@@ -40,10 +45,12 @@ const CardProduct = ({ card }: CardProductProps) => {
             <span className={styles.subHeading}>{card.description}</span>
             <span className={styles.sku}>{card.sku}</span>
             <span className={styles.divider}></span>
-            <span className={styles.price}>{card.price}</span>
+            <span className={styles.price}>${card.price.toFixed(2)}</span>
           </div>
         </Link>
-        <Button icon={<ShoppingCart />}>Add to cart</Button>
+        <Button onClick={() => dispatch(addItem(card))} icon={<ShoppingCart />}>
+          Add to cart
+        </Button>
       </div>
     </div>
   );

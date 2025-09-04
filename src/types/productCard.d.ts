@@ -1,9 +1,9 @@
 export interface ProductCard {
-  id: number;
+  id: string;
   image: string;
   title: string;
   description: string;
-  price: string;
+  price: number;
   capacity: string;
   sku: string;
   inStock: boolean;
