@@ -1,6 +1,6 @@
 export const productData = [
   {
-    id: 1,
+    id: '1',
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Nordic Gin',
     description: 'Finland / Arctic Spirits',
@@ -10,7 +10,7 @@ export const productData = [
     inStock: true,
   },
   {
-    id: 2,
+    id: '2',
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Irish Whiskey',
     description: 'Ireland / Green Barrel',
@@ -20,7 +20,7 @@ export const productData = [
     inStock: false,
   },
   {
-    id: 3,
+    id: '3',
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Baltic Vodka',
     description: 'Estonia / Pure Spirit',
@@ -30,7 +30,7 @@ export const productData = [
     inStock: true,
   },
   {
-    id: 4,
+    id: '4',
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Caribbean Rum',
     description: 'Jamaica / Sunny Isles',
@@ -40,7 +40,7 @@ export const productData = [
     inStock: true,
   },
   {
-    id: 5,
+    id: '5',
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Polar Ice Vodka',
     description: 'Russia / Crystal Clear',
@@ -50,7 +50,7 @@ export const productData = [
     inStock: false,
   },
   {
-    id: 6,
+    id: '6',
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Highland Scotch',
     description: 'Scotland / Old Glen',
@@ -60,7 +60,7 @@ export const productData = [
     inStock: true,
   },
   {
-    id: 7,
+    id: '7',
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Crystal Clear Vodka',
     description: 'Poland / Pure Spirit',
@@ -70,7 +70,7 @@ export const productData = [
     inStock: true,
   },
   {
-    id: 8,
+    id: '8',
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Golden Caribbean Rum',
     description: 'Barbados / Sunny Isles',
@@ -80,7 +80,7 @@ export const productData = [
     inStock: true,
   },
   {
-    id: 9,
+    id: '9',
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Silver Mountain Gin',
     description: 'Norway / Frost Spirits',
@@ -90,7 +90,7 @@ export const productData = [
     inStock: true,
   },
   {
-    id: 10,
+    id: '10',
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Old Barrel Whiskey',
     description: 'USA / Heritage',
@@ -100,7 +100,7 @@ export const productData = [
     inStock: false,
   },
   {
-    id: 11,
+    id: '11',
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Clear Stream Vodka',
     description: 'Lithuania / Crystal Line',
@@ -110,7 +110,7 @@ export const productData = [
     inStock: true,
   },
   {
-    id: 12,
+    id: '12',
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Tropical Breeze Rum',
     description: 'Cuba / Island Spirits',
