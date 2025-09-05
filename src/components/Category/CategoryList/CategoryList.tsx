@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { categories } from '@/data/categoriesData';
 import type { Category } from '@/types/categoryTypes';
+
 import styles from './CategoryList.module.css';
 
 interface CategoryListProps {

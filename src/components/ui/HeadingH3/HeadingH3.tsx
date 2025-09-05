@@ -1,11 +1,11 @@
-import styles from './Heading.module.css';
+import styles from './HeadingH3.module.css';
 
 interface HeadingProps {
   children: React.ReactNode;
 }
 
-const Heading = ({ children }: HeadingProps) => {
+const HeadingH3 = ({ children }: HeadingProps) => {
   return <h3 className={styles.heading}>{children}</h3>;
 };
 
-export { Heading };
+export { HeadingH3 };

@@ -1,0 +1,90 @@
+.card {
+  overflow-y: scroll;
+  padding-bottom: 16px;
+}
+
+.cardWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1017px;
+  width: 100%;
+  padding: 8px 32px;
+  border: 1px solid var(--Gray-300, #d5d7da);
+  background: #fff;
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+}
+
+.cardImg img {
+  width: 180px;
+}
+
+.cardInfo {
+  padding-left: 56px;
+  color: var(--color-gray-800);
+  font-family: 'Inter';
+  font-size: 20px;
+  gap: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.cardTitle {
+  font-weight: 500;
+  width: 230px;
+}
+
+.cardQuantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  font-weight: 400;
+  border: 2px solid var(--color-gray-400);
+  line-height: 16px;
+}
+
+.quantity button {
+  background: none;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.cardPrice {
+  font-weight: 500;
+  width: 80px;
+}
+
+.cardTotalPrice {
+  color: var(--color-brand-burgundy);
+  text-align: center;
+  font-family: 'Inter';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  width: 80px;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}

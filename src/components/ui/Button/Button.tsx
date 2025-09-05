@@ -5,11 +5,15 @@ import styles from './Button.module.css';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: React.ReactNode;
   children: ReactNode;
+  variant?: 'secondary';
 }
 
-const Button = ({ children, icon, ...rest }: ButtonProps) => {
+const Button = ({ children, variant, icon, ...rest }: ButtonProps) => {
   return (
-    <button className={styles.button} {...rest}>
+    <button
+      className={`${variant ? styles.buttonSecondary : styles.button}`}
+      {...rest}
+    >
       {icon && <span className={styles.icon}>{icon}</span>}
       {children}
     </button>
