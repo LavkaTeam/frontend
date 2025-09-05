@@ -26,7 +26,7 @@ const Cart = () => {
         <HeadingH3>Cart</HeadingH3>
         <div className={styles.cartLayout}>
           <section>
-            <SubHeading>Goods</SubHeading>
+            <SubHeading>{cartItems.length} Goods</SubHeading>
             {cartItems.map((item) => (
               <CartProduct key={item.id} card={item} />
             ))}
