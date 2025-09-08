@@ -67,7 +67,9 @@ const Cart = () => {
                   <div className={styles.checkoutButton}>
                     <Button icon={<CartIcon />}>Checkout</Button>
                   </div>
-                  <Button variant='secondary'>Continue Shopping</Button>
+                  <Link to='/products'>
+                    <Button variant='secondary'>Continue Shopping</Button>
+                  </Link>
                 </div>
               </aside>
             </div>
