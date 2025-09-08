@@ -3,6 +3,7 @@ import { useSlider } from '@hooks/useSlider';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 
 import styles from './CardSection.module.css';
+import { Space } from '../ui/Space';
 
 interface WithId {
   id: string | number;
@@ -38,6 +39,7 @@ const CardSection = <T extends WithId>({
     <section className={styles.cardSection}>
       <div className={noPaddings ? '' : 'container'}>
         {title ? <HeadingH3>{title}</HeadingH3> : null}
+        <Space height='32px' />
         <div className={styles.sliderWrapper}>
           {withSlider && (
             <div className={`${styles.arrowButton} ${styles.leftButton}`}>

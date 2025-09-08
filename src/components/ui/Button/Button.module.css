@@ -10,7 +10,7 @@
   background: var(--burgundy, #af261f);
   border: none;
   box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
-  color: var(--White, #fff);
+  color: var(--color-primary-white);
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
@@ -22,7 +22,7 @@
 
 .buttonSecondary {
   border: 2px solid var(--burgundy, #af261f);
-  background-color: #fff;
+  background-color: var(--color-primary-white);
   color: var(--burgundy, #af261f);
 }
 
