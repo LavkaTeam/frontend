@@ -1,0 +1,1 @@
+export { EmptyCartIcon } from './EmptyCartIcon';
