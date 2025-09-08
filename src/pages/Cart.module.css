@@ -84,3 +84,9 @@
   font-weight: 500;
   line-height: 38px;
 }
+
+.aside {
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+}

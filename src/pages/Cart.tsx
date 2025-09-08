@@ -37,7 +37,7 @@ const Cart = () => {
                   <CartProduct key={item.id} card={item} />
                 ))}
               </section>
-              <aside>
+              <aside className={styles.aside}>
                 <SubHeading>Total</SubHeading>
                 <div className={styles.totalPrice}>
                   <div className={styles.totalInfo}>
