@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState /* useEffect */ } from 'react';
 import styles from './BuyerSubscriptions.module.css';
 import { Button } from '@/components/ui/Button/Button';
 import { useUser } from '@/hooks/useUser';
