@@ -1,0 +1,1 @@
+export { EditPasswordIcon } from './EditPasswordIcon';
