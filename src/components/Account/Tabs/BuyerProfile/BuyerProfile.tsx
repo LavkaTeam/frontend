@@ -65,9 +65,8 @@ const BuyerProfile = () => {
         bic: user.bic || '',
       };
 
-      console.log('Sending data:', userData);
-
-      const updatedUser = await updateUser(user.id, userData);
+      // Викликаємо API без збереження результату
+      await updateUser(user.id, userData);
 
       showToast('Profile updated successfully', 'success');
     } catch (err: any) {

@@ -19,7 +19,6 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
     reset,
   } = useForm<ChangePasswordFormSchema>({

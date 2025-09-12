@@ -19,7 +19,7 @@ const AccountPage = () => {
       <div className={styles.sideBar}>
         <div className={styles.userInfo}>
           <div className={styles.userImage}>
-            {user.image || <img src='/icons/testAvatar.png' />}
+            {/* {user.image || */ <img src='/icons/testAvatar.png' />}
             {/* Тестовий аватар */}
           </div>
           <div className={styles.userText}>

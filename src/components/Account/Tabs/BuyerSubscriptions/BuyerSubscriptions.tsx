@@ -6,47 +6,41 @@ import { useToast } from '@/hooks/useToast';
 import Toast from '../Toast/Toast';
 import { SelectSubscription } from './SelectSubscription/SelectSubscription';
 import { subscriptionsData } from '@/data/subscriptionsData';
-import { updateUser } from '@/api/user';
+// import { updateUser } from '@/api/user';
 
 const BuyerSubscriptions = () => {
   const { data: user, error } = useUser();
   const { toasts, showToast } = useToast();
-  const [selectedSubscriptions, setSelectedSubscriptions] = useState<string[]>(
-    []
-  );
+  // const [selectedSubscriptions, setSelectedSubscriptions] = useState<string[]>(
+  //   []
+  // );
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (user && user.subscriptions) {
-      setSelectedSubscriptions(user.subscriptions);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user && user.subscriptions) {
+  //     setSelectedSubscriptions(user.subscriptions);
+  //   }
+  // }, [user]);
 
-  const handleSubscriptionToggle = (subscriptionId: string) => {
-    setSelectedSubscriptions((prev) => {
-      if (prev.includes(subscriptionId)) {
-        return prev.filter((id) => id !== subscriptionId);
-      } else {
-        return [...prev, subscriptionId];
-      }
-    });
-  };
+  // const handleSubscriptionToggle = (subscriptionId: string) => {
+  //   setSelectedSubscriptions((prev) => {
+  //     if (prev.includes(subscriptionId)) {
+  //       return prev.filter((id) => id !== subscriptionId);
+  //     } else {
+  //       return [...prev, subscriptionId];
+  //     }
+  //   });
+  // };
 
   const handleSave = async () => {
     if (!user) return;
 
     setIsLoading(true);
     try {
-      // Оновлюємо тільки підписки, інші дані залишаємо без змін
-      const updatedUser = await updateUser(user.id, {
-        ...user, // всі поточні дані користувача
-        subscriptions: selectedSubscriptions, // оновлені підписки
-      });
-
-      showToast('Subscriptions updated successfully', 'success');
-
-      // Оновлюємо дані в кеші вручну (якщо потрібно)
-      // Можна використати window.location.reload() або інший спосіб оновлення даних
+      // await updateUser(user.id, {
+      //   ...user,
+      //   subscriptions: selectedSubscriptions,
+      // });
     } catch (err: any) {
       console.error('Failed to update subscriptions:', err);
       const errorMessage =
@@ -64,12 +58,13 @@ const BuyerSubscriptions = () => {
       <h3 className={styles.title}>Subscriptions / Newsletters</h3>
       <p className={styles.description}>Choose what you'd like to receive</p>
 
+      {/* без функціоналу */}
       {subscriptionsData.map((subscription) => (
         <SelectSubscription
           key={subscription.id}
           subscription={subscription}
-          isSelected={selectedSubscriptions.includes(subscription.id)}
-          onToggle={handleSubscriptionToggle}
+          isSelected={false} // поки false, оскільки функціонал відключений
+          onToggle={() => {}}
         />
       ))}
 

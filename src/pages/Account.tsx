@@ -4,7 +4,7 @@ import { Loader } from '@/components/ui/Loader';
 import { useUser } from '@/hooks/useUser';
 
 const Account = () => {
-  const { data: user, error, isLoading } = useUser();
+  const { error, isLoading } = useUser();
 
   if (isLoading) return <Loader />;
   if (error) return <div>Error: {error?.message}</div>;
