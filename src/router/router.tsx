@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router';
 import { Layout } from '@/Layout';
 import { Loader } from '@/components/ui/Loader';
 import { lazy, Suspense } from 'react';
+import { PrivateRoute } from './PrivateRoute';
 
 const Home = lazy(() => import('@/pages/Home'));
 const Register = lazy(() => import('@/pages/Register'));
@@ -44,9 +45,11 @@ export const router = createBrowserRouter([
       {
         path: '/account',
         element: (
-          <Suspense fallback={<Loader />}>
-            <Account />
-          </Suspense>
+          <PrivateRoute>
+            <Suspense fallback={<Loader />}>
+              <Account />
+            </Suspense>
+          </PrivateRoute>
         ),
       },
       {
