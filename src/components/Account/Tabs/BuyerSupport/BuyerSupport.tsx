@@ -1,9 +1,9 @@
-import { Heading } from '@/components/ui/Heading/Heading';
+import { HeadingH3 } from '@/components/ui/HeadingH3';
 
 const BuyerSupport = () => {
   return (
     <div>
-      <Heading>Support</Heading>
+      <HeadingH3>Support</HeadingH3>
     </div>
   );
 };
