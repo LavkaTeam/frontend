@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { Button } from '@ui/Button';
-import { OutlineHeart, SolidHeart } from '../Heart';
+import { OutlineHeart, SolidHeart } from '../ui/icons/Heart';
 import { ShoppingCart } from '../ShoppingCart';
 import type { ProductCard } from '@/types/productCard';
 

@@ -2,8 +2,8 @@ import { ArrowButton } from '../ui/icons/ArrowButton';
 import { useSlider } from '@hooks/useSlider';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 
-import styles from './CardSection.module.css';
 import { Space } from '../ui/Space';
+import styles from './CardSection.module.css';
 
 interface WithId {
   id: string | number;
