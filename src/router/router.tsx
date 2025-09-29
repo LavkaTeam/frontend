@@ -1,7 +1,7 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { Layout } from '@/Layout';
 import { Loader } from '@/components/ui/Loader';
-import { lazy, Suspense } from 'react';
 
 const Home = lazy(() => import('@/pages/Home'));
 const Register = lazy(() => import('@/pages/Register'));
