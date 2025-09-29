@@ -3,13 +3,11 @@ import { Logo } from '../Logo';
 import { ShoppingCart } from '../ShoppingCart';
 import { OutlineHeart } from '../ui/icons/Heart';
 import { Input } from '@ui/Input';
-
 import { useLogOutHandler } from '@/hooks/useLogOutHandler';
 import { SearchIcon } from '../ui/icons/SearchIcon';
 import { AccountIcon } from '../ui/icons/AccountIcon';
-import { LoginIcon } from '../ui/icons/LoginIcon';
 import { LogoutIcon } from '../ui/icons/LogoutIcon';
-
+import { HeaderIcon } from '../HeaderIcon';
 import styles from './Header.module.css';
 
 const Header = () => {
@@ -33,28 +31,25 @@ const Header = () => {
 
             <div className={styles.userActions}>
               <div className={styles.actions}>
-                {isAuthenticated && (
-                  <Link to={'/account'}>
-                    <AccountIcon />
-                  </Link>
-                )}
+                <Link to={`${isAuthenticated ? '/account' : '/login'}`}>
+                  <HeaderIcon icon={<AccountIcon />} iconText='Account' />
+                </Link>
 
                 <Link to={'/favorites'}>
-                  <OutlineHeart />
+                  <HeaderIcon icon={<OutlineHeart />} iconText='Wishlist' />
                 </Link>
 
                 <Link to={'/cart'}>
-                  <ShoppingCart currentColor='#252B37' />
+                  <HeaderIcon
+                    icon={<ShoppingCart currentColor='#252B37' />}
+                    iconText='Cart'
+                  />
                 </Link>
               </div>
-              {isAuthenticated ? (
+              {isAuthenticated && (
                 <div className={styles.logoutButton} onClick={handleLogOut}>
-                  <LogoutIcon />
+                  <HeaderIcon icon={<LogoutIcon />} iconText='Logout' />
                 </div>
-              ) : (
-                <Link to={'/login'}>
-                  <LoginIcon />
-                </Link>
               )}
             </div>
           </div>
