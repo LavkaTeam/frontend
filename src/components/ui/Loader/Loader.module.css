@@ -1,25 +1,52 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: calc(
+    100vh - 320px
+  ); /* Тимчасово відняв довжину футера (потрібно по іншому зробити) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-background-lightgray);
+  z-index: 99;
+}
+
 .loaderContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.logo {
+  width: 250px;
+  height: 63px;
+}
+
+.dropContainer {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.loader {
-  width: 48px;
-  height: 48px;
-  border: 5px solid var(--color-primary-white);
-  border-bottom-color: var(--color-brand-burgundy);
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+.drop {
+  animation: dropAnimation 4s ease-in-out infinite;
 }
 
-@keyframes rotation {
+@keyframes dropAnimation {
   0% {
-    transform: rotate(0deg);
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(100px);
   }
   100% {
-    transform: rotate(360deg);
+    transform: translateY(0);
   }
 }
