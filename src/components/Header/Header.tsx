@@ -6,7 +6,6 @@ import { Input } from '@ui/Input';
 import { useLogOutHandler } from '@/hooks/useLogOutHandler';
 import { SearchIcon } from '../ui/icons/SearchIcon';
 import { AccountIcon } from '../ui/icons/AccountIcon';
-import { LoginIcon } from '../ui/icons/LoginIcon';
 import { LogoutIcon } from '../ui/icons/LogoutIcon';
 import { HeaderIcon } from '../HeaderIcon';
 import styles from './Header.module.css';
