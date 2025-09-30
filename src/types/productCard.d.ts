@@ -5,6 +5,7 @@ export interface ProductCard {
   description: string;
   price: number;
   capacity: string;
+  abv: string;
   sku: string;
   inStock: boolean;
 }

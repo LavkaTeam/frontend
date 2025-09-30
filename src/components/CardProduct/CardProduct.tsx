@@ -40,7 +40,9 @@ const CardProduct = ({ card }: CardProductProps) => {
           <div className={styles.cardProductDetails}>
             <span className={styles.heading}>{card.title}</span>
             {card.capacity && (
-              <span className={styles.capacity}>{card.capacity}</span>
+              <span className={styles.capacity}>
+                {card.capacity} L / {card.abv} ABV
+              </span>
             )}
             <span className={styles.subHeading}>{card.description}</span>
             <span className={styles.sku}>{card.sku}</span>
