@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router';
 import { Layout } from '@/Layout';
 import { Loader } from '@/components/ui/Loader';
 import { lazy, Suspense } from 'react';
-import { PrivateRoute } from './PrivateRoute';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const Home = lazy(() => import('@/pages/Home'));
 const Register = lazy(() => import('@/pages/Register'));
@@ -45,13 +45,23 @@ export const router = createBrowserRouter([
       {
         path: '/account',
         element: (
-          <PrivateRoute>
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
             <Suspense fallback={<Loader />}>
               <Account />
             </Suspense>
-          </PrivateRoute>
+          </ProtectedRoute>
         ),
       },
+      // {
+      //   path: '/admin',
+      //   element: (
+      //     <ProtectedRoute allowedRoles={['admin']}>
+      //       <Suspense fallback={<Loader />}>
+      //         Адмін-панель
+      //       </Suspense>
+      //     </ProtectedRoute>
+      //   ),
+      // },
       {
         path: '/cart',
         element: (
