@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import { Logo } from '../Logo';
 import { ShoppingCart } from '../ShoppingCart';
-import { OutlineHeart } from '../Heart';
+import { OutlineHeart } from '../ui/icons/Heart';
 import { Input } from '@ui/Input';
 import { useLogOutHandler } from '@/hooks/useLogOutHandler';
 import { SearchIcon } from '../ui/icons/SearchIcon';

@@ -1,0 +1,28 @@
+.BuyerSubscriptions {
+  margin: 0 auto;
+}
+
+.title {
+  color: var(--color-gray-800);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: -0.72px;
+  margin-bottom: 16px;
+}
+
+.description {
+  color: var(--color-gray-800);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  margin-bottom: 48px;
+}
+
+.button {
+  width: 175px;
+}
+
+.BuyerSubscriptions > .button {
+  margin-left: auto;
+}

@@ -10,7 +10,11 @@ interface HeaderIconProps {
 const HeaderIcon = ({ icon, iconText }: HeaderIconProps) => {
   return (
     <div className={styles.headerIcon}>
+<<<<<<< HEAD
       <span>{icon}</span>
+=======
+      {icon}
+>>>>>>> origin/master
       <span>{iconText}</span>
     </div>
   );
