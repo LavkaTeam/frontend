@@ -1,8 +1,11 @@
 import { createBrowserRouter } from 'react-router';
 import { Layout } from '@/Layout';
 import { Loader } from '@/components/ui/Loader';
+<<<<<<< HEAD
 import { lazy, Suspense } from 'react';
 import { ProtectedRoute } from './ProtectedRoute';
+=======
+>>>>>>> origin/feature/create-product-page
 
 const Home = lazy(() => import('@/pages/Home'));
 const Register = lazy(() => import('@/pages/Register'));

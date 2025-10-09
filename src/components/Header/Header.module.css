@@ -5,10 +5,14 @@
   width: 100%;
   background-color: var(--color-primary-white);
 <<<<<<< HEAD
+<<<<<<< HEAD
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 =======
   border-bottom: 1px solid #000;
 >>>>>>> origin/master
+=======
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+>>>>>>> origin/feature/create-product-page
 }
 
 .container {
