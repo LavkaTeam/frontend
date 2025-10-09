@@ -13,6 +13,8 @@ import { CardProduct } from '@/components/CardProduct';
 
 import styles from './Product.module.css';
 
+import { productData } from '@/data/productData';
+
 const Product = () => {
   const dispatch = useAppDispatch();
 

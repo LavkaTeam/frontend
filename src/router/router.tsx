@@ -44,11 +44,23 @@ export const router = createBrowserRouter([
       {
         path: '/account',
         element: (
-          <Suspense fallback={<Loader />}>
-            <Account />
-          </Suspense>
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
+            <Suspense fallback={<Loader />}>
+              <Account />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
+      // {
+      //   path: '/admin',
+      //   element: (
+      //     <ProtectedRoute allowedRoles={['admin']}>
+      //       <Suspense fallback={<Loader />}>
+      //         Адмін-панель
+      //       </Suspense>
+      //     </ProtectedRoute>
+      //   ),
+      // },
       {
         path: '/cart',
         element: (

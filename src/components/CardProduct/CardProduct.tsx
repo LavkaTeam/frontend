@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { Button } from '@ui/Button';
-import { OutlineHeart, SolidHeart } from '../Heart';
+import { OutlineHeart, SolidHeart } from '../ui/icons/Heart';
 import { ShoppingCart } from '../ShoppingCart';
 import type { ProductCard } from '@/types/productCard';
 import { useAppDispatch } from '@/store/hooks';
@@ -44,7 +44,9 @@ const CardProduct = ({ card }: CardProductProps) => {
           <div className={styles.cardProductDetails}>
             <span className={styles.heading}>{card.title}</span>
             {card.capacity && (
-              <span className={styles.capacity}>{card.capacity}</span>
+              <span className={styles.capacity}>
+                {card.capacity} L / {card.abv} ABV
+              </span>
             )}
             <span className={styles.subHeading}>
               {card.country} / {card.brand}

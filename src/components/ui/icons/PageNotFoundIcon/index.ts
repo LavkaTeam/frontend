@@ -1,0 +1,1 @@
+export { PageNotFoundIcon } from './PageNotFoundIcon';
