@@ -1,0 +1,38 @@
+.productPage {
+  display: flex;
+}
+
+.imageBlock {
+  width: 591px;
+  padding-right: 56px;
+}
+
+.inStockInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spanInStock {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-green);
+}
+
+.spanSoldOut {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-brand-burgundy);
+}
+
+.inStock {
+  color: var(--color-green);
+}
+
+.soldOut {
+  color: var(--color-brand-burgundy);
+}

@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/store/hooks';
 import { addItem } from '@/store/cartSlice';
 
 import styles from './CardProduct.module.css';
+import { Price } from '../Price';
 
 type CardProductProps = {
   card: ProductCard;
@@ -35,17 +36,23 @@ const CardProduct = ({ card }: CardProductProps) => {
       <div className={styles.cardProductInfo}>
         <Link to={`product/${card.id}`}>
           <div className={styles.cardInStock}>
-            <span className={styles.inStock}>In Stock</span>
+            {card.inStock ? (
+              <span className={styles.inStock}>In Stock</span>
+            ) : (
+              <span className={styles.soldOut}>Sold Out</span>
+            )}
           </div>
           <div className={styles.cardProductDetails}>
             <span className={styles.heading}>{card.title}</span>
             {card.capacity && (
               <span className={styles.capacity}>{card.capacity}</span>
             )}
-            <span className={styles.subHeading}>{card.description}</span>
+            <span className={styles.subHeading}>
+              {card.country} / {card.brand}
+            </span>
             <span className={styles.sku}>{card.sku}</span>
             <span className={styles.divider}></span>
-            <span className={styles.price}>${card.price.toFixed(2)}</span>
+            <Price price={card.price} />
           </div>
         </Link>
         <Button onClick={() => dispatch(addItem(card))} icon={<ShoppingCart />}>

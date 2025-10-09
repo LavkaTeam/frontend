@@ -3,7 +3,6 @@ import { CartProduct } from '@/components/CartProduct';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { SubHeading } from '@/components/ui/SubHeading';
 import { useAppSelector } from '@/store/hooks';
-
 import { Button } from '@/components/ui/Button';
 import { CartIcon } from '@/components/ui/icons/CartIcon';
 import { Space } from '@/components/ui/Space';
