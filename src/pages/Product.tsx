@@ -73,7 +73,7 @@ const Product = () => {
                 Country:
               </SubHeading>
               <SubHeading size='medium' color='secondary'>
-                {product.description.split(' / ')[0]}
+                {product.country}
               </SubHeading>
               <Space height='32px' />
               <SubHeading size='medium' color='primary'>
