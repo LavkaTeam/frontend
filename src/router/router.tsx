@@ -1,7 +1,8 @@
-import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { Layout } from '@/Layout';
 import { Loader } from '@/components/ui/Loader';
+import { lazy, Suspense } from 'react';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const Home = lazy(() => import('@/pages/Home'));
 const Register = lazy(() => import('@/pages/Register'));
@@ -44,11 +45,23 @@ export const router = createBrowserRouter([
       {
         path: '/account',
         element: (
-          <Suspense fallback={<Loader />}>
-            <Account />
-          </Suspense>
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
+            <Suspense fallback={<Loader />}>
+              <Account />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
+      // {
+      //   path: '/admin',
+      //   element: (
+      //     <ProtectedRoute allowedRoles={['admin']}>
+      //       <Suspense fallback={<Loader />}>
+      //         Адмін-панель
+      //       </Suspense>
+      //     </ProtectedRoute>
+      //   ),
+      // },
       {
         path: '/cart',
         element: (
