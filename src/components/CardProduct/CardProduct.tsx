@@ -4,12 +4,11 @@ import { Button } from '@ui/Button';
 import { OutlineHeart, SolidHeart } from '../Heart';
 import { ShoppingCart } from '../ShoppingCart';
 import type { ProductCard } from '@/types/productCard';
-
 import { useAppDispatch } from '@/store/hooks';
 import { addItem } from '@/store/cartSlice';
+import { Price } from '../Price';
 
 import styles from './CardProduct.module.css';
-import { Price } from '../Price';
 
 type CardProductProps = {
   card: ProductCard;

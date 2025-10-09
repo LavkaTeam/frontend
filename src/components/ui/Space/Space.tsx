@@ -1,5 +1,5 @@
 interface SpaceProps {
-  height?: '32px' | '16px';
+  height?: '85px' | '40px' | '32px' | '24px' | '16px';
 }
 
 const Space = ({ height }: SpaceProps) => {
