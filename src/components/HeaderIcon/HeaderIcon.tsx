@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-
 import styles from './HeaderIcon.module.css';
 
 interface HeaderIconProps {
@@ -10,9 +9,10 @@ interface HeaderIconProps {
 const HeaderIcon = ({ icon, iconText }: HeaderIconProps) => {
   return (
     <div className={styles.headerIcon}>
-      {icon}
+      <span>{icon}</span>
       <span>{iconText}</span>
     </div>
   );
 };
+
 export { HeaderIcon };

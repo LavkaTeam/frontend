@@ -2,7 +2,8 @@ export interface ProductCard {
   id: string;
   image: string;
   title: string;
-  description: string;
+  country: string;
+  brand: string;
   price: number;
   capacity: string;
   abv: string;

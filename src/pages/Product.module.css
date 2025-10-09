@@ -1,0 +1,93 @@
+.productPage {
+  margin-top: 5px;
+  display: flex;
+  width: 100%;
+  padding: 27px 6px 0;
+  background-color: var(--color-primary-white);
+  box-shadow: 0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.imageBlock {
+  max-width: 591px;
+  width: 100%;
+  padding-right: 56px;
+}
+
+.inStockInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spanInStock {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-green);
+}
+
+.spanSoldOut {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-brand-burgundy);
+}
+
+.inStock {
+  color: var(--color-green);
+}
+
+.soldOut {
+  color: var(--color-brand-burgundy);
+}
+
+.productInfo {
+  display: flex;
+  gap: 72px;
+}
+
+.productInfo span {
+  background-color: var(--color-gray-400);
+  width: 1px;
+  margin: 15px 0;
+}
+
+.h6 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actionButton {
+  max-width: 300px;
+  width: 100%;
+}
+
+.favoritesBlock {
+  display: flex;
+  justify-content: space-between;
+}
+
+.favorites {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gray);
+}
+
+.border {
+  display: block;
+  border-bottom: 1px solid var(--color-gray);
+}
+
+.contactInfo {
+  display: flex;
+  gap: 16px;
+}

@@ -4,9 +4,9 @@ import { Button } from '@ui/Button';
 import { OutlineHeart, SolidHeart } from '../ui/icons/Heart';
 import { ShoppingCart } from '../ShoppingCart';
 import type { ProductCard } from '@/types/productCard';
-
 import { useAppDispatch } from '@/store/hooks';
 import { addItem } from '@/store/cartSlice';
+import { Price } from '../Price';
 
 import styles from './CardProduct.module.css';
 
@@ -35,7 +35,11 @@ const CardProduct = ({ card }: CardProductProps) => {
       <div className={styles.cardProductInfo}>
         <Link to={`product/${card.id}`}>
           <div className={styles.cardInStock}>
-            <span className={styles.inStock}>In Stock</span>
+            {card.inStock ? (
+              <span className={styles.inStock}>In Stock</span>
+            ) : (
+              <span className={styles.soldOut}>Sold Out</span>
+            )}
           </div>
           <div className={styles.cardProductDetails}>
             <span className={styles.heading}>{card.title}</span>
@@ -44,10 +48,12 @@ const CardProduct = ({ card }: CardProductProps) => {
                 {card.capacity} L / {card.abv} ABV
               </span>
             )}
-            <span className={styles.subHeading}>{card.description}</span>
+            <span className={styles.subHeading}>
+              {card.country} / {card.brand}
+            </span>
             <span className={styles.sku}>{card.sku}</span>
             <span className={styles.divider}></span>
-            <span className={styles.price}>${card.price.toFixed(2)}</span>
+            <Price price={card.price} />
           </div>
         </Link>
         <Button onClick={() => dispatch(addItem(card))} icon={<ShoppingCart />}>

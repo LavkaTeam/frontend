@@ -1,8 +1,27 @@
 .subheading {
-  color: var(--color-grey);
   font-family: Inter;
   font-size: 20px;
   font-weight: 400;
   line-height: 30px;
   padding-bottom: 8px;
+}
+
+.primary {
+  color: var(--color-gray);
+}
+
+.secondary {
+  color: var(--color-gray-800);
+}
+
+.large {
+  font-size: 20px;
+}
+
+.medium {
+  font-size: 16px;
+}
+
+.small {
+  font-size: 14px;
 }

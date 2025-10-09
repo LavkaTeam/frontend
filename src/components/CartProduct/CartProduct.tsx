@@ -30,7 +30,7 @@ const CartProduct = ({ card }: CartProductProps) => {
           <div className={styles.cardInfo}>
             <div className={styles.cardTitle}>
               {card.title}, {card.capacity} L, <br />
-              {card.description}
+              {card.brand}
             </div>
             <div className={styles.price}>
               <span className={styles.cardPrice}>${card.price}</span>

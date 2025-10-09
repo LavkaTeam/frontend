@@ -60,6 +60,10 @@
   color: var(--color-green);
 }
 
+.soldOut {
+  color: var(--color-brand-burgundy);
+}
+
 .sku {
   color: var(--color-gray-800);
   font-size: 14px;
@@ -117,9 +121,3 @@
   margin-bottom: 15px;
 }
 
-.price {
-  color: var(--color-brand-burgundy);
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 22px;
-}

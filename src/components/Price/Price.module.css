@@ -1,0 +1,6 @@
+.price {
+  color: var(--color-brand-burgundy);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 22px;
+}
