@@ -4,6 +4,8 @@ export const productData = [
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Nordic Gin',
     country: 'Finland',
+    productDescription:
+      'A dry sparkling wine from Spain with a pale straw color and fine bubbles. Aromas of green apple, white peach, and floral notes. Fresh and balanced taste with a light acidity.',
     brand: 'Arctic Spirits',
     price: 25.99,
     capacity: '0,7',
@@ -16,6 +18,8 @@ export const productData = [
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Irish Whiskey',
     country: 'Ireland',
+    productDescription:
+      'A smooth Irish whiskey with notes of vanilla, honey, and toasted oak. Perfect for sipping neat or in classic cocktails.',
     brand: 'Green Barrel',
     price: 39.5,
     capacity: '0,5',
@@ -28,6 +32,8 @@ export const productData = [
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Baltic Vodka',
     country: 'Estonia',
+    productDescription:
+      'A clean and crisp vodka distilled from pure grains, with a subtle hint of sweetness and smooth finish.',
     brand: 'Pure Spirit',
     price: 18.75,
     capacity: '1',
@@ -40,6 +46,8 @@ export const productData = [
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Caribbean Rum',
     country: 'Jamaica',
+    productDescription:
+      'A rich and aromatic rum with tropical fruit notes, hints of vanilla and caramel, ideal for cocktails or sipping.',
     brand: 'Sunny Isles',
     price: 27.4,
     capacity: '0,7',
@@ -52,6 +60,8 @@ export const productData = [
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Polar Ice Vodka',
     country: 'Russia',
+    productDescription:
+      'Ultra-pure vodka with a soft, smooth taste. Distilled multiple times for clarity and gentle finish.',
     brand: 'Crystal Clear',
     price: 21.0,
     capacity: '0,5',
@@ -64,6 +74,8 @@ export const productData = [
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Highland Scotch',
     country: 'Scotland',
+    productDescription:
+      'A fine Scotch whisky with smoky peat aromas, rich oak notes, and a long, warming finish.',
     brand: 'Old Glen',
     price: 44.2,
     capacity: '1',
@@ -76,6 +88,8 @@ export const productData = [
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Crystal Clear Vodka',
     country: 'Poland',
+    productDescription:
+      'Smooth Polish vodka, clean and crisp, with a light and refreshing character, perfect for cocktails.',
     brand: 'Pure Spirit',
     price: 19.3,
     capacity: '0,7',
@@ -88,6 +102,8 @@ export const productData = [
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Golden Caribbean Rum',
     country: 'Barbados',
+    productDescription:
+      'Golden rum with rich aromas of tropical fruits and honey, smooth on the palate with a sweet finish.',
     brand: 'Sunny Isles',
     price: 29.99,
     capacity: '0,5',
@@ -100,6 +116,8 @@ export const productData = [
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Silver Mountain Gin',
     country: 'Norway',
+    productDescription:
+      'A crisp Norwegian gin with juniper and floral botanicals, fresh and aromatic, perfect for classic cocktails.',
     brand: 'Frost Spirits',
     price: 31.5,
     capacity: '1',
@@ -112,6 +130,8 @@ export const productData = [
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Old Barrel Whiskey',
     country: 'USA',
+    productDescription:
+      'Full-bodied American whiskey aged in oak barrels, with rich notes of vanilla, caramel, and a hint of spice.',
     brand: 'Heritage',
     price: 42.0,
     capacity: '0,7',
@@ -124,6 +144,8 @@ export const productData = [
     image: 'https://i.postimg.cc/8ch8p8Mq/Frame-1171275630-4.png',
     title: 'Clear Stream Vodka',
     country: 'Lithuania',
+    productDescription:
+      'Smooth Lithuanian vodka with a clean taste and subtle sweetness, perfect neat or in mixed drinks.',
     brand: 'Crystal Line',
     price: 22.9,
     capacity: '0,5',
@@ -136,6 +158,8 @@ export const productData = [
     image: 'https://i.postimg.cc/5yr9ZW5L/Frame-1171275630-2.png',
     title: 'Tropical Breeze Rum',
     country: 'Cuba',
+    productDescription:
+      'Cuban rum with tropical fruit notes, smooth body and a hint of spice, ideal for cocktails.',
     brand: 'Island Spirits',
     price: 28.75,
     capacity: '1',

@@ -8,10 +8,13 @@ import { SearchIcon } from '../ui/icons/SearchIcon';
 import { AccountIcon } from '../ui/icons/AccountIcon';
 import { LogoutIcon } from '../ui/icons/LogoutIcon';
 import { HeaderIcon } from '../HeaderIcon';
+import { useAppSelector } from '@/store/hooks';
 import styles from './Header.module.css';
 
 const Header = () => {
   const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const cart = useAppSelector((state) => state.cart);
+  const commonQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const { handleSubmit: handleLogOut } = useLogOutHandler();
 
@@ -43,6 +46,7 @@ const Header = () => {
                   <HeaderIcon
                     icon={<ShoppingCart currentColor='#252B37' />}
                     iconText='Cart'
+                    count={commonQuantity}
                   />
                 </Link>
               </div>

@@ -30,7 +30,7 @@ const Product = () => {
         <div className={styles.imageBlock}>product images</div>
         <div>
           <HeadingH3>
-            {product.title} {product.capacity} L {product.title}
+            {product.title} {product.capacity} L {product.brand}
           </HeadingH3>
           <Space height='32px' />
           <div className={styles.inStockInfo}>
@@ -88,9 +88,7 @@ const Product = () => {
           <div>
             <h6 className={styles.h6}>Product Description</h6>
             <SubHeading size='medium' color='secondary'>
-              A dry sparkling wine from Spain with a pale straw color and fine
-              bubbles. Aromas of green apple, white peach, and floral notes.
-              Fresh and balanced taste with a light acidity.
+              {product.productDescription}
             </SubHeading>
           </div>
           <Space height='40px' />
