@@ -3,6 +3,7 @@ export interface ProductCard {
   image: string;
   title: string;
   country: string;
+  productDescription: string;
   brand: string;
   price: number;
   capacity: string;

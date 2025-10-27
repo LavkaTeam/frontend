@@ -27,13 +27,13 @@ const CardProduct = ({ card }: CardProductProps) => {
       >
         {isFavorite ? <SolidHeart /> : <OutlineHeart />}
       </div>
-      <Link to={`product/${card.id}`}>
+      <Link to={`/product/${card.id}`}>
         <div className={styles.cardImageWrapper}>
           <img src={card.image} alt={card.title} />
         </div>
       </Link>
       <div className={styles.cardProductInfo}>
-        <Link to={`product/${card.id}`}>
+        <Link to={`/product/${card.id}`}>
           <div className={styles.cardInStock}>
             {card.inStock ? (
               <span className={styles.inStock}>In Stock</span>
