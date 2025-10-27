@@ -7,7 +7,7 @@ const PageNotFoundIcon = () => {
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
     >
-      <g clip-path='url(#clip0_3279_22095)'>
+      <g clipPath='url(#clip0_3279_22095)'>
         <path
           d='M8.76401 93.7926C8.76401 105.246 28.834 125.531 8.76611 128C-10.9564 124.473 8.76401 105.246 8.76401 93.7926Z'
           fill='#7E1217'

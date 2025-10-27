@@ -39,7 +39,6 @@ const CardSection = <T extends WithId>({
     <section className={styles.cardSection}>
       <div className={noPaddings ? '' : 'container'}>
         {title ? <HeadingH3>{title}</HeadingH3> : null}
-        <Space height='32px' />
         <div className={styles.sliderWrapper}>
           {withSlider && (
             <div className={`${styles.arrowButton} ${styles.leftButton}`}>
