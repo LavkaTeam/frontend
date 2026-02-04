@@ -22,7 +22,7 @@ const CategoryList = ({
         <Link
           key={category.id}
           to={`/products/${encodeURIComponent(
-            category.name.toLowerCase().replace(/\s/g, '-')
+            category.name.toLowerCase().replace(/\s/g, '-'),
           )}`}
           onClick={() => handleCategoryClick(category)}
         >

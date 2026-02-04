@@ -2,13 +2,18 @@
   position: fixed;
   top: 20px;
   right: 20px;
+
   padding: 16px 24px;
   border-radius: 8px;
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   min-width: 250px;
+  width: fit-content; /* Ширина підлаштовується під контент */
+  white-space: nowrap; /* Забороняє перенос тексту на новий рядок */
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1001;
   animation: slideIn 0.3s ease;
@@ -16,11 +21,11 @@
 
 @keyframes slideIn {
   from {
-    transform: translateX(100%);
+    transform: translateY(20px);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }

@@ -7,7 +7,7 @@ interface FetchOptions extends RequestInit {
 
 const fetchData = async <T = unknown>(
   endpoint: string,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
 ): Promise<T> => {
   const response = await fetch(`${apiUrl}${endpoint}`, {
     headers: {

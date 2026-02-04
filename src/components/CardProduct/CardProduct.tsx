@@ -1,13 +1,12 @@
-import { useState } from 'react';
-import { Link } from 'react-router';
-import { Button } from '@ui/Button';
-import { OutlineHeart, SolidHeart } from '../ui/icons/Heart';
-import { ShoppingCart } from '../ShoppingCart';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/Button';
+import { OutlineHeart, SolidHeart } from '@/components/ui/icons/Heart';
+import { ShoppingCart } from '@/components/ShoppingCart';
 import type { ProductCard } from '@/types/productCard';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addItem } from '@/store/cartSlice';
+import { toggleFavorite } from '@/store/favoritesSlice';
 import { Price } from '../Price';
-
 import styles from './CardProduct.module.css';
 
 type CardProductProps = {
@@ -15,23 +14,37 @@ type CardProductProps = {
 };
 
 const CardProduct = ({ card }: CardProductProps) => {
-  const [isFavorite, setIsFavorite] = useState(false);
-
   const dispatch = useAppDispatch();
+
+  // Перевіряємо в Redux, чи є цей ID в списку favorites
+  const isFavorite = useAppSelector((state: any) =>
+    state.favorites.includes(card.id),
+  );
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Запобігаємо переходу за посиланням картки
+    e.stopPropagation();
+    dispatch(toggleFavorite(card.id));
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(addItem(card));
+  };
 
   return (
     <div className={styles.cardProduct}>
-      <div
-        className={styles.favoriteIcon}
-        onClick={() => setIsFavorite(!isFavorite)}
-      >
+      <div className={styles.favoriteIcon} onClick={handleFavoriteClick}>
         {isFavorite ? <SolidHeart /> : <OutlineHeart />}
       </div>
+
       <Link to={`/product/${card.id}`}>
         <div className={styles.cardImageWrapper}>
           <img src={card.image} alt={card.title} />
         </div>
       </Link>
+
       <div className={styles.cardProductInfo}>
         <Link to={`/product/${card.id}`}>
           <div className={styles.cardInStock}>
@@ -56,11 +69,13 @@ const CardProduct = ({ card }: CardProductProps) => {
             <Price price={card.price} />
           </div>
         </Link>
-        <Button onClick={() => dispatch(addItem(card))} icon={<ShoppingCart />}>
+
+        <Button onClick={handleAddToCart} icon={<ShoppingCart />}>
           Add to cart
         </Button>
       </div>
     </div>
   );
 };
+
 export { CardProduct };

@@ -1,0 +1,17 @@
+.FavoritesWrapper {
+  width: 100%;
+  max-width: 1038px;
+}
+.EmptyFavorites {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.EmptyFavorites p {
+  padding-top: 8px;
+  color: var(--color-gray-600);
+  text-align: center;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 38px;
+}

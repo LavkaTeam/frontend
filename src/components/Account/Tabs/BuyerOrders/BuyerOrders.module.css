@@ -1,3 +1,8 @@
+.BuyerOrders {
+  width: 100%;
+  max-width: 1038px;
+}
+
 .title {
   color: var(--color-gray-800);
   font-size: 36px;
@@ -12,7 +17,7 @@
   font-size: 18px;
   font-weight: 600;
   line-height: 28px;
-  margin-bottom: 40px;
+  margin-bottom: 14px;
 }
 
 .button {

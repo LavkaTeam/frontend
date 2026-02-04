@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { InputField } from '@/components/Form';
 import { EditPasswordIcon } from '@/components/ui/icons/EditPasswordIcon';
-import ChangePassword from '../ChangePassword/ChangePassword';
+import { ChangePassword } from '@/components/ChangePassword/ChangePassword';
 import { updateUser } from '@/api/user';
 import { useToast } from '@/hooks/useToast';
-import Toast from '../Toast/Toast';
+import { Toast } from '@/components/ui/Toast';
 
 const BuyerProfile = () => {
   const { data: user, error } = useUser();
@@ -123,7 +123,7 @@ const BuyerProfile = () => {
               placeholder='Email'
             />
             <div className={styles.passwordBlock}>
-              <InputField id='text' type='password' value='••••••••' readOnly />
+              <InputField id='text' type='text' value='••••••••' readOnly />
               <div
                 className={styles.editPassword}
                 onClick={() => setIsPasswordModalOpen(true)}

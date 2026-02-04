@@ -1,0 +1,1 @@
+export { EmptyFavoritesIcon } from './EmptyFavoritesIcon';

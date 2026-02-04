@@ -6,7 +6,7 @@
 
 .sideBar {
   padding-right: 24px;
-  border-right: 1px solid var(--color-grey);
+  border-right: 1px solid var(--color-gray);
 }
 
 .userInfo {

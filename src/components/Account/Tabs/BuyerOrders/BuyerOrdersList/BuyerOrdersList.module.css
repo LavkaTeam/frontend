@@ -1,0 +1,125 @@
+.ordersList {
+  width: 100%;
+  max-width: 1038px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 1038px;
+  border-collapse: separate;
+  border-spacing: 0 16px;
+}
+
+.headerRow th {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-gray);
+  border: none;
+}
+
+.row {
+  height: 58px;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.row td {
+  border-top: 1px solid var(--color-gray-400);
+  border-bottom: 1px solid var(--color-gray-400);
+  padding: 0 10px;
+  vertical-align: middle;
+  text-align: center;
+  color: var(--color-brand-wood-bark);
+  font-size: 16px;
+}
+
+.row td:first-child {
+  border-left: 1px solid var(--color-gray-400);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.row td:last-child {
+  border-right: 1px solid var(--color-gray-400);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.cellWithBorder {
+  position: relative;
+}
+
+.cellWithBorder::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 15px;
+  bottom: 15px;
+  width: 1px;
+  background-color: var(--color-gray-300);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 122px;
+  padding: 4px 0;
+  color: var(--color-primary-white);
+  font-size: 14px;
+  border-radius: 8px;
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+.status.new {
+  background-color: var(--color-gray);
+}
+
+.status.pending {
+  background-color: var(--color-gray);
+}
+
+.status.shipped {
+  background-color: var(--color-brand-orange);
+}
+
+.status.delivered {
+  background-color: var(--color-green);
+}
+
+.status.cancelled {
+  background-color: var(--color-brand-burgundy);
+}
+
+.detailsButton {
+  background: none;
+  border: none;
+  color: var(--color-brand-wood-bark);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.detailsButton:hover {
+  text-decoration: underline;
+  color: var(--color-gray-900);
+}

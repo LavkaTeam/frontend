@@ -31,7 +31,7 @@ interface UpdateUserData {
 
 const updateUser = (
   id: string,
-  userData: UpdateUserData
+  userData: UpdateUserData,
 ): Promise<UserResponse> => {
   const token = localStorage.getItem('token');
   if (!token) {
