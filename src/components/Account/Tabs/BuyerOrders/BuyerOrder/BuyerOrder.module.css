@@ -1,0 +1,241 @@
+.container {
+  width: 100%;
+  max-width: 1038px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 40px;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-gray);
+  transition: color 0.2s ease;
+}
+
+.backButton:hover {
+  color: var(--color-gray-800);
+}
+
+.backIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin: 0;
+  letter-spacing: -0.7px;
+}
+
+.subTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin: 0;
+}
+
+.reorderButton {
+  width: 100%;
+  max-width: 180px;
+  background-color: var(--color-brand-burgundy);
+  color: var(--color-primary-white);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(10, 12, 18, 0.05);
+  transition: background-color 0.2s;
+}
+
+.reorderButton:hover {
+  background-color: var(--color-brand-dark-burgundy);
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.infoBox {
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-300);
+  padding: 14px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.infoGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+}
+
+.labelDark {
+  color: var(--color-brand-wood-bark);
+  font-weight: 400;
+}
+
+.valueGray {
+  color: var(--color-gray);
+  font-weight: 400;
+}
+
+.labelGray {
+  font-size: 20px;
+  color: var(--color-gray);
+  font-weight: 400;
+}
+
+.valueDark {
+  font-size: 20px;
+  color: var(--color-brand-wood-bark);
+  font-weight: 400;
+}
+
+.goodsSection {
+  margin-top: 16px;
+}
+
+.goodsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  margin-bottom: 12px;
+}
+
+.goodsCount {
+  font-size: 20px;
+  color: var(--color-gray);
+}
+
+/* --- ОНОВЛЕНІ СТИЛІ ДЛЯ ЗАГОЛОВКІВ КОЛОНОК --- */
+.goodsHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* Відстань між колонками */
+  margin-right: 20px; /* Трохи відступу справа, щоб вирівняти з контентом */
+}
+
+.headerAmount {
+  width: 80px; /* Фіксована ширина */
+  text-align: center; /* Центруємо текст заголовка */
+  font-size: 20px;
+  color: var(--color-gray);
+}
+
+.headerPrice {
+  width: 80px; /* Фіксована ширина */
+  text-align: right; /* Притискаємо текст вправо */
+  font-size: 20px;
+  color: var(--color-gray);
+}
+/* ------------------------------------------- */
+
+.goodsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.itemRow {
+  background: var(--color-primary-white);
+  padding: 8px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.itemRow:hover {
+  cursor: pointer;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: var(--color-gray-200);
+}
+
+.itemLeft {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+
+.itemImage {
+  width: 100px;
+  height: 111px;
+  object-fit: contain;
+  background-color: var(--color-primary-white);
+}
+
+.placeholderImg {
+  width: 100px;
+  height: 111px;
+  background-color: var(--color-gray-200);
+}
+
+.itemText {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-gray-800);
+  line-height: 1.4;
+}
+
+.itemRight {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-right: 20px;
+}
+
+.itemAmount {
+  font-size: 20px;
+  color: var(--color-gray-800);
+  width: 80px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.itemPrice {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-brand-burgundy);
+  width: 80px;
+  text-align: right;
+  display: block;
+}

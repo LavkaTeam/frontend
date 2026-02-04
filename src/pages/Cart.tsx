@@ -9,6 +9,7 @@ import { Space } from '@/components/ui/Space';
 import { EmptyCartIcon } from '@/components/ui/icons/EmptyCartIcon';
 
 import styles from './Cart.module.css';
+import { HeaderMenu } from '@/components/HeaderMenu';
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cart);
@@ -23,76 +24,83 @@ const Cart = () => {
   const total = subTotal + dph + shippingFree - discount;
 
   return (
-    <main className='container'>
-      <div className={styles.cart}>
-        {cartItems.length > 0 ? (
-          <>
-            <HeadingH3>Cart</HeadingH3>
-            <Space height='32px' />
-            <div className={styles.cartLayout}>
-              <section>
-                <SubHeading>{cartItems.length} Goods</SubHeading>
-                {cartItems.map((item) => (
-                  <CartProduct key={item.id} card={item} />
-                ))}
-              </section>
-              <aside className={styles.aside}>
-                <SubHeading>Total</SubHeading>
-                <div className={styles.totalPrice}>
-                  <div className={styles.totalInfo}>
-                    <p>Sub-Total:</p>
-                    <span className={styles.price}>${subTotal.toFixed(2)}</span>
-                  </div>
-                  <div className={styles.totalInfo}>
-                    <p>DPH 21%:</p>
-                    <span className={styles.price}>${dph.toFixed(2)}</span>
-                  </div>
-                  <div className={styles.totalInfo}>
-                    <p>Discount:</p>
-                    <span className={styles.price}>-${discount}</span>
-                  </div>
-                  <div className={styles.totalInfoWithBorder}>
-                    <span>
-                      Shipping free depending <br /> on the number of items:
-                    </span>
-                    <span className={styles.price}>$79</span>
-                  </div>
-                  <div className={styles.totalInfo}>
-                    <p>Total:</p>
-                    <span className={styles.greenPrice}>
-                      ${total.toFixed(2)}
-                    </span>
-                  </div>
-                  <div className={styles.checkoutButton}>
-                    <Button icon={<CartIcon />}>Checkout</Button>
-                  </div>
-                  <Link to='/products'>
-                    <Button variant='secondary'>Continue Shopping</Button>
-                  </Link>
-                </div>
-              </aside>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className={styles.emptyCartHeading}>
+    <>
+      <HeaderMenu />
+      <main className='container'>
+        <div className={styles.cart}>
+          {cartItems.length > 0 ? (
+            <>
               <HeadingH3>Cart</HeadingH3>
-              <Link to='/products'>
-                <Button>Go to catalog</Button>
-              </Link>
-            </div>
-            <Space height='32px' />
-            <div className={styles.emptyCart}>
-              <EmptyCartIcon />
-              <Space height='16px' />
-              <p>
-                But that’s easy to fix — just add products from our assortment.
-              </p>
-            </div>
-          </>
-        )}
-      </div>
-    </main>
+              <Space height='32px' />
+              <div className={styles.cartLayout}>
+                <section>
+                  <SubHeading>{cartItems.length} Goods</SubHeading>
+                  {cartItems.map((item) => (
+                    <CartProduct key={item.id} card={item} />
+                  ))}
+                </section>
+                <aside className={styles.aside}>
+                  <SubHeading>Total</SubHeading>
+                  <div className={styles.totalPrice}>
+                    <div className={styles.totalInfo}>
+                      <p>Sub-Total:</p>
+                      <span className={styles.price}>
+                        ${subTotal.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className={styles.totalInfo}>
+                      <p>DPH 21%:</p>
+                      <span className={styles.price}>${dph.toFixed(2)}</span>
+                    </div>
+                    <div className={styles.totalInfo}>
+                      <p>Discount:</p>
+                      <span className={styles.price}>-${discount}</span>
+                    </div>
+                    <div className={styles.totalInfoWithBorder}>
+                      <span>
+                        Shipping free depending <br /> on the number of items:
+                      </span>
+                      <span className={styles.price}>$79</span>
+                    </div>
+                    <div className={styles.totalInfo}>
+                      <p>Total:</p>
+                      <span className={styles.greenPrice}>
+                        ${total.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className={styles.checkoutButton}>
+                      <Button icon={<CartIcon />}>Checkout</Button>
+                    </div>
+                    <Link to='/products'>
+                      <Button variant='secondary'>Continue Shopping</Button>
+                    </Link>
+                  </div>
+                </aside>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.emptyCartHeading}>
+                <HeadingH3>Cart</HeadingH3>
+                <Link to='/products'>
+                  <Button>Go to catalog</Button>
+                </Link>
+              </div>
+              <Space height='32px' />
+              <div className={styles.emptyCart}>
+                <EmptyCartIcon />
+                <h3 className={styles.emptyCartHeading}>Your Cart is Empty</h3>
+                <Space height='16px' />
+                <p>
+                  But that’s easy to fix — just add products from our
+                  assortment.
+                </p>
+              </div>
+            </>
+          )}
+        </div>
+      </main>
+    </>
   );
 };
 

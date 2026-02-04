@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { productData } from '@/data/productData';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
@@ -6,19 +7,34 @@ import { Price } from '@/components/Price';
 import { SubHeading } from '@/components/ui/SubHeading';
 import { Button } from '@/components/ui/Button';
 import { ShoppingCart } from '@/components/ShoppingCart';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addItem } from '@/store/cartSlice';
+import { addToHistory } from '@/store/viewingHistorySlice';
+import { toggleFavorite } from '@/store/favoritesSlice';
+
 import { CardSection } from '@/components/CardSection';
 import { CardProduct } from '@/components/CardProduct';
+
+import { OutlineHeart, SolidHeart } from '@/components/ui/icons/Heart';
 
 import styles from './Product.module.css';
 
 const Product = () => {
   const dispatch = useAppDispatch();
-
   const { productId } = useParams();
 
   const product = productData.find((item) => item.id === productId);
+
+  const isFavorite = useAppSelector((state: any) =>
+    productId ? state.favorites.includes(productId) : false,
+  );
+
+  // --- ЛОГІКА ІСТОРІЇ ПЕРЕГЛЯДІВ ---
+  useEffect(() => {
+    if (productId && product) {
+      dispatch(addToHistory(productId));
+    }
+  }, [productId, product, dispatch]);
 
   if (!product) {
     return <div>Product not found</div>;
@@ -27,7 +43,14 @@ const Product = () => {
   return (
     <main className='container'>
       <div className={styles.productPage}>
-        <div className={styles.imageBlock}>product images</div>
+        <div className={styles.imageBlock}>
+          {/* Тимчасово виводимо картинку, якщо вона є в даних */}
+          <img
+            src={product.image}
+            alt={product.title}
+            style={{ maxWidth: '100%' }}
+          />
+        </div>
         <div>
           <HeadingH3>
             {product.title} {product.capacity} L {product.brand}
@@ -92,6 +115,7 @@ const Product = () => {
             </SubHeading>
           </div>
           <Space height='40px' />
+
           <div className={styles.actions}>
             <div className={styles.actionButton}>
               <Button
@@ -101,10 +125,24 @@ const Product = () => {
                 Add to cart
               </Button>
             </div>
-            <div className={styles.favoritesBlock}>
-              <span className={styles.favorites}>Favorites</span>
+
+            <div
+              className={styles.favoritesBlock}
+              onClick={() => dispatch(toggleFavorite(product.id))}
+              style={{
+                cursor: 'pointer',
+                display: 'flex',
+                gap: '8px',
+                alignItems: 'center',
+              }}
+            >
+              {isFavorite ? <SolidHeart /> : <OutlineHeart />}
+              <span className={styles.favorites}>
+                {isFavorite ? 'In Favorites' : 'Add to Favorites'}
+              </span>
             </div>
           </div>
+
           <Space height='32px' />
           <span className={styles.border}></span>
           <Space height='32px' />

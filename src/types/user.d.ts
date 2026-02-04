@@ -1,3 +1,5 @@
+export type UserRole = 'BUYER' | 'SELLER';
+
 export interface UserResponse {
   id: string;
   name: string;
@@ -12,6 +14,6 @@ export interface UserResponse {
   iban: string;
   bic: string;
   telephoneNumber: string;
-  role: 'BUYER' | 'SELLER';
+  role: UserRole;
   products: [];
 }

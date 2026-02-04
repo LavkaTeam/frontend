@@ -1,54 +1,65 @@
-import { useState /* useEffect */ } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './BuyerSubscriptions.module.css';
 import { Button } from '@/components/ui/Button/Button';
 import { useUser } from '@/hooks/useUser';
 import { useToast } from '@/hooks/useToast';
-import Toast from '../Toast/Toast';
+import { Toast } from '@/components/ui/Toast';
 import { SelectSubscription } from './SelectSubscription/SelectSubscription';
 import { subscriptionsData } from '@/data/subscriptionsData';
-// import { updateUser } from '@/api/user';
 
 const BuyerSubscriptions = () => {
   const { data: user, error } = useUser();
   const { toasts, showToast } = useToast();
-  // const [selectedSubscriptions, setSelectedSubscriptions] = useState<string[]>(
-  //   []
-  // );
+  const [selectedSubscriptions, setSelectedSubscriptions] = useState<string[]>(
+    [],
+  );
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (user && user.subscriptions) {
-  //     setSelectedSubscriptions(user.subscriptions);
-  //   }
-  // }, [user]);
+  // 1. Завантажуємо налаштування з localStorage при вході
+  useEffect(() => {
+    if (user) {
+      // Використовуємо унікальний ключ для кожного юзера, щоб налаштування не плутались
+      const storageKey = `user_subscriptions_${user.id}`;
+      const savedSubs = localStorage.getItem(storageKey);
 
-  // const handleSubscriptionToggle = (subscriptionId: string) => {
-  //   setSelectedSubscriptions((prev) => {
-  //     if (prev.includes(subscriptionId)) {
-  //       return prev.filter((id) => id !== subscriptionId);
-  //     } else {
-  //       return [...prev, subscriptionId];
-  //     }
-  //   });
-  // };
+      if (savedSubs) {
+        setSelectedSubscriptions(JSON.parse(savedSubs));
+      } else {
+        setSelectedSubscriptions([]);
+      }
+    }
+  }, [user]);
+
+  const handleSubscriptionToggle = (subscriptionId: string) => {
+    setSelectedSubscriptions((prev) => {
+      if (prev.includes(subscriptionId)) {
+        return prev.filter((id) => id !== subscriptionId);
+      } else {
+        return [...prev, subscriptionId];
+      }
+    });
+  };
 
   const handleSave = async () => {
     if (!user) return;
 
     setIsLoading(true);
-    try {
-      // await updateUser(user.id, {
-      //   ...user,
-      //   subscriptions: selectedSubscriptions,
-      // });
-    } catch (err: any) {
-      console.error('Failed to update subscriptions:', err);
-      const errorMessage =
-        err.message || err.error || 'Failed to update subscriptions';
-      showToast(errorMessage, 'error');
-    } finally {
-      setIsLoading(false);
-    }
+
+    // 2. Імітуємо затримку мережі (щоб виглядало як реальний запит)
+    setTimeout(() => {
+      try {
+        const storageKey = `user_subscriptions_${user.id}`;
+        localStorage.setItem(storageKey, JSON.stringify(selectedSubscriptions));
+
+        // Показуємо успішний тост
+        showToast('Subscriptions updated successfully', 'success');
+      } catch (err) {
+        console.error('Failed to save locally:', err);
+        showToast('Failed to update subscriptions', 'error');
+      } finally {
+        setIsLoading(false);
+      }
+    }, 800); // 800мс затримки для реалістичності
   };
 
   if (error || !user) return null;
@@ -58,13 +69,12 @@ const BuyerSubscriptions = () => {
       <h3 className={styles.title}>Subscriptions / Newsletters</h3>
       <p className={styles.description}>Choose what you'd like to receive</p>
 
-      {/* без функціоналу */}
       {subscriptionsData.map((subscription) => (
         <SelectSubscription
           key={subscription.id}
           subscription={subscription}
-          isSelected={false} // поки false, оскільки функціонал відключений
-          onToggle={() => {}}
+          isSelected={selectedSubscriptions.includes(subscription.id)}
+          onToggle={() => handleSubscriptionToggle(subscription.id)}
         />
       ))}
 
@@ -74,14 +84,17 @@ const BuyerSubscriptions = () => {
         </Button>
       </div>
 
-      {toasts.map((toast) => (
-        <Toast
-          key={toast.id}
-          message={toast.message}
-          type={toast.type}
-          onClose={() => {}}
-        />
-      ))}
+      <div className={styles.toastContainer}>
+        {toasts &&
+          toasts.map((toast: any) => (
+            <Toast
+              key={toast.id}
+              message={toast.message}
+              type={toast.type}
+              onClose={() => {}}
+            />
+          ))}
+      </div>
     </div>
   );
 };

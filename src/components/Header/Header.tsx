@@ -13,8 +13,12 @@ import styles from './Header.module.css';
 
 const Header = () => {
   const isAuthenticated = Boolean(localStorage.getItem('token'));
+
   const cart = useAppSelector((state) => state.cart);
   const commonQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+
+  const favorites = useAppSelector((state: any) => state.favorites);
+  const favoritesCount = favorites.length;
 
   const { handleSubmit: handleLogOut } = useLogOutHandler();
 
@@ -39,7 +43,11 @@ const Header = () => {
                 </Link>
 
                 <Link to={'/favorites'}>
-                  <HeaderIcon icon={<OutlineHeart />} iconText='Wishlist' />
+                  <HeaderIcon
+                    icon={<OutlineHeart />}
+                    iconText='Wishlist'
+                    count={favoritesCount}
+                  />
                 </Link>
 
                 <Link to={'/cart'}>

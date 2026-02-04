@@ -8,6 +8,7 @@ import {
   changePasswordSchema,
   type ChangePasswordFormSchema,
 } from '@/schemas/changePasswordSchema';
+import { Toast } from '@/components/ui/Toast';
 
 interface ChangePasswordProps {
   isOpen: boolean;
@@ -16,6 +17,13 @@ interface ChangePasswordProps {
 
 const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
   const [isVisible, setIsVisible] = useState(false);
+
+  // Стан для тоста
+  const [toast, setToast] = useState<{
+    message: string;
+    type: 'success' | 'error';
+  } | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -30,15 +38,30 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
     if (isOpen) {
       requestAnimationFrame(() => setIsVisible(true));
       reset();
+      setToast(null);
     } else {
       setIsVisible(false);
     }
   }, [isOpen, reset]);
 
+  // 3 секунди -> закриваємо тост -> закриваємо модалку
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+        onClose();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast, onClose]);
+
   const onSubmit = (data: ChangePasswordFormSchema) => {
-    // Тут буде логіка зміни пароля
-    console.log('Changing password:', data);
-    onClose();
+    console.log('Attempted change:', data);
+
+    setToast({
+      message: 'This feature is temporarily unavailable',
+      type: 'error',
+    });
   };
 
   const handleTransitionEnd = () => {
@@ -87,9 +110,19 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
             <Button type='submit'>Change Password</Button>
           </div>
         </form>
+
+        {toast && (
+          <div className={styles.toastModal}>
+            <Toast
+              message={toast.message}
+              type={toast.type}
+              onClose={() => setToast(null)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default ChangePassword;
+export { ChangePassword };
