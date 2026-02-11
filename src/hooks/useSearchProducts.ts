@@ -3,7 +3,7 @@ import { searchProducts } from '@/api/Products';
 import type { SearchParams } from '@/types/api';
 
 export const useSearchProducts = (params: SearchParams) => {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['products-search', params],
     queryFn: () => searchProducts(params),
   });

@@ -69,7 +69,7 @@ const CardProduct = ({ card }: CardProductProps) => {
             )}
 
             <span className={styles.subHeading}>
-              {card.producer || 'N/A'} / {card.country || 'N/A'}
+              {card.producer || 'N/A'} / {/* card.country ||  */ 'N/A'}
               {/* COMPANY поки немає на бекенді*/}
             </span>
 

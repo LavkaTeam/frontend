@@ -162,7 +162,8 @@ const Product = () => {
                 Country:
               </SubHeading>
               <SubHeading size='medium' color='secondary'>
-                {product.country || 'N/A'}
+                {/* {product.country || */ 'N/A'}
+                {/* поля country поки що нема не бекенді*/}
               </SubHeading>
               <Space height='24px' />
               <SubHeading size='medium' color='primary'>
@@ -309,7 +310,7 @@ const Product = () => {
               </a>
             </div>
             <Link
-              to={`/sellerProducts/${product.seller.id}`}
+              to={`/sellerProducts/${product.seller.email}`} // product.seller.id  -  поки що нема id продавця на бекенді, тому юзаю email
               className={styles.sellerLinkWrapper}
             >
               <span className={styles.sellerLinkText}>

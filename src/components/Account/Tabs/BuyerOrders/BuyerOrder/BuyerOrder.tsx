@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { mockOrders } from '@/data/ordersData';
-import { productData } from '@/data/productData';
 import type { Order } from '@/types/order';
-import { addItem, updateItemQuantity } from '@/store/cartSlice';
 import styles from './BuyerOrder.module.css';
 
 interface BuyerOrderProps {
@@ -15,7 +12,6 @@ interface BuyerOrderProps {
 const BuyerOrder: React.FC<BuyerOrderProps> = ({ orderId, onBack }) => {
   const [order, setOrder] = useState<Order | null>(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const foundOrder = mockOrders.find((o) => o.orderId === orderId);
@@ -46,27 +42,9 @@ const BuyerOrder: React.FC<BuyerOrderProps> = ({ orderId, onBack }) => {
     navigate(`/product/${productId}`);
   };
 
-  // Логіка Reorder (Додавання в кошик)
+  // Логіка Reorder очищена (буде перероблена під API)
   const handleReorder = () => {
-    order.orderItems.forEach((item) => {
-      const productCard = productData.find((p) => p.id === item.productId);
-
-      if (productCard) {
-        dispatch(addItem(productCard));
-
-        if (item.productQuantity > 1) {
-          dispatch(
-            updateItemQuantity({
-              id: item.productId,
-              quantity: item.productQuantity,
-            }),
-          );
-        }
-      }
-    });
-
-    // Після додавання переходимо в кошик
-    navigate('/cart');
+    console.log('Reorder logic to be implemented');
   };
 
   return (

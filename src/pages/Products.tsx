@@ -56,8 +56,8 @@ const Products = () => {
     maxPrice: priceTo ? Number(priceTo) : undefined,
     producer: country,
 
-    volume: capacities.length > 0 ? capacities : undefined,
-    alcohol: strengths.length > 0 ? strengths : undefined,
+    // volume: capacities.length > 0 ? capacities : undefined,
+    // alcohol: strengths.length > 0 ? strengths : undefined,
 
     page: currentPage,
     size: 12,
