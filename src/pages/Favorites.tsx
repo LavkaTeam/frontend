@@ -1,23 +1,22 @@
-import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { CardSection } from '@/components/CardSection/CardSection';
 import { CardProduct } from '@/components/CardProduct/CardProduct';
-import { productData } from '@/data/productData';
-import { Space } from '@/components/ui/Space';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch } from '@/store/hooks';
 import { EmptyFavoritesIcon } from '@/components/ui/icons/EmptyFavoritesIcon';
 import { Button } from '@/components/ui/Button';
-
-import styles from './Favorites.module.css';
+import { useFavoriteProducts } from '@/hooks/useFavoriteProducts';
+import { Loader } from '@/components/ui/Loader';
+import { TrashIcon } from '@/components/ui/icons/TrashIcon';
+import { clearFavorites } from '@/store/favoritesSlice';
+import { Space } from '@/components/ui/Space';
 import { HeaderMenu } from '@/components/HeaderMenu';
 
-const Favorites = () => {
-  const favoriteIds = useAppSelector((state: any) => state.favorites);
+import styles from './Favorites.module.css';
 
-  const favoriteProducts = useMemo(() => {
-    return productData.filter((product) => favoriteIds.includes(product.id));
-  }, [favoriteIds]);
+const Favorites = () => {
+  const dispatch = useAppDispatch();
+  const { products: favoriteProducts, isLoading } = useFavoriteProducts();
 
   return (
     <>
@@ -26,12 +25,33 @@ const Favorites = () => {
         <div className={styles.favoritesWrapper}>
           <div className={styles.favoritesHeading}>
             <HeadingH3>Wishlist</HeadingH3>
-            <Link to='/products'>
-              <Button>Browse catalog</Button>
-            </Link>
+
+            {!isLoading && favoriteProducts.length > 0 ? (
+              <button
+                onClick={() => dispatch(clearFavorites())}
+                className={styles.clearButton}
+                title='Clear wishlist'
+              >
+                <TrashIcon
+                  width='44'
+                  height='44'
+                  color='var(--color-brand-dark-burgundy)'
+                />
+              </button>
+            ) : (
+              <Link to='/products'>
+                <Button>Browse catalog</Button>
+              </Link>
+            )}
           </div>
+
           <Space height='32px' />
-          {favoriteProducts.length > 0 ? (
+
+          {isLoading ? (
+            <div className={styles.loaderContainer}>
+              <Loader variant='section' />
+            </div>
+          ) : favoriteProducts.length > 0 ? (
             <CardSection
               cards={favoriteProducts}
               CardComponent={CardProduct}

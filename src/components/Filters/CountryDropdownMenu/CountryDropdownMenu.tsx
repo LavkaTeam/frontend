@@ -8,16 +8,23 @@ interface Country {
   iconId: string;
 }
 
-const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({
+interface CountryDropdownProps {
+  countries: Country[];
+  selectedCountry: string;
+  onSelect: (value: string) => void;
+}
+
+const CountryDropdownMenu: React.FC<CountryDropdownProps> = ({
   countries,
+  selectedCountry,
+  onSelect,
 }) => {
   const { isOpen, toggle, close } = useFilterDropdown();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [selectedCountry, setSelectedCountry] = useState('United States');
   const [search, setSearch] = useState('');
 
   const handleSelect = (value: string) => {
-    setSelectedCountry(value);
+    onSelect(value);
     close();
     setSearch('');
   };
@@ -37,7 +44,7 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({
   }, [close]);
 
   const filteredCountries = countries.filter((country) =>
-    country.value.toLowerCase().includes(search.toLowerCase())
+    country.value.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -48,7 +55,9 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({
       >
         {isOpen ? (
           <div className={styles.searchContainer}>
-            <SearchIcon />
+            <div className={styles.searchIconWrapper}>
+              <SearchIcon />
+            </div>
             <input
               type='text'
               placeholder='Search'
@@ -56,20 +65,34 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({
               onChange={(e) => setSearch(e.target.value)}
               className={styles.searchInput}
               autoFocus
+              onClick={(e) => e.stopPropagation()}
             />
           </div>
         ) : (
           <div className={styles.buttonContent}>
-            {selectedCountry && (
-              <svg className={styles.flagIcon}>
-                <use
-                  href={`/icons/flags.svg#${
-                    countries.find((c) => c.value === selectedCountry)?.iconId
-                  }`}
-                />
-              </svg>
+            {!selectedCountry && (
+              <div className={styles.inactiveSearchIcon}>
+                <SearchIcon />
+              </div>
             )}
-            <span>{selectedCountry}</span>
+
+            <div className={styles.valueWrapper}>
+              {selectedCountry ? (
+                <>
+                  <svg className={styles.flagIcon}>
+                    <use
+                      href={`/icons/flags.svg#${
+                        countries.find((c) => c.value === selectedCountry)
+                          ?.iconId
+                      }`}
+                    />
+                  </svg>
+                  <span className={styles.selectedText}>{selectedCountry}</span>
+                </>
+              ) : (
+                <span className={styles.placeholder}>Select country</span>
+              )}
+            </div>
           </div>
         )}
         <img
@@ -78,11 +101,29 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({
           className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}
         />
       </button>
+
       <div
         className={`${styles.dropdownMenu} ${
           isOpen ? styles.open : styles.closed
         }`}
       >
+        {!search && (
+          <div
+            className={`${styles.option} ${!selectedCountry ? styles.selected : ''}`}
+            onClick={() => handleSelect('')}
+          >
+            <SearchIcon />
+            <span>All Countries</span>
+            {!selectedCountry && (
+              <img
+                src='/icons/checkTick.svg'
+                alt='Checkmark'
+                className={styles.checkmark}
+              />
+            )}
+          </div>
+        )}
+
         {filteredCountries.map((country) => (
           <div
             key={country.value}
@@ -104,6 +145,15 @@ const CountryDropdownMenu: React.FC<{ countries: Country[] }> = ({
             )}
           </div>
         ))}
+
+        {filteredCountries.length === 0 && search && (
+          <div
+            className={styles.option}
+            style={{ cursor: 'default', color: '#9CA3AF' }}
+          >
+            No countries found
+          </div>
+        )}
       </div>
     </div>
   );

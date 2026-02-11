@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { OutlineHeart, SolidHeart } from '@/components/ui/icons/Heart';
 import { ShoppingCart } from '@/components/ShoppingCart';
-import type { ProductCard } from '@/types/productCard';
+import type { Product } from '@/types/productCard';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addItem } from '@/store/cartSlice';
 import { toggleFavorite } from '@/store/favoritesSlice';
@@ -10,19 +10,21 @@ import { Price } from '../Price';
 import styles from './CardProduct.module.css';
 
 type CardProductProps = {
-  card: ProductCard;
+  card: Product;
 };
 
 const CardProduct = ({ card }: CardProductProps) => {
   const dispatch = useAppDispatch();
 
-  // Перевіряємо в Redux, чи є цей ID в списку favorites
   const isFavorite = useAppSelector((state: any) =>
     state.favorites.includes(card.id),
   );
 
+  const imageUrl =
+    card.mainImage?.url || 'https://placehold.co/400?text=No+Image';
+
   const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Запобігаємо переходу за посиланням картки
+    e.preventDefault();
     e.stopPropagation();
     dispatch(toggleFavorite(card.id));
   };
@@ -30,6 +32,7 @@ const CardProduct = ({ card }: CardProductProps) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
     dispatch(addItem(card));
   };
 
@@ -41,36 +44,47 @@ const CardProduct = ({ card }: CardProductProps) => {
 
       <Link to={`/product/${card.id}`}>
         <div className={styles.cardImageWrapper}>
-          <img src={card.image} alt={card.title} />
+          <img src={imageUrl} alt={card.name} />
         </div>
       </Link>
 
       <div className={styles.cardProductInfo}>
         <Link to={`/product/${card.id}`}>
           <div className={styles.cardInStock}>
-            {card.inStock ? (
+            {card.quantity > 0 ? (
               <span className={styles.inStock}>In Stock</span>
             ) : (
               <span className={styles.soldOut}>Sold Out</span>
             )}
           </div>
           <div className={styles.cardProductDetails}>
-            <span className={styles.heading}>{card.title}</span>
-            {card.capacity && (
+            <span className={styles.heading}>{card.name}</span>
+
+            {card.volume && (
               <span className={styles.capacity}>
-                {card.capacity} L / {card.abv} ABV
+                {card.volume || 'N/A'} L /{' '}
+                {card.alcohol || card.alcohol >= 0 ? `${card.alcohol}%` : 'N/A'}{' '}
+                ABV
               </span>
             )}
+
             <span className={styles.subHeading}>
-              {card.country} / {card.brand}
+              {card.producer || 'N/A'} / {card.country || 'N/A'}
+              {/* COMPANY поки немає на бекенді*/}
             </span>
-            <span className={styles.sku}>{card.sku}</span>
+
+            <span className={styles.sku}>SKU: {card.id.slice(0, 8)}</span>
+
             <span className={styles.divider}></span>
             <Price price={card.price} />
           </div>
         </Link>
 
-        <Button onClick={handleAddToCart} icon={<ShoppingCart />}>
+        <Button
+          disabled={card.quantity <= 0}
+          onClick={handleAddToCart}
+          icon={<ShoppingCart />}
+        >
           Add to cart
         </Button>
       </div>

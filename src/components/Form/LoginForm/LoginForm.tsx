@@ -10,7 +10,7 @@ import { loginSchema, type LoginFormSchema } from '@/schemas/loginSchema';
 interface LoginFormProps {
   onSubmit: (
     data: LoginFormSchema,
-    setError: ReturnType<typeof useForm<LoginFormSchema>>['setError']
+    setError: ReturnType<typeof useForm<LoginFormSchema>>['setError'],
   ) => void;
   isLoading?: boolean;
 }

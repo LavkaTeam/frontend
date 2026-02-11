@@ -23,11 +23,11 @@ const SubcategoryList = ({
       {selectedCategory.subcategories.map((subcategory) => (
         <Link
           key={subcategory.id}
-          to={`/products/${encodeURIComponent(selectedCategory.name.toLowerCase().replace(/\s/g, '-'))}/${encodeURIComponent(subcategory.name.toLowerCase().replace(/\s/g, '-'))}`} // More SEO-friendly URL
+          to={`/products?category=${encodeURIComponent(selectedCategory.id)}&subcategory=${encodeURIComponent(subcategory.id)}`}
           className={styles.subcategoryItem}
           onClick={closeDropdown}
         >
-          {subcategory.name}
+          {subcategory.label}
         </Link>
       ))}
     </div>

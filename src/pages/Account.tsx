@@ -1,4 +1,3 @@
-import { HeaderMenu } from '@/components/HeaderMenu';
 import { AccountPage } from '@/components/Account/AccountPage';
 import { Loader } from '@/components/ui/Loader';
 import { useUser } from '@/hooks/useUser';
@@ -11,7 +10,6 @@ const Account = () => {
 
   return (
     <div className='container'>
-      <HeaderMenu />
       <AccountPage />
     </div>
   );

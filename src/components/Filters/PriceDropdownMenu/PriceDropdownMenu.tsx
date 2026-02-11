@@ -4,7 +4,7 @@ import styles from './PriceDropdownMenu.module.css';
 
 interface PriceDropdownMenuProps {
   label: string;
-  options: string[];
+  options: number[];
   selectedValue: string;
   onSelect: (value: string) => void;
 }
@@ -18,14 +18,21 @@ const PriceDropdownMenu: React.FC<PriceDropdownMenuProps> = ({
   const { isOpen, toggle, close } = useFilterDropdown();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleSelect = (option: string) => {
-    onSelect(option);
+  const handleSelect = (option: number | string) => {
+    const newVal = String(option);
+
+    const finalValue = newVal === selectedValue ? '' : newVal;
+
+    onSelect(finalValue);
     close();
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         close();
       }
     };
@@ -41,23 +48,45 @@ const PriceDropdownMenu: React.FC<PriceDropdownMenuProps> = ({
         onClick={toggle}
         className={`${styles.button} ${isOpen ? styles.buttonOpen : ''}`}
       >
-        {selectedValue || label}
+        {/* Якщо вибрано - показуємо з $, інакше Label (From/To) */}
+        {selectedValue ? `$${selectedValue}` : label}
         <img
-          src="/icons/dropdown-arrow.svg"
-          alt="Dropdown arrow"
+          src='/icons/dropdown-arrow.svg'
+          alt='Dropdown arrow'
           className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}
         />
       </button>
-      <div className={`${styles.dropdownMenu} ${isOpen ? styles.open : styles.closed}`}>
+
+      <div
+        className={`${styles.dropdownMenu} ${isOpen ? styles.open : styles.closed}`}
+      >
+        <div
+          className={`${styles.option} ${!selectedValue ? styles.selected : ''}`}
+          onClick={() => handleSelect('')}
+        >
+          {label}
+          {!selectedValue && (
+            <img
+              src='/icons/checkTick.svg'
+              alt='Checkmark'
+              className={styles.checkmark}
+            />
+          )}
+        </div>
+
         {options.map((option) => (
           <div
             key={option}
-            className={styles.option}
+            className={`${styles.option} ${selectedValue === String(option) ? styles.selected : ''}`}
             onClick={() => handleSelect(option)}
           >
-            {option}
-            {selectedValue === option && (
-              <img src="/icons/checkTick.svg" alt="Checkmark" className={styles.checkmark} />
+            ${option}
+            {selectedValue === String(option) && (
+              <img
+                src='/icons/checkTick.svg'
+                alt='Checkmark'
+                className={styles.checkmark}
+              />
             )}
           </div>
         ))}

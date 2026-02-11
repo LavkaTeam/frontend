@@ -1,8 +1,21 @@
 import styles from './Loader.module.css';
 
-const Loader = () => {
+interface LoaderProps {
+  /**
+   * 'fullscreen' - перекриває весь екран (position: fixed)
+   * 'section' - перекриває батьківський контейнер (position: absolute)
+   * @default 'section'
+   */
+  variant?: 'fullscreen' | 'section';
+  className?: string;
+}
+
+const Loader = ({ variant = 'section', className = '' }: LoaderProps) => {
+  const positionClass =
+    variant === 'fullscreen' ? styles.fullScreen : styles.section;
+
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${positionClass} ${className}`}>
       <div className={styles.loaderContainer}>
         <div className={styles.logo}>
           <svg

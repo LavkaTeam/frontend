@@ -1,9 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { Product } from '@/types/productCard';
 
-// Тип стану - просто масив рядків (ID товарів)
-type FavoritesState = string[];
+type FavoritesState = Product['id'][];
 
-// Функція для завантаження з localStorage
 const loadFromLocalStorage = (): FavoritesState => {
   try {
     const serializedState = localStorage.getItem('favorites');
@@ -23,7 +22,7 @@ const favoritesSlice = createSlice({
   name: 'favorites',
   initialState,
   reducers: {
-    toggleFavorite: (state, action: PayloadAction<string>) => {
+    toggleFavorite: (state, action: PayloadAction<Product['id']>) => {
       const productId = action.payload;
       const index = state.indexOf(productId);
 
@@ -33,11 +32,14 @@ const favoritesSlice = createSlice({
         state.push(productId);
       }
 
-      // Зберігаємо в localStorage при кожній зміні
+      localStorage.setItem('favorites', JSON.stringify(state));
+    },
+    clearFavorites: (state) => {
+      state.splice(0, state.length);
       localStorage.setItem('favorites', JSON.stringify(state));
     },
   },
 });
 
-export const { toggleFavorite } = favoritesSlice.actions;
+export const { toggleFavorite, clearFavorites } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

@@ -1,28 +1,6 @@
-export const priceFromOptions = [
-  '$5',
-  '$10',
-  '$20',
-  '$50',
-  '$75',
-  '$100',
-  '$150',
-  '$175',
-  '$200',
-  '$250',
-];
+export const priceFromOptions = [5, 10, 20, 50, 75, 100, 150, 175, 200, 250];
 
-export const priceToOptions = [
-  '$10',
-  '$20',
-  '$50',
-  '$75',
-  '$100',
-  '$150',
-  '$175',
-  '$200',
-  '$250',
-  '$300',
-];
+export const priceToOptions = [10, 20, 50, 75, 100, 150, 175, 200, 250, 300];
 
 export const countries = [
   { value: 'United States', iconId: 'flag-united-states' },
@@ -43,18 +21,22 @@ export const countries = [
 ];
 
 export const capacityOptions = [
-  '0.02-0.02 l',
-  '0.25-0.375 l',
-  '0.5 l',
-  '0.7-0.75 l',
-  '1 l',
-  '1.5-2 l',
-  '2 l',
+  '0.02-0.2',
+  '0.25-0.375',
+  '0.5',
+  '0.75',
+  '1',
+  '1.5-2',
+  '2',
 ];
 
 export const strengthOptions = [
-  { Title: 'Up to 8%', subTitle: 'Light - beer, cider' },
-  { Title: '8-20%', subTitle: 'Medium - wine, liqueurs' },
-  { Title: '20-40%', subTitle: 'Strong - vodka, rum, gin' },
-  { Title: 'Over 40%', subTitle: 'Extra strong - absinthe, spirits' },
+  { value: '0-8', label: 'Up to 8%', subTitle: 'Light - beer, cider' },
+  { value: '8-20', label: '8-20%', subTitle: 'Medium - wine, liqueurs' },
+  { value: '20-40', label: '20-40%', subTitle: 'Strong - vodka, rum, gin' },
+  {
+    value: '40+',
+    label: 'Over 40%',
+    subTitle: 'Extra strong - absinthe, spirits',
+  },
 ];

@@ -1,0 +1,6 @@
+.divider {
+  width: 100%;
+  background-color: var(--color-gray-400, #e4e7ec);
+  border: none;
+  display: block;
+}

@@ -15,7 +15,6 @@ const BuyerSubscriptions = () => {
   );
   const [isLoading, setIsLoading] = useState(false);
 
-  // 1. Завантажуємо налаштування з localStorage при вході
   useEffect(() => {
     if (user) {
       // Використовуємо унікальний ключ для кожного юзера, щоб налаштування не плутались
@@ -45,13 +44,12 @@ const BuyerSubscriptions = () => {
 
     setIsLoading(true);
 
-    // 2. Імітуємо затримку мережі (щоб виглядало як реальний запит)
+    // Імітуємо затримку мережі (щоб виглядало як реальний запит)
     setTimeout(() => {
       try {
         const storageKey = `user_subscriptions_${user.id}`;
         localStorage.setItem(storageKey, JSON.stringify(selectedSubscriptions));
 
-        // Показуємо успішний тост
         showToast('Subscriptions updated successfully', 'success');
       } catch (err) {
         console.error('Failed to save locally:', err);

@@ -1,11 +1,47 @@
 .favoritesWrapper {
   margin-top: 32px;
+  min-height: calc(100vh - 400px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: 80px;
 }
 
 .favoritesHeading {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
+}
+
+.clearButton:hover {
+  opacity: 0.7;
+}
+
+.clearButton:active {
+  transform: scale(0.95);
+}
+
+.clearButton svg path {
+  stroke: var(--color-brand-burgundy, #af261f);
+}
+
+.loaderContainer {
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
 }
 
 .emptyFavorites {
