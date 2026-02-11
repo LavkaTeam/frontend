@@ -31,3 +31,10 @@
   color: var(--color-gray-600);
   font-size: 12px;
 }
+
+.contentArea {
+  position: relative;
+  flex-grow: 1;
+  width: 100%;
+  min-height: 400px;
+}

@@ -1,6 +1,8 @@
-import { ArrowButton } from '../ui/icons/ArrowButton';
 import { useSlider } from '@hooks/useSlider';
+
+import { ArrowButton } from '../ui/icons/ArrowButton';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
+import { NoProductsFound } from '../NoProductsFound';
 
 import styles from './CardSection.module.css';
 
@@ -56,7 +58,7 @@ const CardSection = <T extends WithId>({
               ))}
             </div>
           ) : (
-            <p>No cards available</p>
+            <NoProductsFound />
           )}
 
           {withSlider && (

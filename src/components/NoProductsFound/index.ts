@@ -1,0 +1,1 @@
+export { NoProductsFound } from './NoProductsFound';

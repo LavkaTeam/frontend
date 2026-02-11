@@ -102,3 +102,29 @@
   top: 100px;
   align-self: flex-start;
 }
+
+.headerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.clearButton:hover {
+  opacity: 0.7;
+}
+
+.clearButton:hover svg path {
+  stroke: var(--color-brand-burgundy, #af261f);
+}

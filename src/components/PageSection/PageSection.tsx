@@ -23,7 +23,6 @@ export const PageSection = ({
         </>
       )}
       {children}
-      <Space height='48px' />
     </section>
   );
 };

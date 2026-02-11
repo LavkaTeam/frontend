@@ -15,10 +15,7 @@ const Header = () => {
   const isAuthenticated = Boolean(localStorage.getItem('token'));
 
   const cart = useAppSelector((state) => state.cart);
-  const commonQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-
   const favorites = useAppSelector((state: any) => state.favorites);
-  const favoritesCount = favorites.length;
 
   const { handleSubmit: handleLogOut } = useLogOutHandler();
 
@@ -46,7 +43,7 @@ const Header = () => {
                   <HeaderIcon
                     icon={<OutlineHeart />}
                     iconText='Wishlist'
-                    count={favoritesCount}
+                    count={favorites.length}
                   />
                 </Link>
 
@@ -54,7 +51,7 @@ const Header = () => {
                   <HeaderIcon
                     icon={<ShoppingCart currentColor='#252B37' />}
                     iconText='Cart'
-                    count={commonQuantity}
+                    count={cart.length}
                   />
                 </Link>
               </div>

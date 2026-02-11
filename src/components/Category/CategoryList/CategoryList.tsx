@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+
 import { categories } from '@/data/categoriesData';
 import type { Category } from '@/types/categoryTypes';
 
@@ -11,6 +12,12 @@ interface CategoryListProps {
   handleCategoryClick: (category: Category) => void;
 }
 
+const ALL_CATEGORY: Category = {
+  id: 'ALL',
+  label: 'All products',
+  subcategories: [],
+};
+
 const CategoryList = ({
   categoryRefs,
   handleCategoryHover,
@@ -21,9 +28,7 @@ const CategoryList = ({
       {categories.map((category, index) => (
         <Link
           key={category.id}
-          to={`/products/${encodeURIComponent(
-            category.name.toLowerCase().replace(/\s/g, '-'),
-          )}`}
+          to={`/products?category=${category.id}`}
           onClick={() => handleCategoryClick(category)}
         >
           <div
@@ -33,7 +38,7 @@ const CategoryList = ({
             className={styles.categoryItem}
             onMouseEnter={() => handleCategoryHover(category)}
           >
-            {category.name}
+            {category.label}
             {category.subcategories && category.subcategories.length > 0 && (
               <img
                 src='/icons/dropdown-arrow.svg'
@@ -44,6 +49,16 @@ const CategoryList = ({
           </div>
         </Link>
       ))}
+      <div className={styles.divider} />
+
+      <Link to={`/products`} onClick={() => handleCategoryClick(ALL_CATEGORY)}>
+        <div
+          className={`${styles.categoryItem} ${styles.allProductsItem}`}
+          onMouseEnter={() => handleCategoryHover(ALL_CATEGORY)}
+        >
+          All Products
+        </div>
+      </Link>
     </div>
   );
 };

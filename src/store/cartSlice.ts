@@ -1,7 +1,7 @@
-import type { ProductCard } from '@/types/productCard';
+import type { Product } from '@/types/productCard';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export interface CartItem extends ProductCard {
+export interface CartItem extends Product {
   quantity: number;
 }
 
@@ -13,10 +13,17 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addItem: (state, action: PayloadAction<ProductCard>) => {
+    addItem: (state, action: PayloadAction<Product>) => {
+      if (action.payload.quantity <= 0) {
+        return;
+      }
+
       const existingItem = state.find((item) => item.id === action.payload.id);
       if (!existingItem) {
         state.push({ ...action.payload, quantity: 1 });
+      } else {
+        // якщо товар вже в корзині - то ще раз клік додає його ще раз (+1)
+        existingItem.quantity += 1;
       }
     },
 
@@ -45,8 +52,12 @@ const cartSlice = createSlice({
         item.quantity = action.payload.quantity;
       }
     },
+
     removeItem: (state, action: PayloadAction<{ id: string }>) => {
       return state.filter((item) => item.id !== action.payload.id);
+    },
+    clearCart: (state) => {
+      state.splice(0, state.length);
     },
   },
 });
@@ -56,6 +67,7 @@ export const {
   removeItem,
   increaseQuantity,
   decreaseQuantity,
+  clearCart,
   updateItemQuantity,
 } = cartSlice.actions;
 export default cartSlice.reducer;

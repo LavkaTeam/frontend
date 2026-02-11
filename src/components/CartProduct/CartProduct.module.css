@@ -1,48 +1,57 @@
 .card {
-  overflow-y: scroll;
-  padding-bottom: 16px;
+  margin-bottom: 16px;
 }
 
 .cardWrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1017px;
-  width: 100%;
-  padding: 8px 32px;
+  width: 1017px;
+  height: 215px;
+  padding: 16px 32px;
   border: 1px solid var(--Gray-300, #d5d7da);
   background: var(--color-primary-white);
+  box-sizing: border-box;
 }
 
 .cardContent {
   display: flex;
   align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.cardImg {
+  width: 140px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .cardImg img {
-  width: 180px;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .cardInfo {
+  flex-grow: 1;
   padding-left: 56px;
   color: var(--color-gray-800);
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 20px;
-  gap: 64px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .cardTitle {
   font-weight: 500;
-  width: 230px;
-}
-
-.cardQuantity {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
+  width: 280px;
+  line-height: 1.4;
 }
 
 .price {
@@ -51,14 +60,23 @@
   gap: 32px;
 }
 
+.cardPrice {
+  font-weight: 500;
+  width: 90px;
+  text-align: right;
+}
+
 .quantity {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 8px 16px;
+  justify-content: space-between;
+  width: 100px;
+  padding: 6px 12px;
   font-weight: 400;
-  border: 2px solid var(--color-gray-400);
+  border: 1px solid var(--color-gray-400);
+  border-radius: 4px;
   line-height: 16px;
+  user-select: none;
 }
 
 .quantity button {
@@ -66,25 +84,60 @@
   font-size: 20px;
   border: none;
   cursor: pointer;
+  color: var(--color-gray-800);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
 }
 
-.cardPrice {
-  font-weight: 500;
-  width: 80px;
+.quantity button:hover {
+  color: var(--color-brand-burgundy);
+}
+
+.cardQuantity {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
 }
 
 .cardTotalPrice {
   color: var(--color-brand-burgundy);
-  text-align: center;
-  font-family: 'Inter';
+  text-align: right;
+  font-family: 'Inter', sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 30px;
-  width: 80px;
+  width: 100px;
 }
 
 .deleteButton {
   background: none;
   border: none;
   cursor: pointer;
+  padding: 8px;
+  margin-left: 24px;
+  opacity: 0.6;
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
+  display: flex;
+  align-items: center;
+}
+
+.deleteButton:hover {
+  opacity: 1;
+}
+
+.deleteButton:active {
+  transform: scale(0.95);
+}
+
+.deleteButton svg path {
+  transition: stroke 0.2s;
+}
+
+.deleteButton:hover svg path {
+  stroke: var(--color-brand-burgundy);
 }

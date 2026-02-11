@@ -1,0 +1,28 @@
+.container {
+  margin: 32px 0;
+  display: flex;
+  gap: 24px;
+}
+
+.wrapper {
+  width: 100%;
+  z-index: 0;
+}
+
+.catalogContent {
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  min-height: 400px;
+}

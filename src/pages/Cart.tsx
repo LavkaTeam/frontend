@@ -1,26 +1,28 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { CartProduct } from '@/components/CartProduct';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { SubHeading } from '@/components/ui/SubHeading';
-import { useAppSelector } from '@/store/hooks';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { Button } from '@/components/ui/Button';
 import { CartIcon } from '@/components/ui/icons/CartIcon';
 import { Space } from '@/components/ui/Space';
 import { EmptyCartIcon } from '@/components/ui/icons/EmptyCartIcon';
-
-import styles from './Cart.module.css';
+import { TrashIcon } from '@/components/ui/icons/TrashIcon';
+import { clearCart } from '@/store/cartSlice';
 import { HeaderMenu } from '@/components/HeaderMenu';
 
+import styles from './Cart.module.css';
+
 const Cart = () => {
+  const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart);
   const discount = 15;
   const shippingFree = 79;
 
   const subTotal = cartItems.reduce((acc, item) => {
-    return acc + item.price * item.quantity;
+    return acc + Number(item.price) * item.quantity;
   }, 0);
   const dph = subTotal * 0.21;
-
   const total = subTotal + dph + shippingFree - discount;
 
   return (
@@ -30,7 +32,20 @@ const Cart = () => {
         <div className={styles.cart}>
           {cartItems.length > 0 ? (
             <>
-              <HeadingH3>Cart</HeadingH3>
+              <div className={styles.headerWrapper}>
+                <HeadingH3>Cart</HeadingH3>
+                <button
+                  onClick={() => dispatch(clearCart())}
+                  className={styles.clearButton}
+                >
+                  <TrashIcon
+                    width='44'
+                    height='44'
+                    color='var(--color-brand-dark-burgundy)'
+                  />
+                </button>
+              </div>
+
               <Space height='32px' />
               <div className={styles.cartLayout}>
                 <section>

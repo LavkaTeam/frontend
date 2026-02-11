@@ -19,8 +19,7 @@ const AccountPage = () => {
       <div className={styles.sideBar}>
         <div className={styles.userInfo}>
           <div className={styles.userImage}>
-            {/* {user.image || */ <img src='/icons/testAvatar.png' />}
-            {/* Тестовий аватар */}
+            <img src='/icons/testAvatar.png' alt='avatar' />
           </div>
           <div className={styles.userText}>
             <p className={styles.userName}>
@@ -31,9 +30,12 @@ const AccountPage = () => {
         </div>
         <TabsList role={user.role} onTabChange={handleTabChange} />
       </div>
-      <Suspense fallback={<Loader />}>
-        <TabsList.Content activeTab={activeTab} />
-      </Suspense>
+
+      <div className={styles.contentArea}>
+        <Suspense fallback={<Loader variant='section' />}>
+          <TabsList.Content activeTab={activeTab} />
+        </Suspense>
+      </div>
     </div>
   );
 };

@@ -2,6 +2,7 @@
   width: 100%;
   max-width: 1038px;
 }
+
 .EmptyFavorites {
   text-align: center;
   margin-bottom: 80px;
@@ -14,4 +15,12 @@
   font-size: 30px;
   font-weight: 500;
   line-height: 38px;
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 200px;
 }

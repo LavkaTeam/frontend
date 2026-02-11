@@ -1,28 +1,18 @@
-import { useMemo } from 'react';
 import { CardSection } from '@/components/CardSection/CardSection';
 import { CardProduct } from '@/components/CardProduct/CardProduct';
-import { productData } from '@/data/productData';
 import { TrashIcon } from '@/components/ui/icons/TrashIcon';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { Space } from '@/components/ui/Space';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch } from '@/store/hooks';
 import { clearHistory } from '@/store/viewingHistorySlice';
-
-import styles from './BuyerViewingHistory.module.css';
+import { useViewingHistoryProducts } from '@/hooks/useViewingHistoryProducts';
 import { EmptyViewingHistory } from '@/components/ui/icons/EmptyViewingHistory';
-
+import { Loader } from '@/components/ui/Loader';
+import styles from './BuyerViewingHistory.module.css';
 const BuyerViewingHistory = () => {
   const dispatch = useAppDispatch();
-  // Отримуємо список ID з Redux
-  const historyIds = useAppSelector((state: any) => state.viewingHistory);
 
-  // Перетворюємо ID на реальні об'єкти товарів
-  const historyProducts = useMemo(() => {
-    // map збереже порядок сортування (від найновішого до найстарішого)
-    return historyIds
-      .map((id: string) => productData.find((p) => p.id === id))
-      .filter((item: any) => item !== undefined);
-  }, [historyIds]);
+  const { products: historyProducts, isLoading } = useViewingHistoryProducts();
 
   const handleClearHistory = () => {
     dispatch(clearHistory());
@@ -34,19 +24,21 @@ const BuyerViewingHistory = () => {
         <HeadingH3>Viewing history</HeadingH3>
         <Space height='32px' />
       </div>
+      <div className={styles.clearHistory} onClick={handleClearHistory}>
+        <span className={styles.clearHistoryText}>Clear history</span>
+        <TrashIcon />
+      </div>
 
-      {historyProducts.length > 0 ? (
-        <>
-          <div className={styles.clearHistory} onClick={handleClearHistory}>
-            <span className={styles.clearHistoryText}>Clear history</span>
-            <TrashIcon />
-          </div>
-          <CardSection
-            cards={historyProducts}
-            CardComponent={CardProduct}
-            noPaddings={true}
-          />
-        </>
+      {isLoading ? (
+        <div className={styles.loaderContainer}>
+          <Loader variant='section' />
+        </div>
+      ) : historyProducts.length > 0 ? (
+        <CardSection
+          cards={historyProducts}
+          CardComponent={CardProduct}
+          noPaddings={true}
+        />
       ) : (
         <>
           <Space height='32px' />
