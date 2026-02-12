@@ -2,13 +2,6 @@
   margin-bottom: 80px;
 }
 
-.cardContainer {
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-  gap: 24px;
-}
-
 .gridCardContainer {
   display: flex;
   flex-wrap: wrap;
@@ -17,21 +10,95 @@
 
 .sliderWrapper {
   position: relative;
+}
+
+.swiperContainer {
+  overflow: hidden !important;
+  padding-bottom: 54px !important;
+  margin-bottom: -24px;
+}
+
+.slideItem {
+  height: auto;
   display: flex;
 }
 
-.arrowButton {
-  z-index: 100;
-  top: 180px;
+.cardWrapper {
+  width: 100%;
+}
+
+/* === Pagination (Mobile/Tablet default) === */
+.swiperContainer :global(.swiper-pagination) {
+  display: block;
+  bottom: 0 !important;
+}
+
+.swiperContainer :global(.swiper-pagination-bullet) {
+  width: 10px;
+  height: 10px;
+  background: var(--color-gray);
+  opacity: 1;
+  margin: 0 4px !important;
+  transition: background-color 0.3s ease;
+}
+
+.swiperContainer :global(.swiper-pagination-bullet-active) {
+  background: var(--color-brand-burgundy);
+  border-radius: 50%;
+}
+
+.navigationButtons {
   position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.arrowButton {
+  position: absolute;
+  top: 220px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    opacity 0.3s,
+    transform 0.2s;
+  user-select: none;
+}
+
+.arrowButton:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+:global(.swiper-button-disabled) {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
 }
 
 .leftButton {
-  z-index: 2;
-  left: -8px;
+  left: -12px;
 }
 
 .rightButton {
-  z-index: 2;
-  right: -8px;
+  right: -12px;
+}
+
+/* Mobile & Tablet: Hide Arrows */
+@media (max-width: 1023px) {
+  .leftButton,
+  .rightButton {
+    display: none;
+  }
+}
+
+/* Desktop: Hide Pagination, Show Arrows, Fix Padding */
+@media (min-width: 1024px) {
+  .swiperContainer {
+    padding-bottom: 24px !important;
+  }
+
+  .swiperContainer :global(.swiper-pagination) {
+    display: none;
+  }
 }
