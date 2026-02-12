@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useSearchProducts } from '@/hooks/useSearchProducts';
@@ -15,34 +14,20 @@ import { NoProductsFound } from '@/components/NoProductsFound/NoProductsFound';
 import styles from './Products.module.css';
 
 const Products = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const pageParam = searchParams.get('page');
+  const currentPage = pageParam ? Math.max(1, Number(pageParam)) : 1;
 
   const category = searchParams.get('category') || undefined;
   const subcategory = searchParams.get('subcategory') || undefined;
-
-  const priceFrom = searchParams.get('priceFrom');
-  const priceTo = searchParams.get('priceTo');
-  const country = searchParams.get('country') || undefined;
-
-  const promotions =
-    searchParams.get('promotions') === 'true' ? true : undefined;
-
-  const capacities = searchParams.getAll('capacity');
-  const strengths = searchParams.getAll('strength');
-
-  useEffect(() => {
-    setCurrentPage(0);
-  }, [
-    category,
-    subcategory,
-    priceFrom,
-    priceTo,
-    country,
-    promotions,
-    JSON.stringify(capacities),
-    JSON.stringify(strengths),
-  ]);
+  // const priceFrom = searchParams.get('priceFrom');
+  // const priceTo = searchParams.get('priceTo');
+  // const country = searchParams.get('country') || undefined;
+  // const promotions =
+  //   searchParams.get('promotions') === 'true' ? true : undefined;
+  // const capacities = searchParams.getAll('capacity');
+  // const strengths = searchParams.getAll('strength');
 
   const {
     products: normalProducts,
@@ -52,20 +37,22 @@ const Products = () => {
     category,
     subcategory,
 
-    minPrice: priceFrom ? Number(priceFrom) : undefined,
-    maxPrice: priceTo ? Number(priceTo) : undefined,
-    producer: country,
+    // minPrice: priceFrom ? Number(priceFrom) : undefined,
+    // maxPrice: priceTo ? Number(priceTo) : undefined,
+    // producer: country,
 
-    // volume: capacities.length > 0 ? capacities : undefined,
-    // alcohol: strengths.length > 0 ? strengths : undefined,
-
-    page: currentPage,
+    page: currentPage - 1,
     size: 12,
     sort: ['quantity,desc'],
   });
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage - 1);
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      newParams.set('page', newPage.toString());
+      return newParams;
+    });
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -95,7 +82,7 @@ const Products = () => {
                     />
 
                     <Pagination
-                      currentPage={currentPage + 1}
+                      currentPage={currentPage}
                       totalPages={totalPages}
                       onPageChange={handlePageChange}
                       noPaddings={true}
