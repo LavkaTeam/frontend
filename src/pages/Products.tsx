@@ -6,10 +6,10 @@ import { FilterBlock } from '@/components/Filters/FilterBlock';
 import { CardSection } from '@/components/CardSection';
 import { CardProduct } from '@/components/CardProduct';
 import { Pagination } from '@/components/Pagination';
-import { Loader } from '@/components/ui/Loader';
 import { Space } from '@/components/ui/Space';
 import { HeaderMenu } from '@/components/HeaderMenu';
 import { NoProductsFound } from '@/components/NoProductsFound/NoProductsFound';
+import { CardProductSkeleton } from '@/components/CardProduct';
 
 import styles from './Products.module.css';
 
@@ -56,6 +56,14 @@ const Products = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const renderSkeletons = (count = 12) => (
+    <div className={styles.skeletonGrid}>
+      {Array.from({ length: count }).map((_, index) => (
+        <CardProductSkeleton key={index} />
+      ))}
+    </div>
+  );
+
   return (
     <div className='container'>
       <HeaderMenu />
@@ -65,9 +73,7 @@ const Products = () => {
         <div className={styles.wrapper}>
           <div className={styles.catalogContent}>
             {isNormalProductsLoading ? (
-              <div className={styles.loaderWrapper}>
-                <Loader variant='section' />
-              </div>
+              renderSkeletons(12)
             ) : (
               <>
                 {normalProducts.length === 0 ? (

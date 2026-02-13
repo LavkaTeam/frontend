@@ -1,0 +1,134 @@
+.cardProductSkeleton {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 330px;
+  height: 560px;
+  padding: 16px;
+
+  align-items: flex-start;
+  gap: 16px;
+  flex-shrink: 0;
+  background: var(--color-primary-white);
+  box-shadow:
+    0px 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0px 4px 6px -2px rgba(10, 13, 18, 0.03);
+  box-sizing: border-box;
+}
+
+/* Анімація пульсації */
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.favoriteIconSkeleton,
+.cardImageSkeleton,
+.cardInStockSkeleton,
+.headingSkeleton,
+.headingSkeletonShort,
+.capacitySkeleton,
+.subHeadingSkeleton,
+.skuSkeleton,
+.priceSkeleton,
+.buttonSkeleton {
+  background: var(--color-gray-200);
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.favoriteIconSkeleton {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 16px;
+  right: 16px;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.cardImageSkeleton {
+  width: 298px;
+  height: 220px;
+  margin-bottom: 8px;
+}
+
+.cardProductInfoSkeleton {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.cardInStockSkeleton {
+  width: 60px;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.cardProductDetailsSkeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  flex-grow: 1;
+  padding-bottom: 16px;
+}
+
+.headingSkeleton {
+  width: 90%;
+  height: 24px;
+  margin-bottom: 8px;
+}
+
+.headingSkeletonShort {
+  width: 60%;
+  height: 24px;
+  margin-bottom: 16px;
+}
+
+.capacitySkeleton {
+  width: 70%;
+  height: 16px;
+  margin-bottom: 8px;
+}
+
+.subHeadingSkeleton {
+  width: 50%;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.skuSkeleton {
+  width: 40%;
+  height: 14px;
+  margin-bottom: 16px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-gray-200);
+  margin: auto 0 16px 0;
+}
+
+.priceSkeleton {
+  width: 100px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+.buttonSkeleton {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+}

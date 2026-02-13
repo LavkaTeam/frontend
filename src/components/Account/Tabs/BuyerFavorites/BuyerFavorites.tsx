@@ -1,6 +1,6 @@
 import { useFavoriteProducts } from '@/hooks/useFavoriteProducts';
 import { CardSection } from '@/components/CardSection/CardSection';
-import { CardProduct } from '@/components/CardProduct/CardProduct';
+import { CardProduct } from '@/components/CardProduct/CardProduct/CardProduct';
 import { Space } from '@/components/ui/Space';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { EmptyFavoritesIcon } from '@/components/ui/icons/EmptyFavoritesIcon';
