@@ -1,5 +1,5 @@
 import { CardSection } from '@/components/CardSection/CardSection';
-import { CardProduct } from '@/components/CardProduct/CardProduct';
+import { CardProduct } from '@/components/CardProduct/CardProduct/CardProduct';
 import { TrashIcon } from '@/components/ui/icons/TrashIcon';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { Space } from '@/components/ui/Space';

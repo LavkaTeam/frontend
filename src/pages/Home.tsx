@@ -8,9 +8,9 @@ import { HeroSection } from '../components/HeroSection';
 import { CardSection } from '@/components/CardSection';
 import { CardDiscover } from '@/components/CardDiscover';
 import { CardProduct } from '@/components/CardProduct';
+import { CardProductSkeleton } from '@/components/CardProduct';
 import { Pagination } from '@/components/Pagination';
 import { PageSection } from '@/components/PageSection/PageSection';
-import { Loader } from '@/components/ui/Loader';
 import { Divider } from '@/components/ui/Divider';
 import { Space } from '@/components/ui/Space';
 
@@ -41,7 +41,7 @@ const Home = () => {
     size: 12,
     sort: ['quantity,desc'],
   });
-  33;
+
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage - 1);
 
@@ -53,6 +53,16 @@ const Home = () => {
     });
   };
 
+  const renderSkeletons = (count = 4) => (
+    <div className='container'>
+      <div className={styles.skeletonGrid}>
+        {Array.from({ length: count }).map((_, index) => (
+          <CardProductSkeleton key={index} />
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <>
       <HeaderMenu />
@@ -61,9 +71,7 @@ const Home = () => {
 
         <PageSection title='Bestsellers'>
           {isBestsellersLoading ? (
-            <div className={styles.loadingContainerStyle}>
-              <Loader variant='section' />
-            </div>
+            renderSkeletons(4)
           ) : (
             <CardSection
               cards={bestsellers}
@@ -79,9 +87,7 @@ const Home = () => {
 
         <PageSection title='Related products'>
           {isRelatedLoading ? (
-            <div className={styles.loadingContainerStyle}>
-              <Loader variant='section' />
-            </div>
+            renderSkeletons(4)
           ) : (
             <CardSection
               cards={relatedProducts}
@@ -96,9 +102,7 @@ const Home = () => {
 
         <div id='top-select-anchor' className={styles.scrollAnchor}>
           {isTopSelectLoading ? (
-            <div className={styles.loadingContainerStyle}>
-              <Loader variant='section' />
-            </div>
+            renderSkeletons(8) // Для сітки Top Select показуємо більше скелетонів
           ) : (
             <>
               <CardSection
@@ -106,11 +110,13 @@ const Home = () => {
                 CardComponent={CardProduct}
               />
 
-              <Pagination
-                currentPage={currentPage + 1}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
+              {totalPages > 0 && (
+                <Pagination
+                  currentPage={currentPage + 1}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              )}
 
               <Space height='80px' />
             </>

@@ -1,16 +1,16 @@
-.loadingContainerStyle {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-  width: 100%;
-}
-
 .scrollAnchor {
   scroll-margin-top: 100px;
 }
 
 .sectionWrapper {
   margin-bottom: 48px;
+}
+
+.skeletonGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 80px;
 }

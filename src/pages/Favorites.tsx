@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CardSection } from '@/components/CardSection/CardSection';
-import { CardProduct } from '@/components/CardProduct/CardProduct';
+import { CardProduct } from '@/components/CardProduct/CardProduct/CardProduct';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { useAppDispatch } from '@/store/hooks';
 import { EmptyFavoritesIcon } from '@/components/ui/icons/EmptyFavoritesIcon';

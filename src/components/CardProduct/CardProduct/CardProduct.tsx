@@ -6,7 +6,7 @@ import type { Product } from '@/types/productCard';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addItem } from '@/store/cartSlice';
 import { toggleFavorite } from '@/store/favoritesSlice';
-import { Price } from '../Price';
+import { Price } from '../../Price';
 import styles from './CardProduct.module.css';
 
 type CardProductProps = {
