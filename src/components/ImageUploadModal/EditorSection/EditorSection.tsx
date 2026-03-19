@@ -30,7 +30,7 @@ export const EditorSection = ({
     setAdjustments,
     setMediaSize,
     setCropSize,
-    isComparing,
+    // isComparing — used only through setIsComparing below
     setIsComparing,
     hasFiltersChanged,
     isPerfectlyCentered,

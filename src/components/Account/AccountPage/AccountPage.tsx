@@ -46,10 +46,10 @@ const AccountPage = () => {
     setSearchParams({ tab: 'SellerProfile' });
   };
 
-  user.status = 'VERIFIED'; // TEST
+  const userStatus = user.status || 'NOT_VERIFIED'; // fallback
 
   const getStatusInfo = () => {
-    switch (user.status) {
+    switch (userStatus) {
       case 'VERIFIED':
         return {
           icon: <VerifiedIcon />,
@@ -96,7 +96,7 @@ const AccountPage = () => {
 
           <div
             className={styles.statusIconWrapper}
-            onClick={user.status !== 'VERIFIED' ? handleStatusClick : undefined}
+            onClick={userStatus !== 'VERIFIED' ? handleStatusClick : undefined}
           >
             {statusInfo.icon}
 

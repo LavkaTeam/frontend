@@ -16,6 +16,7 @@ import styles from './SellerOrders.module.css';
 // Якщо в type OrderStatus додасться 'REFUNDED', тут буде світитися помилка, поки ти його не додаш.
 const STATUS_DICTIONARY: Record<OrderStatus, OrderStatus> = {
   NEW: 'NEW',
+  PENDING: 'PENDING',
   PROCESSING: 'PROCESSING',
   SHIPPED: 'SHIPPED',
   DELIVERED: 'DELIVERED',

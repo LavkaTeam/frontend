@@ -1,10 +1,10 @@
-import { apiUrl } from './fetchData';
+// import { apiUrl } from './fetchData'; // Uncomment when backend is ready
 
 // Інтерфейс відповіді (може змінитися, коли зробиш бек)
-interface FileUploadResponse {
-  url: string;
-  filename: string;
-}
+// interface FileUploadResponse {
+//   url: string;
+//   filename: string;
+// }
 
 export const uploadDocument = async (file: File): Promise<string> => {
   const token = localStorage.getItem('token');

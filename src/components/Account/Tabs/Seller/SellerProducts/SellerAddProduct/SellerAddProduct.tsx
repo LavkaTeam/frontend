@@ -18,6 +18,7 @@ import {
 } from '@/utils/draftStorage';
 
 interface SellerAddProductProps {
+  onCancel?: () => void;
   onSave?: (data: any) => void;
 }
 

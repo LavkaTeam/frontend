@@ -8,6 +8,7 @@ export interface UserResponse {
   companyName: string;
   registration_Number: string;
   liquor_License: string;
+  liquor_License_File_Url: string;
   tax_ID: string;
   vat_Number: string;
   bank_Name: string;
@@ -16,4 +17,6 @@ export interface UserResponse {
   telephoneNumber: string;
   role: UserRole;
   products: [];
+  status: 'VERIFIED' | 'PENDING' | 'NOT_VERIFIED';
+  logoUrl: string;
 }

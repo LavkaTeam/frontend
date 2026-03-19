@@ -2,6 +2,7 @@ import { UserRole } from './user';
 
 export type OrderStatus =
   | 'NEW'
+  | 'PENDING'
   | 'PROCESSING'
   | 'SHIPPED'
   | 'DELIVERED'
