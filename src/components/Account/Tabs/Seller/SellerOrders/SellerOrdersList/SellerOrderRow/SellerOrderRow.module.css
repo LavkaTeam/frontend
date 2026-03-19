@@ -1,0 +1,97 @@
+.orderRow {
+  display: grid;
+  /* Важливо: ця сітка має бути 1 в 1 як у SellerOrdersList.module.css */
+  grid-template-columns: 1.5fr 1.5fr 1fr 2.5fr 1.5fr 1fr;
+  align-items: center;
+  width: 100%;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: 8px; /* Зробив 8px як скрізь, замість 2px */
+  height: 58px;
+  padding: 0 16px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.orderRow:hover {
+  border-color: var(--color-gray-400);
+  box-shadow: 0 2px 8px rgba(10, 13, 18, 0.04);
+}
+
+.colText {
+  color: var(--color-gray-900);
+  font-size: 16px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 8px;
+}
+
+.colStatus {
+  display: flex;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.colDetails {
+  display: flex;
+  justify-content: center;
+}
+
+/* === Бейджі === */
+.statusBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 122px;
+  height: 26px;
+  /* Твій дизайн: закруглені тільки ліві кути (якщо це так задумано, залишаємо) */
+  border-radius: 8px 0 0 8px;
+  color: var(--color-primary-white);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Якщо у тебе є змінні для цих кольорів — заміни їх */
+.statusNew {
+  background-color: var(--color-gray-500, #86827e);
+}
+.statusProcessing {
+  background-color: #eab308;
+}
+.statusShipped {
+  background-color: #c8721b;
+}
+.statusDelivered {
+  background-color: #5d913c;
+}
+.statusCancelled {
+  background-color: var(--color-brand-burgundy, #af261f);
+}
+
+/* Кнопка Details */
+.detailsLink {
+  background: none;
+  border: none;
+  color: var(--color-gray-900);
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s;
+  padding: 4px 8px;
+}
+
+.detailsLink:hover {
+  text-decoration-color: var(--color-gray-900);
+}
+
+@media (max-width: 900px) {
+  .orderRow {
+    min-width: 800px;
+  }
+}

@@ -17,7 +17,7 @@ export const useLoginHandler = () => {
         localStorage.setItem('token', response.token);
         queryClient.invalidateQueries({ queryKey: ['user'] });
 
-        navigate('/');
+        navigate('/account');
       },
       onError: (error: any) => {
         console.log('Server error:', error);

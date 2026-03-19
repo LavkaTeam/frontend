@@ -1,0 +1,87 @@
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: var(--color-primary-white);
+  box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05); /* Легка тінь для контейнера */
+}
+
+/* Сітка хедера має бути 1 в 1 як у orderRow */
+.tableHeader {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr 2.5fr 1.5fr 1fr;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 0 16px; /* Важливо: такий же падінг як у рядка */
+}
+
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.headerCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--color-gray-500);
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.headerCell:hover {
+  color: var(--color-gray-900);
+}
+
+.headerCellDisabled {
+  cursor: default;
+}
+
+.headerCellDisabled:hover {
+  color: var(--color-gray-500);
+}
+
+/* Анімації Стрілочки */
+.sortArrow {
+  opacity: 0;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
+}
+.headerCell:hover .sortArrow {
+  opacity: 0.4;
+}
+.sortArrowActive {
+  opacity: 1 !important;
+  color: var(--color-gray-900);
+}
+.sortArrowAsc {
+  transform: rotate(180deg);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 100px;
+  color: var(--color-gray-500);
+  background: var(--color-primary-white);
+  border: 1px dashed var(--color-gray-300);
+  border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+  .tableHeader {
+    min-width: 800px;
+  }
+  .tableWrapper {
+    overflow-x: auto;
+    padding-bottom: 12px;
+  }
+}

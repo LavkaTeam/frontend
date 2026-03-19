@@ -1,0 +1,87 @@
+.pageContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  color: var(--color-gray-900);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: -0.72px;
+}
+
+.subTitle {
+  color: var(--color-gray-800);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.addBtn:hover {
+  background-color: #9f173b;
+}
+
+.actionBlock {
+  width: 212px;
+}
+
+.toolbar {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.filterBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -8px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filterBtn:hover {
+  background-color: var(--color-gray-200);
+}
+
+.filterBtnActive {
+  background-color: var(--color-gray-200);
+}
+
+.filterWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .addBtn {
+    width: 100%;
+  }
+}

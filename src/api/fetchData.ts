@@ -1,4 +1,4 @@
-const apiUrl: string =
+export const apiUrl: string =
   import.meta.env.VITE_API_URL || 'https://lavka-api.onrender.com/api';
 
 interface FetchOptions extends RequestInit {

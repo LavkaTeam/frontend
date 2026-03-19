@@ -1,26 +1,29 @@
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { BuyerOrdersList } from './BuyerOrdersList/BuyerOrdersList';
 import BuyerOrder from './BuyerOrder/BuyerOrder';
 import { mockOrders } from '@/data/ordersData';
 import styles from './BuyerOrders.module.css';
 
 const BuyerOrders = () => {
-  // Стан: ID вибраного замовлення або null (якщо дивимось список)
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedOrderId = searchParams.get('orderId');
 
-  // Функція, щоб відкрити замовлення
   const handleOrderSelect = (orderId: string) => {
-    setSelectedOrderId(orderId);
+    setSearchParams((prev) => {
+      prev.set('orderId', orderId);
+      return prev;
+    });
   };
 
-  // Функція, щоб повернутися назад до списку
   const handleBackToList = () => {
-    setSelectedOrderId(null);
+    setSearchParams((prev) => {
+      prev.delete('orderId');
+      return prev;
+    });
   };
 
   return (
     <div className={styles.BuyerOrders}>
-      {/* Якщо ID вибрано -> показуємо деталі, інакше -> список */}
       {selectedOrderId ? (
         <BuyerOrder orderId={selectedOrderId} onBack={handleBackToList} />
       ) : (

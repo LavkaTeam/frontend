@@ -17,7 +17,7 @@ export const useRegisterHandler = () => {
         localStorage.setItem('token', response.token);
         queryClient.invalidateQueries({ queryKey: ['user'] });
 
-        navigate('/');
+        navigate('/account');
       },
       onError: (error: any) => {
         if (error.email) {

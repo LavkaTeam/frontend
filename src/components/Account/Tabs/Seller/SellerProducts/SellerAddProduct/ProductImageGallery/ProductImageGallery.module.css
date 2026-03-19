@@ -1,0 +1,299 @@
+.galleryContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* === ВЕЛИКИЙ DROPZONE === */
+.largeDropzone {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2px dashed #d5d6da;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background-color: var(--color-primary-white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.largeDropzone:hover {
+  border-color: var(--color-brand-burgundy);
+  background-color: #fefaf9;
+}
+.dropzoneText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-gray-800);
+  font-size: 16px;
+  font-weight: 500;
+}
+.browseText {
+  color: var(--color-gray-800);
+}
+
+/* === СТАН ІЗ ФОТОГРАФІЯМИ === */
+.filledStateContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mainPhotoPreview {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  border: 2px solid #e2d8d0;
+  overflow: hidden;
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.mainPhotoPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mainPhotoBadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--color-brand-burgundy);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  pointer-events: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.setAsMainBtn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-800);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+.setAsMainBtn:hover {
+  background: #ffffff;
+  color: var(--color-gray-900);
+  border-color: var(--color-gray-400);
+  transform: scale(1.02);
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fileCard {
+  width: 100%;
+  height: 81px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px 8px 8px;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+  cursor: pointer;
+}
+.fileCard:hover:not(.cardActive) {
+  border-color: #e5e7eb;
+  background: #fcfcfc;
+}
+.cardActive {
+  border: 1px solid var(--color-brand-burgundy);
+}
+.dragging {
+  opacity: 0.3;
+  transform: scale(0.98);
+  border: 2px dashed var(--color-brand-burgundy);
+  background-color: var(--color-gray-50);
+}
+.cardUploading {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.dragHandle {
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d5d6da;
+  padding: 4px;
+  border-radius: 4px;
+}
+.dragHandle:hover {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-500);
+}
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.thumbnailBox {
+  width: 65px;
+  height: 65px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e2d8d0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-gray-50);
+}
+.thumbnailBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fileInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  flex-grow: 1;
+  min-width: 0;
+}
+.fileTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fileName {
+  color: #252b37;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+.miniMainBadge {
+  background: var(--color-brand-25);
+  color: var(--color-brand-burgundy);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.fileMeta {
+  color: var(--color-gray-500);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.uploadingState {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.progressTrack {
+  width: 100%;
+  max-width: 180px;
+  height: 4px;
+  background-color: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progressFill {
+  height: 100%;
+  background-color: var(--color-brand-burgundy);
+  transition: width 0.3s ease;
+}
+.progressTextRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 180px;
+  color: #6b7280;
+  font-size: 11px;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.iconBtn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--color-gray-700);
+}
+.iconBtn:hover {
+  background: var(--color-gray-100);
+  transform: scale(1.05);
+}
+.actionBtnDel:hover {
+  background: #fee2e2;
+}
+.actionBtnDel:hover svg path,
+.actionBtnDel:hover svg polyline {
+  stroke: var(--color-error-500) !important;
+}
+
+.addMoreCard {
+  width: 100%;
+  height: 81px;
+  border: 2px dashed #d5d6da;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  cursor: pointer;
+  background-color: var(--color-primary-white);
+  transition: all 0.2s ease;
+}
+.addMoreCard:hover {
+  border-color: var(--color-brand-burgundy);
+  background-color: #fefaf9;
+}
+.uploadCloudWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary-white);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.addMoreText {
+  color: var(--color-gray-700);
+  font-size: 15px;
+  font-weight: 500;
+}

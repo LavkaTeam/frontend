@@ -1,0 +1,149 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.label {
+  color: var(--color-gray-800);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 234px;
+  font-size: 16px;
+  font-family: Inter, sans-serif;
+  padding: 10px 16px;
+  color: var(--color-gray-900);
+  border-radius: 8px;
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-primary-white);
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-gray-400);
+}
+.textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* === СТИЛІ ДЛЯ КОМПОНЕНТА ТЕГІВ === */
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px; /* Мінімальна висота як у звичайного Input */
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #d5d6da;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+  cursor: text;
+}
+
+.tagsContainer:focus-within {
+  border-color: var(--color-gray-400);
+}
+
+.tagsContainer.disabled {
+  opacity: 0.6;
+  background: var(--color-gray-50);
+  cursor: not-allowed;
+}
+
+.tagBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 31px;
+  padding: 3px 10px;
+  border: 1px solid #717680;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.tagText {
+  color: #252b37;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.tagRemoveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #717680;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.tagRemoveBtn:hover:not(:disabled) {
+  color: #dc2626; /* Червоний при наведенні */
+}
+
+.tagsInput {
+  flex-grow: 1;
+  min-width: 120px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  color: var(--color-gray-900);
+  padding: 4px 0;
+}
+
+.tagsInput::placeholder {
+  color: var(--color-gray-400);
+}
+
+.tagsInput:disabled {
+  cursor: not-allowed;
+}
+
+.errorText {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.tagHint {
+  color: var(--color-gray-500, #6b7280);
+  font-size: 13px;
+  margin-top: 4px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.tagHint strong {
+  font-weight: 600;
+  color: var(--color-gray-700, #374151);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

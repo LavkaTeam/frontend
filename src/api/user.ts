@@ -1,7 +1,7 @@
 import type { UserResponse } from '@/types/user';
 import { fetchData } from './fetchData';
 
-const getUser = (): Promise<UserResponse> => {
+export const getUser = (): Promise<UserResponse> => {
   const token = localStorage.getItem('token');
   if (!token) {
     return Promise.reject('No token');
@@ -14,22 +14,24 @@ const getUser = (): Promise<UserResponse> => {
   });
 };
 
-interface UpdateUserData {
+export interface UpdateUserData {
   name: string;
   lastName: string;
   email: string;
   companyName: string;
   registration_Number: string;
   liquor_License: string;
+  liquor_License_File_Url?: string;
   tax_ID: string;
   vat_Number: string;
   bank_Name: string;
   iban: string;
   bic: string;
   telephoneNumber: string;
+  logoUrl?: string;
 }
 
-const updateUser = (
+export const updateUser = (
   id: string,
   userData: UpdateUserData,
 ): Promise<UserResponse> => {
@@ -46,5 +48,3 @@ const updateUser = (
     body: JSON.stringify(userData),
   });
 };
-
-export { getUser, updateUser };
