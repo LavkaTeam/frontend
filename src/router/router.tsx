@@ -12,6 +12,7 @@ const Favorites = lazy(() => import('@/pages/Favorites'));
 const Cart = lazy(() => import('@/pages/Cart'));
 const Product = lazy(() => import('@/pages/Product'));
 const Products = lazy(() => import('@/pages/Products'));
+const SellerProductsPublic = lazy(() => import('@/pages/SellerProductsPublic'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
@@ -108,6 +109,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <Products />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/sellerProducts/:sellerId',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <SellerProductsPublic />
           </Suspense>
         ),
       },

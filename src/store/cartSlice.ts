@@ -19,10 +19,13 @@ const cartSlice = createSlice({
       }
 
       const existingItem = state.find((item) => item.id === action.payload.id);
+      const minQty = action.payload.minimumOrderQuantity || 1;
       if (!existingItem) {
-        state.push({ ...action.payload, quantity: 1 });
+        state.push({
+          ...action.payload,
+          quantity: Math.min(minQty, action.payload.quantity),
+        });
       } else {
-        // якщо товар вже в корзині - то ще раз клік додає його ще раз (+1)
         existingItem.quantity += 1;
       }
     },
@@ -36,7 +39,9 @@ const cartSlice = createSlice({
 
     decreaseQuantity: (state, action: PayloadAction<{ id: string }>) => {
       const item = state.find((item) => item.id === action.payload.id);
-      if (item && item.quantity > 1) {
+      const minQty = item?.minimumOrderQuantity || 1;
+
+      if (item && item.quantity > minQty) {
         item.quantity -= 1;
       } else {
         return state.filter((item) => item.id !== action.payload.id);
@@ -49,7 +54,9 @@ const cartSlice = createSlice({
     ) => {
       const item = state.find((item) => item.id === action.payload.id);
       if (item) {
-        item.quantity = action.payload.quantity;
+        const minQty = item.minimumOrderQuantity || 1;
+        const boundedQty = Math.max(action.payload.quantity, minQty);
+        item.quantity = boundedQty;
       }
     },
 

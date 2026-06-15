@@ -1,0 +1,71 @@
+.badge {
+  --fold-size: 14px;
+  --transition-speed: 0.3s;
+
+  position: relative;
+  padding: 6px 20px 6px 14px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary-white);
+  transform: rotate(-3deg);
+  width: fit-content;
+  pointer-events: none;
+  user-select: none;
+
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.15));
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.badgeBestseller {
+  --bg-color: var(--color-brand-burgundy);
+  --fold-color: var(--color-brand-dark-burgundy);
+
+  background:
+    linear-gradient(var(--bg-color), var(--bg-color)) top left / 100%
+      calc(100% - var(--fold-size)) no-repeat,
+    linear-gradient(var(--bg-color), var(--bg-color)) top left /
+      calc(100% - var(--fold-size)) 100% no-repeat,
+    linear-gradient(-45deg, transparent 50%, var(--bg-color) 50%) bottom right /
+      var(--fold-size) var(--fold-size) no-repeat;
+}
+
+.badgeSale {
+  --bg-color: var(--color-green);
+  --fold-color: #3b6324;
+
+  background:
+    linear-gradient(var(--bg-color), var(--bg-color)) top left / 100%
+      calc(100% - var(--fold-size)) no-repeat,
+    linear-gradient(var(--bg-color), var(--bg-color)) top left /
+      calc(100% - var(--fold-size)) 100% no-repeat,
+    linear-gradient(-45deg, transparent 50%, var(--bg-color) 50%) bottom right /
+      var(--fold-size) var(--fold-size) no-repeat;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: var(--fold-size);
+  height: var(--fold-size);
+
+  background: linear-gradient(-45deg, transparent 50%, var(--fold-color) 50%);
+
+  border-top-left-radius: 3px;
+
+  filter: drop-shadow(-2px -2px 2px rgba(0, 0, 0, 0.25));
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: rotate(-3deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-3deg) scale(1);
+  }
+}

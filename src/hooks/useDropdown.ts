@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { categories } from '../data/categoriesData';
 import type { Category } from '@/types/categoryTypes';
 
-export const useDropdown = () => {
+export const useDropdown = (categories: Category[] = []) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [subcategoriesTop, setSubcategoriesTop] = useState(0);
@@ -45,16 +44,18 @@ export const useDropdown = () => {
   }, [isOpen, closeDropdown]);
 
   useEffect(() => {
-    if (selectedCategory && isOpen) {
+    if (selectedCategory && isOpen && categories.length > 0) {
       const selectedIndex = categories.findIndex(
         (cat) => cat.id === selectedCategory.id,
       );
-      const selectedRef = categoryRefs.current[selectedIndex];
-      if (selectedRef) {
-        setSubcategoriesTop(selectedRef.offsetTop);
+      if (selectedIndex !== -1) {
+        const selectedRef = categoryRefs.current[selectedIndex];
+        if (selectedRef) {
+          setSubcategoriesTop(selectedRef.offsetTop);
+        }
       }
     }
-  }, [selectedCategory, isOpen]);
+  }, [selectedCategory, isOpen, categories]);
 
   return {
     isOpen,

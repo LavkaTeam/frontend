@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
-import { categories } from '@/data/categoriesData';
 import type { Category } from '@/types/categoryTypes';
 
 import styles from './CategoryList.module.css';
 
 interface CategoryListProps {
+  categories: Category[];
   categoryRefs: React.MutableRefObject<(HTMLDivElement | null)[]>;
   selectedCategory: Category | null;
   handleCategoryHover: (category: Category) => void;
@@ -19,6 +19,7 @@ const ALL_CATEGORY: Category = {
 };
 
 const CategoryList = ({
+  categories,
   categoryRefs,
   handleCategoryHover,
   handleCategoryClick,

@@ -1,0 +1,172 @@
+/* ── Container ─────────────────────────────────────────── */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* ── Inputs row ─────────────────────────────────────────── */
+.inputsRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.inputLabel {
+  font-size: 12px;
+  color: var(--color-gray-500);
+}
+
+/* ── Input wrapper ──────────────────────────────────────── */
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Price input ────────────────────────────────────────── */
+.priceInput {
+  width: 100%;
+  height: 40px;
+  background: var(--color-primary-white);
+  border: 2px solid var(--color-gray-200);
+  border-radius: 8px;
+  padding: 0 14px 0 28px;
+  font-size: 16px;
+  color: var(--color-gray-900);
+  text-align: center;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.priceInput::-webkit-outer-spin-button,
+.priceInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.priceInput:focus {
+  border-color: var(--color-gray-300);
+  box-shadow:
+    0px 1px 2px 0px rgba(10, 13, 18, 0.05),
+    0px 0px 0px 4px var(--color-gray-200);
+}
+
+.priceInput:disabled {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
+/* ── Currency symbol ────────────────────────────────────── */
+.currency {
+  position: absolute;
+  left: 10px;
+  font-size: 16px;
+  color: var(--color-gray-500);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Divider between inputs ─────────────────────────────── */
+.dividerLine {
+  width: 12px;
+  height: 2px;
+  background: var(--color-gray-400);
+  margin-bottom: 19px;
+  flex-shrink: 0;
+}
+
+/* ── Slider wrapper ─────────────────────────────────────── */
+.sliderWrapper {
+  padding: 0 8px;
+  margin-top: 4px;
+}
+
+/* ── Track outer (click area) ───────────────────────────── */
+.trackOuter {
+  height: 24px;
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* ── Track inner (coloured bar) ─────────────────────────── */
+.trackInner {
+  height: 6px;
+  width: 100%;
+  border-radius: 4px;
+  align-self: center;
+}
+
+/* ── Thumb ──────────────────────────────────────────────── */
+.thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #af261f;
+  outline: none;
+  cursor: grab;
+}
+
+.thumb:active {
+  cursor: grabbing;
+}
+
+/* ── Inner dot (active while dragging) ─────────────────── */
+.thumbDot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.15s ease;
+}
+
+.thumbDotActive {
+  background-color: #af261f;
+}
+
+/* ── Static Fallback for disabled range ─────────────────── */
+.staticTrackWrapper {
+  height: 24px;
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+.staticTrack {
+  height: 6px;
+  width: 100%;
+  border-radius: 4px;
+  background-color: var(--color-gray-200);
+  align-self: center;
+}
+
+.staticThumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background-color: var(--color-gray-50);
+  border: 2px solid var(--color-gray-300);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -31,7 +31,10 @@ const LazyBuyerSupport = lazy(
 // const LazySellerMessages = lazy(() => import('@/components/Account/Tabs/SellerMessages/SellerMessages'));
 // const LazySellerSupport = lazy(() => import('@/components/Account/Tabs/SellerSupport/SellerSupport'));
 
-const tabComponents: Record<string, React.LazyExoticComponent<any>> = {
+const tabComponents: Record<
+  string,
+  React.LazyExoticComponent<React.ComponentType<unknown>>
+> = {
   buyerProfile: LazyBuyerProfile,
   buyerOrders: LazyBuyerOrders,
   buyerFavorites: LazyBuyerFavorites,

@@ -1,0 +1,326 @@
+.pageSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.productPageSkeleton {
+  margin-top: 5px;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 20px;
+}
+
+.imageColumn {
+  width: 646px;
+  flex-shrink: 0;
+}
+
+.imageCard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: var(--color-primary-white);
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.contentColumn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px;
+  border-radius: 12px;
+  background-color: var(--color-primary-white);
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.imageSkeleton,
+.thumbSkeleton,
+.titleSkeleton,
+.stockSkeleton,
+.skuSkeleton,
+.ratingSkeleton,
+.priceSkeleton,
+.infoLabel,
+.infoValue,
+.infoButton,
+.blockTitle,
+.paragraph,
+.paragraphShort,
+.tierLine,
+.buttonSkeleton,
+.favoriteButtonSkeleton,
+.minOrderSkeleton,
+.sellerLine,
+.sellerLineLong,
+.sellerLogoSkeleton,
+.relatedHeader,
+.divider {
+  background: var(--color-gray-200);
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.imageSkeleton {
+  width: 598px;
+  height: 598px;
+}
+
+.thumbRow {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  width: 598px;
+}
+
+.thumbSkeleton {
+  width: 152px;
+  height: 152px;
+}
+
+.titleSkeleton {
+  width: 62%;
+  height: 40px;
+}
+
+.stockRowSkeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stockSkeleton {
+  width: 110px;
+  height: 24px;
+}
+
+.skuSkeleton {
+  width: 120px;
+  height: 24px;
+}
+
+.ratingSkeleton {
+  width: 220px;
+  height: 24px;
+}
+
+.priceSkeleton {
+  width: 180px;
+  height: 32px;
+}
+
+.infoGridSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.infoGrid {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.infoColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.divider {
+  width: 1px;
+}
+
+.infoLabel {
+  width: 88px;
+  height: 18px;
+}
+
+.infoValue {
+  width: 120px;
+  height: 22px;
+}
+
+.infoButton {
+  width: 160px;
+  height: 34px;
+}
+
+.infoButtonRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tiersBlock,
+.sellerBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.descriptionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tiersBlock {
+  width: min(100%, 360px);
+}
+
+.blockTitle {
+  width: 180px;
+  height: 24px;
+}
+
+.paragraph {
+  width: 100%;
+  height: 18px;
+}
+
+.paragraphShort {
+  width: 78%;
+  height: 18px;
+}
+
+.tierLine {
+  width: 100%;
+  height: 18px;
+}
+
+.actionsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.actionArea {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.minOrderSkeleton {
+  width: 120px;
+  height: 18px;
+}
+
+.buttonSkeleton {
+  width: 300px;
+  height: 48px;
+}
+
+.favoriteButtonSkeleton {
+  width: 140px;
+  height: 24px;
+}
+
+.sellerLine,
+.sellerLineLong {
+  height: 20px;
+}
+
+.sellerLine {
+  width: 52%;
+}
+
+.sellerLineLong {
+  width: 72%;
+}
+
+.sellerSkeletonRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 24px;
+}
+
+.sellerLogoSkeleton {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+}
+
+.sellerLinkSkeleton {
+  width: 220px;
+  height: 20px;
+}
+
+.relatedHeader {
+  width: 240px;
+  height: 32px;
+}
+
+.relatedSection {
+  margin-bottom: 80px;
+}
+
+.relatedGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+@media (max-width: 1200px) {
+  .productPageSkeleton {
+    flex-direction: column;
+  }
+
+  .imageColumn {
+    width: 100%;
+  }
+
+  .imageSkeleton {
+    width: 100%;
+    height: 520px;
+  }
+
+  .thumbRow {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .contentColumn,
+  .imageCard {
+    padding: 20px 16px;
+  }
+
+  .infoGrid,
+  .actionsRow,
+  .sellerSkeletonRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .infoButtonRow {
+    justify-content: flex-start;
+  }
+}

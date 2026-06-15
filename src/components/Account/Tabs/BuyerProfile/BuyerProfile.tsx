@@ -69,7 +69,7 @@ const BuyerProfile = () => {
       await updateUser(user.id, userData);
 
       showToast('Profile updated successfully', 'success');
-    } catch (err: any) {
+    } catch (err) {
       console.error('Failed to update profile:', err);
 
       let errorMessage = 'Failed to update profile';
@@ -78,8 +78,8 @@ const BuyerProfile = () => {
         errorMessage = err.message;
       } else if (typeof err === 'string') {
         errorMessage = err;
-      } else if (err?.message) {
-        errorMessage = err.message;
+      } else if (err && typeof err === 'object' && 'message' in err) {
+        errorMessage = String((err as { message: unknown }).message);
       }
 
       showToast(errorMessage, 'error');

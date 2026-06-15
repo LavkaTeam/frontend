@@ -47,7 +47,7 @@ const BuyerOrdersList: React.FC<BuyerOrdersListProps> = ({
               >
                 <td className={styles.cellWithBorder}>{order.orderId}</td>
                 <td className={styles.cellWithBorder}>
-                  {formatDate((order as any).orderCreatedAt)}
+                  {formatDate(order.orderCreatedAt)}
                 </td>
                 <td className={styles.cellWithBorder}>
                   {formatPrice(order.orderTotalPrice)}

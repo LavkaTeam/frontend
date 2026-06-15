@@ -6,9 +6,37 @@
   margin-bottom: 48px;
 }
 
+.topSelectSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.topSelectPagination {
+  margin-top: 24px;
+}
+
+.topSelectButtonLink {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+}
+
+.topSelectButtonLink :global(button) {
+  width: 100%;
+}
+
 .skeletonGrid {
   display: flex;
   flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 80px;
+}
+
+.skeletonMixed {
+  display: flex;
   gap: 24px;
   width: 100%;
   overflow: hidden;
