@@ -4,13 +4,13 @@ const registerSchema = z.object({
   name: z
     .string()
     .min(1, 'Name is required')
-    .regex(/^[A-Za-z\-]{2,50}$/, 'Name must be 2-50 letters and dashes only'),
+    .regex(/^[A-Za-z-]{2,50}$/, 'Name must be 2-50 letters and dashes only'),
 
   lastName: z
     .string()
     .min(1, 'Last name is required')
     .regex(
-      /^[A-Za-z\-]{2,50}$/,
+      /^[A-Za-z-]{2,50}$/,
       'Last name must be 2-50 letters and dashes only',
     ),
 

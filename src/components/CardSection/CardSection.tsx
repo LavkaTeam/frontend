@@ -23,6 +23,10 @@ interface CardSectionProps<T extends WithId> {
   CardComponent: React.ComponentType<{ card: T }>;
   withSlider?: boolean;
   noPaddings?: boolean;
+  leadCard?: React.ReactNode;
+  footer?: React.ReactNode;
+  noBottomMargin?: boolean;
+  isFetching?: boolean;
 }
 
 const CardSection = <T extends WithId>({
@@ -31,17 +35,30 @@ const CardSection = <T extends WithId>({
   withSlider = false,
   CardComponent,
   noPaddings = false,
+  leadCard,
+  footer,
+  noBottomMargin = false,
+  isFetching = false,
 }: CardSectionProps<T>) => {
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
   const hasCards = cards && cards.length > 0;
+  const hasLeadCard = Boolean(leadCard);
 
   return (
-    <section className={styles.cardSection}>
+    <section
+      className={`${styles.cardSection} ${
+        noBottomMargin ? styles.noBottomMargin : ''
+      }`}
+    >
       <div className={noPaddings ? '' : 'container'}>
         {title ? <HeadingH3>{title}</HeadingH3> : null}
 
-        <div className={styles.sliderWrapper}>
+        <div
+          className={`${styles.sliderWrapper} ${
+            isFetching ? styles.sliderWrapperFetching : ''
+          }`}
+        >
           {hasCards ? (
             withSlider ? (
               <>
@@ -61,12 +78,17 @@ const CardSection = <T extends WithId>({
                 </div>
 
                 <Swiper
+                  key={`swiper-${cards.length}-${hasLeadCard}`}
                   modules={[Navigation, Pagination]}
                   spaceBetween={24}
-                  slidesPerView={1.2}
-                  loop={true}
-                  pagination={{ clickable: true }}
-                  className={styles.swiperContainer}
+                  slidesPerView='auto'
+                  slidesPerGroup={1}
+                  loop={hasCards && cards.length >= 4}
+                  watchOverflow={true}
+                  pagination={hasLeadCard ? false : { clickable: true }}
+                  className={`${styles.swiperContainer} ${
+                    hasLeadCard ? styles.mixedSwiperContainer : ''
+                  }`}
                   navigation={{
                     prevEl: prevRef.current,
                     nextEl: nextRef.current,
@@ -81,14 +103,30 @@ const CardSection = <T extends WithId>({
                     }
                   }}
                   breakpoints={{
-                    320: { slidesPerView: 1.2, spaceBetween: 16 },
-                    560: { slidesPerView: 2.2, spaceBetween: 20 },
-                    900: { slidesPerView: 3.2, spaceBetween: 24 },
-                    1200: { slidesPerView: 4, spaceBetween: 24 },
+                    320: {
+                      spaceBetween: 16,
+                    },
+                    768: {
+                      spaceBetween: 20,
+                    },
+                    1024: {
+                      spaceBetween: 24,
+                    },
                   }}
                 >
+                  {leadCard && (
+                    <SwiperSlide
+                      key='leadCard'
+                      className={`${styles.slideItem} ${styles.autoWidthSlide}`}
+                    >
+                      {leadCard}
+                    </SwiperSlide>
+                  )}
                   {cards.map((card) => (
-                    <SwiperSlide key={card.id} className={styles.slideItem}>
+                    <SwiperSlide
+                      key={card.id}
+                      className={`${styles.slideItem} ${styles.autoWidthSlide}`}
+                    >
                       <div className={styles.cardWrapper}>
                         <CardComponent card={card} />
                       </div>
@@ -98,6 +136,7 @@ const CardSection = <T extends WithId>({
               </>
             ) : (
               <div className={styles.gridCardContainer}>
+                {leadCard && leadCard}
                 {cards.map((card) => (
                   <CardComponent key={card.id} card={card} />
                 ))}
@@ -106,7 +145,10 @@ const CardSection = <T extends WithId>({
           ) : (
             <NoProductsFound />
           )}
+
         </div>
+
+        {footer ? <div className={styles.sectionFooter}>{footer}</div> : null}
       </div>
     </section>
   );

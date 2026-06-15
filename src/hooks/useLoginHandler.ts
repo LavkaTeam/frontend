@@ -19,15 +19,16 @@ export const useLoginHandler = () => {
 
         navigate('/');
       },
-      onError: (error: any) => {
-        console.log('Server error:', error);
-        if (error.email) {
-          setError('email', { message: error.email });
+      onError: (error: unknown) => {
+        const err = error as Record<string, string | undefined>;
+        console.log('Server error:', err);
+        if (err?.email) {
+          setError('email', { message: err.email });
         }
-        if (error.password) {
-          setError('password', { message: error.password });
+        if (err?.password) {
+          setError('password', { message: err.password });
         }
-        if (!error.email && !error.password) {
+        if (!err?.email && !err?.password) {
           alert('Something went wrong');
         }
       },

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { discoverCards } from '@/data/discoverData';
 import { useSearchProducts } from '@/hooks/useSearchProducts';
@@ -13,34 +14,66 @@ import { Pagination } from '@/components/Pagination';
 import { PageSection } from '@/components/PageSection/PageSection';
 import { Divider } from '@/components/ui/Divider';
 import { Space } from '@/components/ui/Space';
+import { Button } from '@/components/ui/Button';
+import {
+  CardRelatedLead,
+  CardRelatedLeadSkeleton,
+} from '@/components/CardRelatedLead';
 
 import styles from './Home.module.css';
+
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { products: bestsellers, isLoading: isBestsellersLoading } =
-    useSearchProducts({
-      mainCategory: 'BESTSELLERS',
-      status: 'in stock',
-    });
+  const { products: rawBestsellers, isLoading: isBestsellersLoading } =
+    useSearchProducts(
+      {
+        mainCategory: 'BESTSELLERS',
+      },
+      { skipFilters: true },
+    );
 
-  const { products: relatedProducts, isLoading: isRelatedLoading } =
-    useSearchProducts({
-      mainCategory: 'RELATED_PRODUCTS',
-      status: 'in stock',
-    });
+  const { products: rawRelatedProducts, isLoading: isRelatedLoading } =
+    useSearchProducts(
+      {
+        mainCategory: 'RELATED_PRODUCTS',
+      },
+      { skipFilters: true },
+    );
+
+  const bestsellers = useMemo(
+    () => shuffleArray(rawBestsellers),
+    [rawBestsellers],
+  );
+  const relatedProducts = useMemo(
+    () => shuffleArray(rawRelatedProducts),
+    [rawRelatedProducts],
+  );
 
   const {
     products: topSelectProducts,
     isLoading: isTopSelectLoading,
+    isFetching: isTopSelectFetching,
     totalPages,
-  } = useSearchProducts({
-    mainCategory: 'TOP_SELECT',
-    page: currentPage,
-    size: 12,
-    sort: ['quantity,desc'],
-  });
+    isLastPage: isTopSelectLastPage,
+  } = useSearchProducts(
+    {
+      mainCategory: 'TOP_SELECT',
+      page: currentPage,
+      size: 12,
+      sort: ['quantity,desc'],
+    },
+    { skipFilters: true },
+  );
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage - 1);
@@ -53,9 +86,10 @@ const Home = () => {
     });
   };
 
-  const renderSkeletons = (count = 4) => (
+  const renderSkeletons = (count = 4, hasLead = false) => (
     <div className='container'>
-      <div className={styles.skeletonGrid}>
+      <div className={hasLead ? styles.skeletonMixed : styles.skeletonGrid}>
+        {hasLead && <CardRelatedLeadSkeleton />}
         {Array.from({ length: count }).map((_, index) => (
           <CardProductSkeleton key={index} />
         ))}
@@ -87,12 +121,13 @@ const Home = () => {
 
         <PageSection title='Related products'>
           {isRelatedLoading ? (
-            renderSkeletons(4)
+            renderSkeletons(4, true)
           ) : (
             <CardSection
               cards={relatedProducts}
               CardComponent={CardProduct}
               withSlider={relatedProducts.length > 4}
+              leadCard={<CardRelatedLead />}
             />
           )}
         </PageSection>
@@ -105,17 +140,33 @@ const Home = () => {
             renderSkeletons(8) // Для сітки Top Select показуємо більше скелетонів
           ) : (
             <>
-              <CardSection
-                cards={topSelectProducts}
-                CardComponent={CardProduct}
-              />
+              <div className={styles.topSelectSection}>
+                <CardSection
+                  cards={topSelectProducts}
+                  CardComponent={CardProduct}
+                  noBottomMargin
+                  isFetching={isTopSelectFetching}
+                  footer={
+                    isTopSelectLastPage && totalPages > 0 ? (
+                      <Link
+                        to='/products'
+                        className={styles.topSelectButtonLink}
+                      >
+                        <Button>View all products</Button>
+                      </Link>
+                    ) : null
+                  }
+                />
+              </div>
 
               {totalPages > 0 && (
-                <Pagination
-                  currentPage={currentPage + 1}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
+                <div className={styles.topSelectPagination}>
+                  <Pagination
+                    currentPage={currentPage + 1}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
               )}
 
               <Space height='80px' />

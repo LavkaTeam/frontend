@@ -2,18 +2,16 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 330px;
-  height: 560px;
+  height: 567px;
   padding: 16px;
-
   align-items: flex-start;
   gap: 16px;
   flex-shrink: 0;
   background: var(--color-primary-white);
   box-shadow:
-    0px 12px 16px -4px rgba(10, 13, 18, 0.08),
-    0px 4px 6px -2px rgba(10, 13, 18, 0.03);
+    0px 12px 16px 0px rgba(10, 13, 18, 0.08),
+    0px 4px 6px 0px rgba(10, 13, 18, 0.03);
   box-sizing: border-box;
 }
 
@@ -32,12 +30,13 @@
 
 .favoriteIconSkeleton,
 .cardImageSkeleton,
-.cardInStockSkeleton,
+.inStockMock,
+.skuMock,
 .headingSkeleton,
 .headingSkeletonShort,
-.capacitySkeleton,
 .subHeadingSkeleton,
-.skuSkeleton,
+.subHeadingSkeletonLong,
+.ratingSkeleton,
 .priceSkeleton,
 .buttonSkeleton {
   background: var(--color-gray-200);
@@ -55,10 +54,17 @@
   z-index: 10;
 }
 
+.cardImageWrapperSkeleton {
+  width: 100%;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .cardImageSkeleton {
-  width: 298px;
-  height: 220px;
-  margin-bottom: 8px;
+  width: 100%;
+  height: 100%;
 }
 
 .cardProductInfoSkeleton {
@@ -69,56 +75,78 @@
   justify-content: space-between;
 }
 
-.cardInStockSkeleton {
-  width: 60px;
-  height: 16px;
-  margin-bottom: 12px;
-}
-
-.cardProductDetailsSkeleton {
+.cardDetailsTopSkeleton {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-  flex-grow: 1;
-  padding-bottom: 16px;
+  gap: 16px;
+}
+
+.cardInStockSkeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.inStockMock {
+  width: 68px;
+  height: 24px;
+}
+
+.skuMock {
+  width: 88px;
+  height: 20px;
+}
+
+.headingAndSubSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .headingSkeleton {
   width: 90%;
   height: 24px;
-  margin-bottom: 8px;
 }
 
 .headingSkeletonShort {
   width: 60%;
   height: 24px;
-  margin-bottom: 16px;
-}
-
-.capacitySkeleton {
-  width: 70%;
-  height: 16px;
-  margin-bottom: 8px;
 }
 
 .subHeadingSkeleton {
   width: 50%;
-  height: 16px;
-  margin-bottom: 12px;
+  height: 20px;
 }
 
-.skuSkeleton {
-  width: 40%;
-  height: 14px;
-  margin-bottom: 16px;
+.subHeadingSkeletonLong {
+  width: 75%;
+  height: 20px;
+}
+
+.ratingSkeleton {
+  width: 108px;
+  height: 18px;
+}
+
+.cardDetailsBottomSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
 }
 
 .divider {
   width: 100%;
   height: 1px;
   background-color: var(--color-gray-200);
-  margin: auto 0 16px 0;
+  display: block;
+}
+
+.priceRowSkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .priceSkeleton {
@@ -127,8 +155,12 @@
   border-radius: 6px;
 }
 
+.cartButtonWrapperSkeleton {
+  width: 100%;
+}
+
 .buttonSkeleton {
   width: 100%;
-  height: 44px;
+  height: 48px;
   border-radius: 8px;
 }

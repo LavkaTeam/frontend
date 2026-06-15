@@ -2,9 +2,13 @@ import { AllCategoriesDropdown } from '../Category/AllCategoriesDropdown';
 
 import styles from './HeaderMenu.module.css';
 
-const HeaderMenu = () => {
+interface HeaderMenuProps {
+  isSticky?: boolean;
+}
+
+const HeaderMenu = ({ isSticky }: HeaderMenuProps) => {
   return (
-    <section className={styles.HeaderMenu}>
+    <section className={`${styles.HeaderMenu} ${isSticky ? styles.sticky : ''}`}>
       <div className='container'>
         <div className={styles.HeaderMenuContainer}>
           <AllCategoriesDropdown />
