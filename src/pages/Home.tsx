@@ -152,7 +152,7 @@ const Home = () => {
                         to='/products'
                         className={styles.topSelectButtonLink}
                       >
-                        <Button>View all products</Button>
+                        <Button variant='secondary'>View all products</Button>
                       </Link>
                     ) : null
                   }

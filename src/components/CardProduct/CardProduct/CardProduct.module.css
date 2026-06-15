@@ -416,3 +416,16 @@
   font-weight: 700;
   text-align: center;
 }
+
+.imageLink {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.titleLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}

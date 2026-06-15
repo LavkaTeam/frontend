@@ -73,7 +73,6 @@
 .minOrderSkeleton,
 .sellerLine,
 .sellerLineLong,
-.sellerLogoSkeleton,
 .relatedHeader,
 .divider {
   background: var(--color-gray-200);
@@ -257,11 +256,7 @@
   gap: 24px;
 }
 
-.sellerLogoSkeleton {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-}
+
 
 .sellerLinkSkeleton {
   width: 220px;

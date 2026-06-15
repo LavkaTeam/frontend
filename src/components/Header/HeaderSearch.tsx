@@ -29,12 +29,11 @@ const HeaderSearch = () => {
 
   const formRef = useRef<HTMLFormElement>(null);
 
+  const urlQuery = searchParams.get('name') || '';
+
   useEffect(() => {
-    const urlQuery = searchParams.get('name') || '';
-    if (urlQuery !== searchValue) {
-      setSearchValue(urlQuery);
-    }
-  }, [searchParams, searchValue]);
+    setSearchValue(urlQuery);
+  }, [urlQuery]);
 
   // Handle outside click to close suggestions
   useEffect(() => {
@@ -47,6 +46,11 @@ const HeaderSearch = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Close suggestions when navigation/route changes
+  useEffect(() => {
+    setIsSuggestionsVisible(false);
+  }, [location]);
 
   const performSearch = (query: string) => {
     if (query) {
