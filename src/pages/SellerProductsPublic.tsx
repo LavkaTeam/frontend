@@ -96,29 +96,39 @@ const SellerProductsPublic = () => {
         >
           <div className={styles.headerMain}>
             <div className={styles.summaryBlock}>
-              <div className={styles.identityBlock}>
-                {seller?.logoUrl ? (
-                  <div className={styles.logoWrap}>
-                    <img
-                      src={seller.logoUrl}
-                      alt={seller.companyName || seller.displayName || 'Seller logo'}
-                      className={styles.logo}
-                    />
+              {isSellerLoading ? (
+                <div className={styles.identityBlock}>
+                  <div className={styles.logoSkeleton}></div>
+                  <div className={styles.headerTitleBlockSkeleton}>
+                    <div className={styles.titleSkeleton}></div>
+                    <div className={styles.subtitleSkeleton}></div>
                   </div>
-                ) : null}
-
-                <div className={styles.headerTitleBlock}>
-                  <HeadingH3>{sellerName}</HeadingH3>
-                  {showDisplayName ? (
-                    <p className={styles.displayName}>{seller.displayName}</p>
-                  ) : null}
-                  <p className={styles.subtitle}>
-                    {seller
-                      ? `Public products from ${sellerName} in one place.`
-                      : 'All public products from this seller in one place.'}
-                  </p>
                 </div>
-              </div>
+              ) : (
+                <div className={styles.identityBlock}>
+                  {seller?.logoUrl ? (
+                    <div className={styles.logoWrap}>
+                      <img
+                        src={seller.logoUrl}
+                        alt={seller.companyName || seller.displayName || 'Seller logo'}
+                        className={styles.logo}
+                      />
+                    </div>
+                  ) : null}
+
+                  <div className={styles.headerTitleBlock}>
+                    <HeadingH3>{sellerName}</HeadingH3>
+                    {showDisplayName ? (
+                      <p className={styles.displayName}>{seller.displayName}</p>
+                    ) : null}
+                    <p className={styles.subtitle}>
+                      {seller
+                        ? `Public products from ${sellerName} in one place.`
+                        : 'All public products from this seller in one place.'}
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {isSellerLoading ? (
                 <div className={styles.metaSkeletonRow}>
@@ -177,14 +187,31 @@ const SellerProductsPublic = () => {
             </div>
 
             {isSellerLoading ? (
-              <div className={styles.detailsSkeleton}>
-                <div className={styles.logoSkeleton}></div>
-                <div className={styles.detailsSkeletonLines}>
-                  <div className={styles.metaSkeleton}></div>
-                  <div className={styles.metaSkeleton}></div>
-                  <div className={styles.metaSkeleton}></div>
+              <aside className={styles.detailsPanel}>
+                <span className={styles.detailsDivider}></span>
+                <div className={styles.detailsGroup}>
+                  <div className={styles.detailRow}>
+                    <div className={styles.detailLabelSkeleton}></div>
+                    <div className={styles.detailValueSkeleton}></div>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <div className={styles.detailLabelSkeleton}></div>
+                    <div className={styles.detailValueSkeleton}></div>
+                  </div>
                 </div>
-              </div>
+
+                <span className={styles.detailsDivider}></span>
+                <div className={styles.detailsGroup}>
+                  <div className={styles.detailRow}>
+                    <div className={styles.detailLabelSkeleton}></div>
+                    <div className={styles.detailValueSkeleton}></div>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <div className={styles.detailLabelSkeleton}></div>
+                    <div className={styles.detailValueSkeleton}></div>
+                  </div>
+                </div>
+              </aside>
             ) : seller ? (
               <aside className={styles.detailsPanel}>
                 <span className={styles.detailsDivider}></span>

@@ -185,27 +185,28 @@ const CardProduct = ({ card }: CardProductProps) => {
         {isFavorite ? <SolidHeart /> : <OutlineHeart />}
       </div>
 
-      <Link
-        to={`/product/${card.id}`}
+      <div
         className={styles.cardLinkArea}
         onMouseEnter={() => setIsImageHovered(true)}
         onMouseLeave={() => setIsImageHovered(false)}
       >
-        <div className={styles.cardImageWrapper}>
-          {imageUrls.map((url, index) => (
-            <img
-              key={`${card.id}-image-${index}`}
-              src={url}
-              alt={card.name}
-              className={`${styles.cardImage} ${
-                index === activeImageIndex
-                  ? styles.imageVisible
-                  : styles.imageHidden
-              }`}
-              loading={index === 0 ? 'eager' : 'lazy'}
-            />
-          ))}
-        </div>
+        <Link to={`/product/${card.id}`} className={styles.imageLink}>
+          <div className={styles.cardImageWrapper}>
+            {imageUrls.map((url, index) => (
+              <img
+                key={`${card.id}-image-${index}`}
+                src={url}
+                alt={card.name}
+                className={`${styles.cardImage} ${
+                  index === activeImageIndex
+                    ? styles.imageVisible
+                    : styles.imageHidden
+                }`}
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+            ))}
+          </div>
+        </Link>
 
         <div className={styles.cardProductInfo}>
           <div className={styles.cardDetailsTop}>
@@ -220,7 +221,9 @@ const CardProduct = ({ card }: CardProductProps) => {
 
             <div className={styles.cardProductMainBlock}>
               <div className={styles.headingAndSub}>
-                <span className={styles.heading}>{card.name}</span>
+                <Link to={`/product/${card.id}`} className={styles.titleLink}>
+                  <span className={styles.heading}>{card.name}</span>
+                </Link>
 
                 {(card.volume || card.alcohol) && (
                   <span className={styles.subHeading}>
@@ -237,7 +240,7 @@ const CardProduct = ({ card }: CardProductProps) => {
               </div>
 
               <div className={styles.ratingBlock}>
-                <RatingStars rating={card.averageRating || 0} max={5} />
+                <RatingStars rating={card.averageRating || 0} max={5} size={16} />
                 <span className={styles.ratingValue}>
                   {card.averageRating ? card.averageRating.toFixed(1) : '0.0'}
                 </span>
@@ -264,7 +267,7 @@ const CardProduct = ({ card }: CardProductProps) => {
             </div>
           </div>
         </div>
-      </Link>
+      </div>
 
       <div className={styles.cartButtonWrapper}>
         {hasMinOrderRule && (

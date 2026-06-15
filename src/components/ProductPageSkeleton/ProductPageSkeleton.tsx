@@ -78,7 +78,6 @@ const ProductPageSkeleton = () => {
           <div className={styles.sellerBlock}>
             <div className={styles.blockTitle}></div>
             <div className={styles.sellerSkeletonRow}>
-              <div className={styles.sellerLogoSkeleton}></div>
               <div className={styles.sellerLinkSkeleton}></div>
             </div>
             <div className={styles.sellerLineLong}></div>

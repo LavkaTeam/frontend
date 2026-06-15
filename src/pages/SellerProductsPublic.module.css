@@ -131,7 +131,7 @@
 .detailsPanel {
   display: flex;
   align-items: stretch;
-  gap: 20px;
+  gap: 36px;
   width: fit-content;
   max-width: none;
   min-width: 0;
@@ -164,7 +164,6 @@
 
 .detailsDivider {
   width: 1px;
-  height: 100%;
   background: var(--color-gray-300);
   align-self: stretch;
   flex-shrink: 0;
@@ -210,35 +209,69 @@
   gap: 12px;
 }
 
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.metaSkeleton,
+.logoSkeleton,
+.titleSkeleton,
+.subtitleSkeleton,
+.detailLabelSkeleton,
+.detailValueSkeleton {
+  background: var(--color-gray-200);
+  animation: pulse 1.5s infinite ease-in-out;
+  border-radius: 4px;
+}
+
 .metaSkeleton {
   width: 180px;
   height: 20px;
   border-radius: 8px;
-  background: var(--color-gray-200);
-}
-
-.detailsSkeleton {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding-left: 32px;
-  border-left: 1px solid var(--color-gray-300);
-  width: fit-content;
-  max-width: none;
-  flex-shrink: 0;
-}
-
-.detailsSkeletonLines {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 
 .logoSkeleton {
-  width: 160px;
-  height: 72px;
+  width: 88px;
+  height: 88px;
   border-radius: 12px;
-  background: var(--color-gray-200);
+  flex-shrink: 0;
+}
+
+.headerTitleBlockSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.titleSkeleton {
+  width: 240px;
+  height: 32px;
+  border-radius: 6px;
+}
+
+.subtitleSkeleton {
+  width: 320px;
+  height: 20px;
+  margin-top: 4px;
+}
+
+.detailLabelSkeleton {
+  width: 80px;
+  height: 14px;
+}
+
+.detailValueSkeleton {
+  width: 140px;
+  height: 18px;
 }
 
 .skeletonGrid {
