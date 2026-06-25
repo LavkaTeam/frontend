@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 type ToastType = 'success' | 'error';
 
@@ -8,21 +8,40 @@ interface Toast {
   type: ToastType;
 }
 
+let toastsState: Toast[] = [];
+const toastListeners = new Set<() => void>();
+
+const notifyToastListeners = () => {
+  toastListeners.forEach((listener) => listener());
+};
+
+const subscribeToToasts = (listener: () => void) => {
+  toastListeners.add(listener);
+
+  return () => {
+    toastListeners.delete(listener);
+  };
+};
+
+const getToastsSnapshot = () => toastsState;
+
 export const useToast = () => {
-  const [toasts, setToasts] = useState<Toast[]>([]);
+  const toasts = useSyncExternalStore(subscribeToToasts, getToastsSnapshot);
 
   const showToast = (message: string, type: ToastType) => {
     const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
+    toastsState = [...toastsState, { id, message, type }];
+    notifyToastListeners();
 
-    // Автоматично прибираємо сповіщення через 3 секунди
     setTimeout(() => {
-      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+      toastsState = toastsState.filter((toast) => toast.id !== id);
+      notifyToastListeners();
     }, 3000);
   };
 
   const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    toastsState = toastsState.filter((toast) => toast.id !== id);
+    notifyToastListeners();
   };
 
   return { toasts, showToast, removeToast };

@@ -3,6 +3,7 @@ import type { ProductSuggestion } from '@/types/api';
 import type { ProductImage } from '@/types/productCard';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { removeFromSearchHistory, clearSearchHistory } from '@/store/searchHistorySlice';
+import { resolvePricing } from '@/utils/pricing';
 import styles from './SearchSuggestions.module.css';
 
 interface SearchSuggestionsProps {
@@ -41,31 +42,6 @@ const SearchSuggestions = ({
   if (!isVisible) return null;
 
   const showHistory = searchValue.length < 2 && history.length > 0;
-
-  const getPricing = (item: ProductSuggestion) => {
-    const isDiscountValid =
-      typeof item.discountPrice === 'number' &&
-      item.discountPrice > 0 &&
-      item.discountPrice < item.price;
-    const discountedPrice = isDiscountValid ? item.discountPrice : null;
-    const basePrice = discountedPrice ?? item.price;
-
-    const validWholesaleTiers = [...(item.wholesalePrices || [])]
-      .filter((wp) => wp.minQuantity > 0 && wp.price > 0)
-      .sort((a, b) => a.minQuantity - b.minQuantity);
-
-    const wholesalePrices = validWholesaleTiers.map((wp) => wp.price);
-    const fromPrice = Math.min(basePrice, ...wholesalePrices);
-    const hasWholesalePriceRange =
-      wholesalePrices.length > 0 &&
-      new Set([basePrice, ...wholesalePrices].map((p) => p.toFixed(2))).size >
-        1;
-
-    return {
-      fromPrice,
-      hasWholesalePriceRange,
-    };
-  };
 
   const getImageUrl = (image: string | ProductImage) => {
     if (typeof image === 'string') return image;
@@ -126,7 +102,7 @@ const SearchSuggestions = ({
         ) : suggestions.length > 0 ? (
           <>
             {suggestions.map((item) => {
-              const { fromPrice, hasWholesalePriceRange } = getPricing(item);
+              const { fromPrice, hasWholesalePriceRange } = resolvePricing(item, 0);
               const imageUrl = getImageUrl(item.mainImage);
 
               return (
