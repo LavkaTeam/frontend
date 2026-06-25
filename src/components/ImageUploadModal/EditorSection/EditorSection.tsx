@@ -1,15 +1,28 @@
-import Cropper from 'react-easy-crop';
 import { UndoIcon } from '@/components/ui/icons/UndoIcon';
 import { RedoIcon } from '@/components/ui/icons/RedoIcon';
 import { CompareIcon } from '@/components/ui/icons/CompareIcon';
 import type { ImageEditorState } from '@/hooks/useImageEditor';
+import Cropper from './Cropper';
 import styles from './EditorSection.module.css';
 
 interface EditorSectionProps {
   imageSrc: string;
   aspectRatio: number;
   editor: ImageEditorState;
-  onCropComplete: (croppedArea: any, croppedAreaPixels: any) => void;
+  onCropComplete: (
+    croppedArea: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    },
+    croppedAreaPixels: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    },
+  ) => void;
 }
 
 export const EditorSection = ({

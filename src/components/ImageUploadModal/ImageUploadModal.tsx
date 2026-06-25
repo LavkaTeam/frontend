@@ -44,7 +44,12 @@ export const ImageUploadModal = ({
 
   const [urlInput, setUrlInput] = useState('');
   const [isDragging, setIsDragging] = useState(false);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState<{
     message: string;
@@ -141,9 +146,15 @@ export const ImageUploadModal = ({
     }
   };
 
-  const onCropComplete = useCallback((_: any, croppedPixels: any) => {
-    setCroppedAreaPixels(croppedPixels);
-  }, []);
+  const onCropComplete = useCallback(
+    (
+      _: { x: number; y: number; width: number; height: number },
+      croppedPixels: { x: number; y: number; width: number; height: number },
+    ) => {
+      setCroppedAreaPixels(croppedPixels);
+    },
+    [],
+  );
 
   const handleSave = async () => {
     if (!imageSrc || !croppedAreaPixels) return;
