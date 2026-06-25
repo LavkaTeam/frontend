@@ -8,6 +8,7 @@ import { LogoutIcon } from '../ui/icons/LogoutIcon';
 import { HeaderIcon } from '../HeaderIcon';
 import { HeaderSearch } from './HeaderSearch';
 import { useAppSelector } from '@/store/hooks';
+import { useGetCart } from '@/hooks/useCartQueries';
 import styles from './Header.module.css';
 
 const Header = () => {
@@ -16,7 +17,10 @@ const Header = () => {
   const cart = useAppSelector((state) => state.cart);
   const favorites = useAppSelector((state) => state.favorites);
 
+  const { data: remoteCart } = useGetCart(isAuthenticated);
   const { handleSubmit: handleLogOut } = useLogOutHandler();
+
+  const cartCount = isAuthenticated ? (remoteCart?.items?.length || 0) : cart.length;
 
   return (
     <header className={styles.wrapper}>
@@ -45,7 +49,7 @@ const Header = () => {
                   <HeaderIcon
                     icon={<ShoppingCart currentColor='#252B37' />}
                     iconText='Cart'
-                    count={cart.length}
+                    count={cartCount}
                   />
                 </Link>
               </div>

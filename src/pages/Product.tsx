@@ -4,12 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addToHistory } from '@/store/viewingHistorySlice';
 import { toggleFavorite } from '@/store/favoritesSlice';
-import {
-  addItem,
-  increaseQuantity,
-  decreaseQuantity,
-  updateItemQuantity,
-} from '@/store/cartSlice';
+import { useCartActions } from '@/hooks/useCartActions';
 import { useProduct } from '@/hooks/useProduct';
 import { useSearchProducts } from '@/hooks/useSearchProducts';
 
@@ -27,6 +22,7 @@ import { ArrowButton } from '@/components/ui/icons/ArrowButton';
 import { RatingStars } from '@/components/ui/RatingStars';
 import { Badge } from '@/components/ui/Badge';
 import { ProductPageSkeleton } from '@/components/ProductPageSkeleton/ProductPageSkeleton';
+import { resolvePricing } from '@/utils/pricing';
 import NotFound from './NotFound';
 
 import styles from './Product.module.css';
@@ -165,10 +161,14 @@ const Product = () => {
   const [isDescriptionOverflowing, setIsDescriptionOverflowing] =
     useState(false);
 
-  const cartItem = useAppSelector((state) =>
-    state.cart.find((item) => item.id === productId),
-  );
-  const quantityInCart = cartItem ? cartItem.quantity : 0;
+  const {
+    addItem,
+    updateQuantity,
+    getCartItemQuantity,
+    isAddingItem,
+    isRemovingItem,
+  } = useCartActions();
+  const quantityInCart = productId ? getCartItemQuantity(productId) : 0;
   const isFavorite = useAppSelector((state) =>
     productId ? state.favorites.includes(productId) : false,
   );
@@ -276,14 +276,10 @@ const Product = () => {
     Math.min(product.minimumOrderQuantity || 1, Math.max(product.quantity, 1)),
   );
   const isInStock = Boolean(product.inStock && product.quantity > 0);
-  const isDiscountValid =
-    typeof product.discountPrice === 'number' &&
-    product.discountPrice > 0 &&
-    product.discountPrice < product.price;
-  const discountedPrice = isDiscountValid
-    ? Number(product.discountPrice)
-    : null;
-  const basePrice = discountedPrice ?? product.price;
+  const { discountedPrice, basePrice, currentUnitPrice } = resolvePricing(
+    product,
+    quantityInCart,
+  );
   const sortedWholesalePrices = [...(product.wholesalePrices || [])]
     .filter((tier) => tier.minQuantity > 0 && tier.price > 0)
     .sort((a, b) => a.minQuantity - b.minQuantity);
@@ -303,13 +299,6 @@ const Product = () => {
     hasWholesalePrices &&
     new Set([basePrice, ...pricePoints].map((price) => price.toFixed(2))).size >
       1;
-
-  let currentUnitPrice = basePrice;
-  for (const tier of sortedWholesalePrices) {
-    if (quantityInCart >= tier.minQuantity) {
-      currentUnitPrice = tier.price;
-    }
-  }
 
   const filteredRelatedProducts = relatedProducts
     .filter((item) => item.category === product.category)
@@ -350,7 +339,7 @@ const Product = () => {
     if (value < minOrderQty) value = minOrderQty;
     if (value > product.quantity) value = product.quantity;
 
-    dispatch(updateItemQuantity({ id: product.id, quantity: value }));
+    updateQuantity(product.id, value);
   };
 
   const handleOpenDrawer = (
@@ -627,9 +616,10 @@ const Product = () => {
               )}
               {quantityInCart === 0 ? (
                 <Button
-                  onClick={() => dispatch(addItem(product))}
+                  onClick={() => addItem(product, Math.max(1, minOrderQty))}
                   icon={<ShoppingCart />}
                   disabled={!isInStock}
+                  isLoading={isAddingItem(product.id)}
                 >
                   Add to cart
                 </Button>
@@ -643,10 +633,16 @@ const Product = () => {
                     <div className={styles.quantityWrapper}>
                       <div className={styles.quantityBlock}>
                         <button
-                          onClick={() =>
-                            dispatch(decreaseQuantity({ id: product.id }))
-                          }
+                          onClick={() => {
+                            if (quantityInCart > minOrderQty) {
+                              updateQuantity(product.id, quantityInCart - 1);
+                            }
+                          }}
                           className={styles.quantityBtn}
+                          disabled={
+                            isRemovingItem(product.id) ||
+                            quantityInCart <= minOrderQty
+                          }
                         >
                           -
                         </button>
@@ -658,14 +654,17 @@ const Product = () => {
                           onChange={handleQuantityChange}
                           min={minOrderQty}
                           max={product.quantity}
+                          disabled={isRemovingItem(product.id)}
                         />
 
                         <button
-                          onClick={() =>
-                            dispatch(increaseQuantity({ id: product.id }))
-                          }
+                          onClick={() => {
+                            if (quantityInCart > 0 && quantityInCart < product.quantity) {
+                              updateQuantity(product.id, quantityInCart + 1);
+                            }
+                          }}
                           className={styles.quantityBtn}
-                          disabled={isMaxQuantityReached}
+                          disabled={isMaxQuantityReached || isRemovingItem(product.id)}
                         >
                           +
                         </button>

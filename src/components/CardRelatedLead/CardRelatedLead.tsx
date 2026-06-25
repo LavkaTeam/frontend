@@ -6,7 +6,7 @@ const CardRelatedLead = () => {
     <Link to="/accessories" className={styles.leadCard}>
       <div className={styles.imageWrapper}>
         <img
-          src="./public/images/AccessoriesCard.jpg"
+          src="/images/AccessoriesCard.jpg"
           alt="Alcohol Accessories"
         />
       </div>

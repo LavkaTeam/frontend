@@ -5,16 +5,11 @@ import { OutlineHeart, SolidHeart } from '@/components/ui/icons/Heart';
 import { ShoppingCart } from '@/components/ShoppingCart';
 import type { Product } from '@/types/productCard';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import {
-  addItem,
-  decreaseQuantity,
-  increaseQuantity,
-  removeItem,
-  updateItemQuantity,
-} from '@/store/cartSlice';
+import { useCartActions } from '@/hooks/useCartActions';
 import { toggleFavorite } from '@/store/favoritesSlice';
 import { RatingStars } from '@/components/ui/RatingStars';
 import { Badge } from '@/components/ui/Badge';
+import { resolvePricing } from '@/utils/pricing';
 import styles from './CardProduct.module.css';
 
 // --- 1. Pure Utility Functions (SOLID / DRY) ---
@@ -29,39 +24,6 @@ const getProductImageUrls = (card: Product): string[] => {
   return uniqueUrls.length > 0
     ? uniqueUrls
     : ['https://placehold.co/400?text=No+Image'];
-};
-
-const getPricing = (card: Product, quantityInCart: number) => {
-  const isDiscountValid =
-    typeof card.discountPrice === 'number' &&
-    card.discountPrice > 0 &&
-    card.discountPrice < card.price;
-  const discountedPrice = isDiscountValid ? card.discountPrice : null;
-  const basePrice = discountedPrice ?? card.price;
-
-  const validWholesaleTiers = [...(card.wholesalePrices || [])]
-    .filter((wp) => wp.minQuantity > 0 && wp.price > 0)
-    .sort((a, b) => a.minQuantity - b.minQuantity);
-
-  const wholesalePrices = validWholesaleTiers.map((wp) => wp.price);
-  const fromPrice = Math.min(basePrice, ...wholesalePrices);
-  const hasWholesalePriceRange =
-    wholesalePrices.length > 0 &&
-    new Set([basePrice, ...wholesalePrices].map((p) => p.toFixed(2))).size > 1;
-
-  let currentUnitPrice = basePrice;
-  for (const tier of validWholesaleTiers) {
-    if (quantityInCart >= tier.minQuantity) {
-      currentUnitPrice = Math.min(currentUnitPrice, tier.price);
-    }
-  }
-
-  return {
-    discountedPrice,
-    fromPrice,
-    currentUnitPrice,
-    hasWholesalePriceRange,
-  };
 };
 
 // --- 2. Isolated Custom Hooks (KISS / Single Responsibility) ---
@@ -109,16 +71,21 @@ type CardProductProps = {
 
 const CardProduct = ({ card }: CardProductProps) => {
   const dispatch = useAppDispatch();
+  const {
+    addItem,
+    updateQuantity,
+    getCartItemQuantity,
+    isAddingItem,
+    isRemovingItem,
+  } = useCartActions();
 
   // Selectors
-  const cartItems = useAppSelector((state) => state.cart);
-  const cartItem = cartItems.find((item) => item.id === card.id);
   const isFavorite = useAppSelector((state) =>
     state.favorites.includes(card.id),
   );
 
   // Derived State
-  const quantityInCart = cartItem?.quantity || 0;
+  const quantityInCart = getCartItemQuantity(card.id);
   const minOrderQty = card.minimumOrderQuantity || 1;
   const isMaxQuantityReached = quantityInCart >= card.quantity;
   const hasMinOrderRule = minOrderQty > 1;
@@ -128,7 +95,10 @@ const CardProduct = ({ card }: CardProductProps) => {
     fromPrice,
     currentUnitPrice,
     hasWholesalePriceRange,
-  } = useMemo(() => getPricing(card, quantityInCart), [card, quantityInCart]);
+  } = useMemo(
+    () => resolvePricing(card, quantityInCart),
+    [card, quantityInCart],
+  );
 
   const imageUrls = useMemo(() => getProductImageUrls(card), [card]);
 
@@ -138,26 +108,24 @@ const CardProduct = ({ card }: CardProductProps) => {
   const { showMaxTooltip, triggerMaxTooltip } = useMaxQuantityTooltip();
 
   // Handlers
-  const handleAddToCart = () => dispatch(addItem(card));
+  const handleAddToCart = () => addItem(card, Math.max(1, card.minimumOrderQuantity || 1));
   const handleFavoriteClick = () => dispatch(toggleFavorite(card.id));
 
   const handleIncreaseQuantity = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (cartItem && cartItem.quantity < card.quantity) {
-      dispatch(increaseQuantity({ id: card.id }));
-      if (cartItem.quantity + 1 >= card.quantity) triggerMaxTooltip();
+    if (quantityInCart > 0 && quantityInCart < card.quantity) {
+      updateQuantity(card.id, quantityInCart + 1);
+      if (quantityInCart + 1 >= card.quantity) triggerMaxTooltip();
     } else {
       triggerMaxTooltip();
     }
   };
 
   const handleDecreaseQuantity = () => {
-    if (cartItem && cartItem.quantity <= minOrderQty) {
-      dispatch(removeItem({ id: card.id }));
-    } else {
-      dispatch(decreaseQuantity({ id: card.id }));
+    if (quantityInCart > minOrderQty) {
+      updateQuantity(card.id, quantityInCart - 1);
     }
   };
 
@@ -171,7 +139,7 @@ const CardProduct = ({ card }: CardProductProps) => {
     }
     if (value < minOrderQty) value = minOrderQty;
 
-    dispatch(updateItemQuantity({ id: card.id, quantity: value }));
+    updateQuantity(card.id, value);
   };
 
   return (
@@ -275,12 +243,13 @@ const CardProduct = ({ card }: CardProductProps) => {
             Min. order: {minOrderQty} pcs
           </span>
         )}
-        {!cartItem ? (
+        {quantityInCart === 0 ? (
           <div className={styles.actionStateWrapper}>
             <Button
               disabled={card.quantity <= 0}
               onClick={handleAddToCart}
               icon={<ShoppingCart />}
+              isLoading={isAddingItem(card.id)}
             >
               Add to cart
             </Button>
@@ -297,9 +266,13 @@ const CardProduct = ({ card }: CardProductProps) => {
                   <button
                     onClick={handleDecreaseQuantity}
                     className={styles.quantityBtn}
+                    disabled={
+                      isRemovingItem(card.id) ||
+                      (hasMinOrderRule && quantityInCart <= minOrderQty)
+                    }
                     title={
                       hasMinOrderRule && quantityInCart <= minOrderQty
-                        ? 'Remove from cart'
+                        ? `Minimum order: ${minOrderQty}`
                         : 'Decrease quantity'
                     }
                   >
@@ -313,11 +286,17 @@ const CardProduct = ({ card }: CardProductProps) => {
                     onChange={handleQuantityChange}
                     min={minOrderQty}
                     max={card.quantity}
+                    disabled={isRemovingItem(card.id)}
                   />
 
                   <button
                     onClick={handleIncreaseQuantity}
-                    className={`${styles.quantityBtn} ${isMaxQuantityReached ? styles.quantityBtnDisabled : ''}`}
+                    className={`${styles.quantityBtn} ${
+                      isMaxQuantityReached || isRemovingItem(card.id)
+                        ? styles.quantityBtnDisabled
+                        : ''
+                    }`}
+                    disabled={isMaxQuantityReached || isRemovingItem(card.id)}
                   >
                     +
                   </button>
