@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useLogin } from './useAuth';
 import { useNavigate } from 'react-router';
 import type { LoginPayload } from '@/types/auth';
+import { syncLocalUserData } from './syncLocalUserData';
 
 export const useLoginHandler = () => {
   const queryClient = useQueryClient();
@@ -16,34 +17,7 @@ export const useLoginHandler = () => {
       onSuccess: async (response) => {
         localStorage.setItem('token', response.token);
         queryClient.invalidateQueries({ queryKey: ['user'] });
-
-        try {
-          const localCartStr = localStorage.getItem('cart');
-          if (localCartStr) {
-            const localCart = JSON.parse(localCartStr);
-            if (Array.isArray(localCart) && localCart.length > 0) {
-              const { addCartItem } = await import('@/api/cart');
-              const { store } = await import('@/store');
-              const { clearCart } = await import('@/store/cartSlice');
-              
-              // Add all items from local cart to the backend
-              await Promise.all(
-                localCart.map((item) =>
-                  addCartItem({
-                    productId: item.id,
-                    requestedQuantity: item.quantity,
-                  }).catch(e => console.error('Failed to add item to cart', e))
-                ),
-              );
-
-              // Clear the local cart
-              store.dispatch(clearCart());
-              queryClient.invalidateQueries({ queryKey: ['cart'] });
-            }
-          }
-        } catch (e) {
-          console.error('Failed to sync local cart to backend', e);
-        }
+        await syncLocalUserData(queryClient);
 
         // Check if there's a redirect state, otherwise go to home
         const locationState = window.history.state as { usr?: { from?: string } };
