@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/Button';
 import { OutlineHeart, SolidHeart } from '@/components/ui/icons/Heart';
 import { ShoppingCart } from '@/components/ShoppingCart';
 import type { Product } from '@/types/productCard';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppSelector } from '@/store/hooks';
 import { useCartActions } from '@/hooks/useCartActions';
-import { toggleFavorite } from '@/store/favoritesSlice';
+import { useFavoriteActions } from '@/hooks/useFavoriteProducts';
 import { RatingStars } from '@/components/ui/RatingStars';
 import { Badge } from '@/components/ui/Badge';
 import { resolvePricing } from '@/utils/pricing';
@@ -70,7 +70,6 @@ type CardProductProps = {
 };
 
 const CardProduct = ({ card }: CardProductProps) => {
-  const dispatch = useAppDispatch();
   const {
     addItem,
     updateQuantity,
@@ -78,6 +77,7 @@ const CardProduct = ({ card }: CardProductProps) => {
     isAddingItem,
     isRemovingItem,
   } = useCartActions();
+  const { toggleFavorite } = useFavoriteActions();
 
   // Selectors
   const isFavorite = useAppSelector((state) =>
@@ -109,7 +109,7 @@ const CardProduct = ({ card }: CardProductProps) => {
 
   // Handlers
   const handleAddToCart = () => addItem(card, Math.max(1, card.minimumOrderQuantity || 1));
-  const handleFavoriteClick = () => dispatch(toggleFavorite(card.id));
+  const handleFavoriteClick = () => void toggleFavorite(card.id);
 
   const handleIncreaseQuantity = (e: React.MouseEvent) => {
     e.preventDefault();

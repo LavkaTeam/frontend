@@ -3,8 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addToHistory } from '@/store/viewingHistorySlice';
-import { toggleFavorite } from '@/store/favoritesSlice';
 import { useCartActions } from '@/hooks/useCartActions';
+import { useFavoriteActions } from '@/hooks/useFavoriteProducts';
 import { useProduct } from '@/hooks/useProduct';
 import { useSearchProducts } from '@/hooks/useSearchProducts';
 
@@ -168,6 +168,7 @@ const Product = () => {
     isAddingItem,
     isRemovingItem,
   } = useCartActions();
+  const { toggleFavorite } = useFavoriteActions();
   const quantityInCart = productId ? getCartItemQuantity(productId) : 0;
   const isFavorite = useAppSelector((state) =>
     productId ? state.favorites.includes(productId) : false,
@@ -687,7 +688,7 @@ const Product = () => {
 
             <div
               className={styles.favoritesBlock}
-              onClick={() => dispatch(toggleFavorite(product.id))}
+              onClick={() => void toggleFavorite(product.id)}
             >
               {isFavorite ? <SolidHeart /> : <OutlineHeart />}
               <span className={styles.favorites}>Favorites</span>
