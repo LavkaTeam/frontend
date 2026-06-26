@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRegister } from './useAuth';
 import { useNavigate } from 'react-router';
 import type { AuthPayload } from '@/types/auth';
+import { syncLocalUserData } from './syncLocalUserData';
 
 export const useRegisterHandler = () => {
   const queryClient = useQueryClient();
@@ -13,9 +14,10 @@ export const useRegisterHandler = () => {
     setError: (field: keyof AuthPayload, error: { message: string }) => void,
   ) => {
     register.mutate(data, {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         localStorage.setItem('token', response.token);
         queryClient.invalidateQueries({ queryKey: ['user'] });
+        await syncLocalUserData(queryClient);
 
         navigate('/');
       },
