@@ -6,7 +6,9 @@ const CartProductSkeleton = () => {
       <div className={styles.cardWrapper}>
         <div className={styles.cardContent}>
           <div className={styles.cardImg}>
-            <div className={`${styles.skeletonImage} ${styles.skeletonPulse}`}></div>
+            <div
+              className={`${styles.skeletonImage} ${styles.skeletonPulse}`}
+            ></div>
           </div>
           <div className={styles.cardInfo}>
             <div
@@ -28,15 +30,27 @@ const CartProductSkeleton = () => {
             </div>
           </div>
           <div className={styles.cardPriceWrap}>
-            <div className={`${styles.skeletonPrice} ${styles.skeletonPulse}`}></div>
-            <div className={`${styles.skeletonSubtitle} ${styles.skeletonPulse}`}></div>
+            <div
+              className={`${styles.skeletonPrice} ${styles.skeletonPulse}`}
+            ></div>
+            <div
+              className={`${styles.skeletonTax} ${styles.skeletonPulse}`}
+            ></div>
           </div>
-          <div className={`${styles.skeletonQuantity} ${styles.skeletonPulse}`}></div>
+          <div
+            className={`${styles.skeletonQuantity} ${styles.skeletonPulse}`}
+          ></div>
           <div className={styles.cardTotalWrap}>
-            <div className={`${styles.skeletonTotal} ${styles.skeletonPulse}`}></div>
-            <div className={`${styles.skeletonSubtitle} ${styles.skeletonPulse}`}></div>
+            <div
+              className={`${styles.skeletonTotal} ${styles.skeletonPulse}`}
+            ></div>
+            <div
+              className={`${styles.skeletonTax} ${styles.skeletonPulse}`}
+            ></div>
           </div>
-          <div className={`${styles.skeletonDelete} ${styles.skeletonPulse}`}></div>
+          <div
+            className={`${styles.skeletonDelete} ${styles.skeletonPulse}`}
+          ></div>
         </div>
       </div>
     </div>

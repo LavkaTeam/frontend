@@ -37,7 +37,7 @@
 .cardInfo {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
   color: var(--color-gray-800);
   font-family: 'Inter', sans-serif;
@@ -102,6 +102,7 @@
 .cardTotalWrap {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 4px;
   min-width: 0;
 }
@@ -222,16 +223,14 @@
 }
 
 .skeletonTitle {
-  width: 100%;
-  max-width: 380px;
-  height: 20px;
-  margin-bottom: 10px;
+  width: min(92%, 360px);
+  height: 18px;
   border-radius: 6px;
 }
 
 .skeletonSubtitle {
-  width: 260px;
-  height: 16px;
+  width: min(72%, 260px);
+  height: 14px;
   border-radius: 6px;
 }
 
@@ -239,11 +238,11 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .skeletonMetaChip {
-  height: 14px;
+  height: 12px;
   border-radius: 999px;
 }
 
@@ -260,8 +259,14 @@
 }
 
 .skeletonPrice {
-  width: 78px;
+  width: 84px;
   height: 22px;
+  border-radius: 6px;
+}
+
+.skeletonTax {
+  width: 92px;
+  height: 12px;
   border-radius: 6px;
 }
 
@@ -272,7 +277,7 @@
 }
 
 .skeletonTotal {
-  width: 90px;
+  width: 88px;
   height: 22px;
   border-radius: 6px;
 }
@@ -282,4 +287,42 @@
   height: 36px;
   border-radius: 999px;
   flex-shrink: 0;
+}
+
+@media (max-width: 1200px) {
+  .cardContent {
+    grid-template-columns: 84px minmax(240px, 1fr) 104px 112px 104px 32px;
+  }
+
+  .cardImg {
+    width: 84px;
+    height: 112px;
+  }
+
+  .skeletonImage {
+    width: 68px;
+    height: 96px;
+  }
+}
+
+@media (max-width: 900px) {
+  .cardContent {
+    grid-template-columns: 72px minmax(180px, 1fr) 88px 92px 88px 32px;
+    column-gap: 10px;
+  }
+
+  .cardImg {
+    width: 72px;
+    height: 100px;
+  }
+
+  .skeletonImage {
+    width: 60px;
+    height: 84px;
+  }
+
+  .skeletonQuantity {
+    width: 92px;
+    height: 40px;
+  }
 }
