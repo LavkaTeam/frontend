@@ -128,6 +128,31 @@
   margin-top: 16px;
 }
 
+.documentsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.documentsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.documentsTitle {
+  color: var(--color-gray-900);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 34px;
+}
+
+.documentsDescription {
+  color: var(--color-gray);
+  font-size: 16px;
+  line-height: 22px;
+}
+
 .goodsHeader {
   display: flex;
   justify-content: space-between;

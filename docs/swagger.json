@@ -1,0 +1,2752 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "B2bar Platform REST API",
+    "description": "API for marketplace Lavka"
+  },
+  "servers": [{ "url": "http://localhost:8080" }],
+  "security": [{ "bearerAuth": [] }],
+  "tags": [{ "name": "Image", "description": "API to images resources" }],
+  "paths": {
+    "/api/user/me": {
+      "get": {
+        "tags": ["Users Profile"],
+        "summary": "Get current user profile",
+        "operationId": "getCurrentUserInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserResponseDTO" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users Profile"],
+        "summary": "Update current user profile",
+        "operationId": "updateCurrentUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserUpdateRequestDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserResponseDTO" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/me/password": {
+      "put": {
+        "tags": ["Users Profile"],
+        "summary": "Change password",
+        "operationId": "changePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PasswordChangeDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/user/me/addresses/{addressId}": {
+      "put": {
+        "tags": ["Users Profile"],
+        "summary": "Update shipping address",
+        "operationId": "updateAddress",
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AddressDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/Address" } }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users Profile"],
+        "summary": "Delete shipping address",
+        "operationId": "deleteAddress",
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get product by ID",
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductResponseDto" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Products"],
+        "summary": "Update product",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProductRequestDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cart/items/{productId}": {
+      "put": {
+        "tags": ["cart-controller"],
+        "operationId": "updateItemQuantity",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CartUpdateRequestDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["cart-controller"],
+        "operationId": "removeItemFromCart",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/users/{id}/status": {
+      "put": {
+        "tags": ["Admin API - Users"],
+        "summary": "Change user verification status",
+        "operationId": "updateUserStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationStatusUpdateDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserResponseDTO" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/me/upload": {
+      "post": {
+        "tags": ["Users Profile"],
+        "summary": "Upload image/document (Logo or License)",
+        "operationId": "uploadFile",
+        "parameters": [
+          {
+            "name": "folder",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "documents" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string", "format": "binary" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/me/favorites/{productId}": {
+      "post": {
+        "tags": ["Users Profile"],
+        "summary": "Add product to favorites",
+        "operationId": "addFavorite",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Users Profile"],
+        "summary": "Remove product from favorites",
+        "operationId": "removeFavorite",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/user/me/favorites/sync": {
+      "post": {
+        "tags": ["Users Profile"],
+        "summary": "Sync favorites from local storage",
+        "operationId": "syncFavorites",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FavoritesSyncDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/user/me/addresses": {
+      "post": {
+        "tags": ["Users Profile"],
+        "summary": "Add shipping address",
+        "operationId": "addAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AddressDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/Address" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all product with pagination",
+        "operationId": "getAll",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageProductResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Products"],
+        "summary": "Create product",
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProductRequestDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{id}/wholesale-prices": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Add or update wholesale prices array",
+        "operationId": "updateWholesalePrices",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/WholesalePrice" }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "post": {
+        "tags": ["order-controller"],
+        "operationId": "checkout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OrderRequestDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/OrderResponseDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/{id}/documents/generate": {
+      "post": {
+        "tags": ["order-controller"],
+        "operationId": "generateDocument",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentGenerateRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/OrderDocumentDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/upload": {
+      "post": {
+        "tags": ["Image"],
+        "summary": "Upload images files ",
+        "operationId": "uploadMedia",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "description": "List of files for download",
+                    "items": { "type": "string", "format": "binary" }
+                  }
+                },
+                "required": ["files"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Media files have been successfully uploaded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Image" }
+              }
+            }
+          },
+          "400": {
+            "description": "Unsupported file type",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          },
+          "500": {
+            "description": "Error when uploading files",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/api/finances/payouts": {
+      "post": {
+        "tags": ["Finances & Transactions"],
+        "summary": "Request a payout to bank account",
+        "operationId": "requestPayout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PayoutRequestDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cart/me/sync": {
+      "post": {
+        "tags": ["cart-controller"],
+        "summary": "Sync cart from local storage",
+        "operationId": "syncCart",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CartSyncDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/cart/items": {
+      "post": {
+        "tags": ["cart-controller"],
+        "operationId": "addItemToCart",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CartItemRequestDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/auth/reset-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Reset password - Step 2: Set new password",
+        "operationId": "resetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Registration new user",
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "LogOut user",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "LogIn user",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/AuthDTO" } }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/auth/forgot-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Forgot password - Step 1: Request token",
+        "operationId": "forgotPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/products/{id}/status": {
+      "patch": {
+        "tags": ["Products"],
+        "summary": "Quick update product status (ACTIVE, HIDDEN, etc.)",
+        "operationId": "updateStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["ACTIVE", "HIDDEN", "UNDER_REVIEW", "ARCHIVED"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/{id}/status": {
+      "patch": {
+        "tags": ["order-controller"],
+        "operationId": "updateOrderStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderStatusUpdateRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/OrderResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/me/id": {
+      "get": {
+        "tags": ["Users Profile"],
+        "summary": "Get current user ID",
+        "operationId": "getCurrentUserId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/me/favorites": {
+      "get": {
+        "tags": ["Users Profile"],
+        "summary": "Get user favorites",
+        "operationId": "getFavorites",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ProductResponseDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sellers/{sellerId}": {
+      "get": {
+        "tags": ["Sellers"],
+        "summary": "Get public seller profile for storefront pages",
+        "operationId": "getPublicSellerProfile",
+        "parameters": [
+          {
+            "name": "sellerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSellerProfileDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/seller/{sellerId}/public": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all ACTIVE products for a seller's public showcase",
+        "operationId": "getPublicSellerProducts",
+        "parameters": [
+          {
+            "name": "sellerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageProductResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/seller/me": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all products for current authorized seller",
+        "operationId": "getMyProducts",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageProductResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/search": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Search products with dynamic filters",
+        "operationId": "searchProducts",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "WINE",
+                "BEER",
+                "STRONG_DRINKS",
+                "LOW_ALCOHOL_DRINKS",
+                "SOFT_DRINKS",
+                "BARWARE_ACCESSORIES"
+              ]
+            }
+          },
+          {
+            "name": "subcategory",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "producer",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "mainCategory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BESTSELLERS",
+                "RELATED_PRODUCTS",
+                "TOP_SELECT",
+                "NORMAL"
+              ]
+            }
+          },
+          {
+            "name": "volume",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": { "type": "number", "format": "double" }
+            }
+          },
+          {
+            "name": "alcoholRanges",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "sellerId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "promotionsOnly",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "countryOfOrigin",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "minimum": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": { "type": "integer", "default": 20, "minimum": 1 }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageProductResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/search/suggestions": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get lightweight product suggestions for search autocomplete",
+        "operationId": "getSuggestions",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductSuggestionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/search/filters": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get available filters based on current search context (Faceted Search). Call with no params to get global filters.",
+        "operationId": "getSearchFilters",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "WINE",
+                "BEER",
+                "STRONG_DRINKS",
+                "LOW_ALCOHOL_DRINKS",
+                "SOFT_DRINKS",
+                "BARWARE_ACCESSORIES"
+              ]
+            }
+          },
+          {
+            "name": "subcategory",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "producer",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "mainCategory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BESTSELLERS",
+                "RELATED_PRODUCTS",
+                "TOP_SELECT",
+                "NORMAL"
+              ]
+            }
+          },
+          {
+            "name": "volume",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": { "type": "number", "format": "double" }
+            }
+          },
+          {
+            "name": "alcoholRanges",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "sellerId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "promotionsOnly",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "countryOfOrigin",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/CategoryFiltersDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/all": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all products without pagination",
+        "operationId": "getAllProducts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ProductResponseDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/{orderId}/documents/{documentId}/download": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "downloadDocument",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "type": "string", "format": "byte" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/{id}": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "getOrderDetails",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/OrderResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/{id}/documents": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "getOrderDocuments",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/OrderDocumentDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/seller": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "getSellerOrders",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageOrderResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/me": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "getMyOrders",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageOrderResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images": {
+      "get": {
+        "tags": ["Image"],
+        "summary": "Get all visual resources with pagination",
+        "operationId": "getAllVisual",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (starting from 0)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 },
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of visual resources",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Page" }
+              }
+            }
+          },
+          "400": {
+            "description": "Incorrect pagination parameters",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageImageResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/{id}": {
+      "get": {
+        "tags": ["Image"],
+        "summary": "Get visual resource by ID",
+        "operationId": "getImageById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the visual resource",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Visual resource found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ImageResponseDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "Visual resource not found",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ImageResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "Incorrect ID",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ImageResponseDto" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Image"],
+        "summary": "Delete a visual resource by ID",
+        "operationId": "deleteImage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the visual resource to be deleted",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The visual resource has been successfully removed"
+          },
+          "404": { "description": "Visual resource not found" },
+          "400": { "description": "Incorrect ID" },
+          "500": { "description": "Deletion error" }
+        }
+      }
+    },
+    "/api/finances/transactions": {
+      "get": {
+        "tags": ["Finances & Transactions"],
+        "summary": "Get transactions history",
+        "operationId": "getTransactions",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["PROCESSING", "COMPLETED", "FAILED"]
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/finances/summary": {
+      "get": {
+        "tags": ["Finances & Transactions"],
+        "summary": "Get financial summary (balance & expected payments)",
+        "operationId": "getSummary",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/FinanceSummaryDTO" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories/tree": {
+      "get": {
+        "tags": ["Categories"],
+        "operationId": "getCategoryTree",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CategoryTreeDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cart/me": {
+      "get": {
+        "tags": ["cart-controller"],
+        "operationId": "getMyCart",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/CartResponseDto" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["cart-controller"],
+        "operationId": "clearMyCart",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/analytics/dashboard": {
+      "get": {
+        "tags": ["Analytics & Dashboard"],
+        "summary": "Get full dashboard data for a specific year",
+        "operationId": "getDashboard",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{productId}": {
+      "delete": {
+        "tags": ["Products"],
+        "summary": "Delete product",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/users/{id}": {
+      "delete": {
+        "tags": ["Admin API - Users"],
+        "summary": "Soft delete / Ban user",
+        "operationId": "softDeleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "country": { "type": "string" },
+          "city": { "type": "string" },
+          "street": { "type": "string" },
+          "zipCode": { "type": "string" },
+          "recipientName": { "type": "string" },
+          "recipientPhone": { "type": "string" },
+          "deliveryNotes": { "type": "string" }
+        }
+      },
+      "Subscriptions": {
+        "type": "object",
+        "properties": {
+          "receiveNews": { "type": "boolean" },
+          "receivePersonalizedOffers": { "type": "boolean" },
+          "receiveOrderStatusUpdates": { "type": "boolean" },
+          "over40Percent": { "type": "boolean" }
+        }
+      },
+      "UserUpdateRequestDTO": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "phoneNumber": { "type": "string" },
+          "companyName": { "type": "string" },
+          "logoUrl": { "type": "string" },
+          "registrationNumber": { "type": "string" },
+          "taxId": { "type": "string" },
+          "vatNumber": { "type": "string" },
+          "liquorLicenseNumber": { "type": "string" },
+          "liquorLicenseDocumentUrl": { "type": "string" },
+          "bankName": { "type": "string" },
+          "iban": { "type": "string" },
+          "bic": { "type": "string" },
+          "legalAddress": { "$ref": "#/components/schemas/Address" },
+          "subscriptions": { "$ref": "#/components/schemas/Subscriptions" }
+        }
+      },
+      "ImageResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "url": { "type": "string" },
+          "publicId": { "type": "string" }
+        }
+      },
+      "ProductResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "ID товару" },
+          "mainImage": {
+            "$ref": "#/components/schemas/ImageResponseDto",
+            "description": "Головне зображення"
+          },
+          "images": {
+            "type": "array",
+            "description": "Додаткові зображення",
+            "items": { "$ref": "#/components/schemas/ImageResponseDto" }
+          },
+          "name": {
+            "type": "string",
+            "description": "Назва товару",
+            "example": "Вино червоне"
+          },
+          "producer": {
+            "type": "string",
+            "description": "Виробник",
+            "example": "Шабо"
+          },
+          "price": {
+            "type": "number",
+            "description": "Базова ціна",
+            "example": 150.0
+          },
+          "volume": {
+            "type": "number",
+            "format": "double",
+            "description": "Об'єм (л)",
+            "example": 0.75
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Кількість на складі",
+            "example": 100
+          },
+          "mainCategory": {
+            "type": "string",
+            "description": "Головна категорія",
+            "enum": ["BESTSELLERS", "RELATED_PRODUCTS", "TOP_SELECT", "NORMAL"]
+          },
+          "alcohol": {
+            "type": "number",
+            "format": "double",
+            "description": "Вміст алкоголю (%)",
+            "example": 12.5
+          },
+          "description": { "type": "string", "description": "Опис" },
+          "status": {
+            "type": "string",
+            "description": "Статус товару",
+            "enum": ["ACTIVE", "HIDDEN", "UNDER_REVIEW", "ARCHIVED"]
+          },
+          "inStock": {
+            "type": "boolean",
+            "description": "Чи є товар в наявності",
+            "example": true
+          },
+          "category": {
+            "type": "string",
+            "description": "Категорія товару",
+            "enum": [
+              "WINE",
+              "BEER",
+              "STRONG_DRINKS",
+              "LOW_ALCOHOL_DRINKS",
+              "SOFT_DRINKS",
+              "BARWARE_ACCESSORIES"
+            ]
+          },
+          "subcategory": {
+            "type": "string",
+            "description": "Підкатегорія",
+            "example": "RED_WINE"
+          },
+          "seller": {
+            "$ref": "#/components/schemas/SellerDto",
+            "description": "Інформація про продавця"
+          },
+          "sku": {
+            "type": "string",
+            "description": "SKU товару (артикул)",
+            "example": "WINE-001"
+          },
+          "countryOfOrigin": {
+            "type": "string",
+            "description": "Країна походження",
+            "example": "Ukraine"
+          },
+          "tags": {
+            "type": "array",
+            "description": "Теги товару",
+            "example": ["new", "limited"],
+            "items": { "type": "string" }
+          },
+          "minimumOrderQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Мінімальна кількість для замовлення",
+            "example": 1
+          },
+          "material": {
+            "type": "string",
+            "description": "Матеріал (для аксесуарів тощо)",
+            "example": "скло"
+          },
+          "discountPrice": {
+            "type": "number",
+            "description": "Акційна ціна (якщо є знижка)",
+            "example": 85.0
+          },
+          "barcode": {
+            "type": "string",
+            "description": "Штрихкод товару",
+            "example": 4820000000000
+          },
+          "salesCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Кількість продажів",
+            "example": 150
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double",
+            "description": "Середній рейтинг (відгуки)",
+            "example": 4.5
+          },
+          "reviewsCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Кількість відгуків",
+            "example": 25
+          },
+          "weight": {
+            "type": "number",
+            "format": "double",
+            "description": "Вага",
+            "example": 0.75
+          },
+          "taxRate": {
+            "type": "number",
+            "format": "double",
+            "description": "Податкова ставка (%)",
+            "example": 20.0
+          },
+          "dimensions": {
+            "type": "string",
+            "description": "Габарити (ВxШxГ)",
+            "example": "30x10x10"
+          },
+          "wholesalePrices": {
+            "$ref": "#/components/schemas/WholesalePrice",
+            "description": "Список оптових цін"
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "SellerDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "phoneNumber": { "type": "string" },
+          "companyName": { "type": "string" },
+          "logoUrl": { "type": "string" }
+        }
+      },
+      "UserResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "phoneNumber": { "type": "string" },
+          "companyName": { "type": "string" },
+          "logoUrl": { "type": "string" },
+          "registrationNumber": { "type": "string" },
+          "taxId": { "type": "string" },
+          "vatNumber": { "type": "string" },
+          "liquorLicenseNumber": { "type": "string" },
+          "liquorLicenseDocumentUrl": { "type": "string" },
+          "bankName": { "type": "string" },
+          "iban": { "type": "string" },
+          "bic": { "type": "string" },
+          "legalAddress": { "$ref": "#/components/schemas/Address" },
+          "shippingAddresses": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Address" }
+          },
+          "subscriptions": { "$ref": "#/components/schemas/Subscriptions" },
+          "role": { "type": "string", "enum": ["BUYER", "SELLER", "ADMIN"] },
+          "verificationStatus": {
+            "type": "string",
+            "enum": ["PENDING", "VERIFIED", "REJECTED", "NOT_VERIFIED"]
+          },
+          "products": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ProductResponseDto" }
+          }
+        }
+      },
+      "WholesalePrice": {
+        "type": "object",
+        "description": "Модель оптової ціни",
+        "properties": {
+          "minQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Мінімальна кількість для цієї ціни",
+            "example": 10
+          },
+          "price": {
+            "type": "number",
+            "description": "Ціна за одиницю",
+            "example": 80.0
+          }
+        }
+      },
+      "PasswordChangeDTO": {
+        "type": "object",
+        "properties": {
+          "oldPassword": { "type": "string" },
+          "newPassword": { "type": "string" }
+        }
+      },
+      "AddressDTO": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "country": { "type": "string" },
+          "city": { "type": "string" },
+          "street": { "type": "string" },
+          "zipCode": { "type": "string" },
+          "recipientName": { "type": "string" },
+          "recipientPhone": { "type": "string" },
+          "deliveryNotes": { "type": "string" }
+        }
+      },
+      "ProductRequestDTO": {
+        "type": "object",
+        "properties": {
+          "mainImageId": {
+            "type": "string",
+            "description": "ID головного зображення",
+            "example": "img123"
+          },
+          "imageIds": {
+            "type": "array",
+            "description": "Список ID додаткових зображень",
+            "items": { "type": "string" }
+          },
+          "name": {
+            "type": "string",
+            "description": "Назва товару",
+            "example": "Вино червоне"
+          },
+          "producer": {
+            "type": "string",
+            "description": "Виробник",
+            "example": "Шабо"
+          },
+          "price": {
+            "type": "number",
+            "description": "Базова роздрібна ціна",
+            "example": 150.0
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Кількість на складі",
+            "example": 100
+          },
+          "mainCategory": {
+            "type": "string",
+            "description": "Головна категорія товару",
+            "enum": ["BESTSELLERS", "RELATED_PRODUCTS", "TOP_SELECT", "NORMAL"]
+          },
+          "alcohol": {
+            "type": "number",
+            "format": "double",
+            "description": "Вміст алкоголю (%)",
+            "example": 12.5
+          },
+          "description": { "type": "string", "description": "Опис товару" },
+          "category": {
+            "type": "string",
+            "description": "Категорія товару",
+            "enum": [
+              "WINE",
+              "BEER",
+              "STRONG_DRINKS",
+              "LOW_ALCOHOL_DRINKS",
+              "SOFT_DRINKS",
+              "BARWARE_ACCESSORIES"
+            ]
+          },
+          "subcategory": {
+            "type": "string",
+            "description": "Підкатегорія товару",
+            "example": "RED_WINE"
+          },
+          "volume": {
+            "type": "number",
+            "format": "double",
+            "description": "Об'єм (л)",
+            "example": 0.75
+          },
+          "sku": {
+            "type": "string",
+            "description": "SKU товару (артикул)",
+            "example": "WINE-001"
+          },
+          "countryOfOrigin": {
+            "type": "string",
+            "description": "Країна походження",
+            "example": "Ukraine"
+          },
+          "tags": {
+            "type": "array",
+            "description": "Теги товару",
+            "example": ["new", "limited"],
+            "items": { "type": "string" }
+          },
+          "minimumOrderQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Мінімальна кількість для замовлення",
+            "example": 1
+          },
+          "material": {
+            "type": "string",
+            "description": "Матеріал (для аксесуарів тощо)",
+            "example": "скло"
+          },
+          "discountPrice": {
+            "type": "number",
+            "description": "Акційна ціна (якщо є знижка)",
+            "example": 85.0
+          },
+          "barcode": {
+            "type": "string",
+            "description": "Штрихкод товару",
+            "example": 4820000000000
+          },
+          "weight": {
+            "type": "number",
+            "format": "double",
+            "description": "Вага (кг або грами залежно від логіки)",
+            "example": 0.75
+          },
+          "dimensions": {
+            "type": "string",
+            "description": "Габарити (ВxШxГ)",
+            "example": "30x10x10"
+          },
+          "taxRate": {
+            "type": "number",
+            "format": "double",
+            "description": "Податкова ставка (%)",
+            "example": 20.0
+          },
+          "wholesalePrices": {
+            "$ref": "#/components/schemas/WholesalePrice",
+            "description": "Список оптових цін"
+          }
+        }
+      },
+      "CartUpdateRequestDto": {
+        "type": "object",
+        "properties": {
+          "requestedQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          }
+        },
+        "required": ["requestedQuantity"]
+      },
+      "VerificationStatusUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "verificationStatus": {
+            "type": "string",
+            "enum": ["PENDING", "VERIFIED", "REJECTED", "NOT_VERIFIED"]
+          }
+        }
+      },
+      "FileUploadResponseDTO": {
+        "type": "object",
+        "properties": { "url": { "type": "string" } }
+      },
+      "FavoritesSyncDTO": {
+        "type": "object",
+        "properties": {
+          "productIds": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "OrderRequestDto": {
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "INVOICE",
+              "CASH_ON_DELIVERY",
+              "CARD_ONLINE",
+              "DEFERRED_PAYMENT"
+            ]
+          },
+          "shippingDetails": { "$ref": "#/components/schemas/ShippingDetails" },
+          "orderComment": { "type": "string" }
+        }
+      },
+      "ShippingDetails": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "phone": { "type": "string" },
+          "city": { "type": "string" },
+          "deliveryType": {
+            "type": "string",
+            "enum": ["COURIER", "WAREHOUSE"]
+          },
+          "warehouseNumber": { "type": "string" },
+          "addressLine": { "type": "string" },
+          "trackingNumber": { "type": "string" }
+        }
+      },
+      "BillingDetails": {
+        "type": "object",
+        "properties": {
+          "companyName": { "type": "string" },
+          "registrationNumber": { "type": "string" },
+          "taxId": { "type": "string" },
+          "iban": { "type": "string" },
+          "bankName": { "type": "string" },
+          "legalAddress": { "type": "string" }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "url": { "type": "string" },
+          "publicId": { "type": "string" }
+        }
+      },
+      "OrderDocumentDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "orderId": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": [
+              "PURCHASE_ORDER",
+              "PROFORMA_INVOICE",
+              "INVOICE",
+              "DELIVERY_NOTE"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "GENERATED", "FAILED"]
+          },
+          "documentNumber": { "type": "string" },
+          "fileName": { "type": "string" },
+          "generatedAt": { "type": "string", "format": "date-time" },
+          "errorMessage": { "type": "string" }
+        }
+      },
+      "OrderItem": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "string" },
+          "sku": { "type": "string" },
+          "barcode": { "type": "string" },
+          "name": { "type": "string" },
+          "mainImage": { "$ref": "#/components/schemas/Image" },
+          "volume": { "type": "number", "format": "double" },
+          "alcohol": { "type": "number", "format": "double" },
+          "producer": { "type": "string" },
+          "country": { "type": "string" },
+          "quantity": { "type": "integer", "format": "int32" },
+          "price": { "type": "number" },
+          "originalPrice": { "type": "number" },
+          "priceType": {
+            "type": "string",
+            "enum": ["RETAIL", "WHOLESALE", "DISCOUNT"]
+          },
+          "itemSubtotal": { "type": "number" },
+          "itemTax": { "type": "number" },
+          "itemWeight": { "type": "number", "format": "double" }
+        }
+      },
+      "OrderResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "orderNumber": { "type": "string" },
+          "userId": { "type": "string" },
+          "buyerName": { "type": "string" },
+          "buyerEmail": { "type": "string" },
+          "buyerPhone": { "type": "string" },
+          "buyerCompany": { "type": "string" },
+          "sellerId": { "type": "string" },
+          "sellerName": { "type": "string" },
+          "sellerCompany": { "type": "string" },
+          "orderStatus": {
+            "type": "string",
+            "enum": ["NEW", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"]
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": ["AWAITING_PAYMENT", "PAID", "FAILED", "REFUNDED"]
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "INVOICE",
+              "CASH_ON_DELIVERY",
+              "CARD_ONLINE",
+              "DEFERRED_PAYMENT"
+            ]
+          },
+          "orderComment": { "type": "string" },
+          "shippingDetails": { "$ref": "#/components/schemas/ShippingDetails" },
+          "billingDetails": { "$ref": "#/components/schemas/BillingDetails" },
+          "summary": { "$ref": "#/components/schemas/Summary" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrderItem" }
+          },
+          "documents": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrderDocumentDto" }
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Summary": {
+        "type": "object",
+        "properties": {
+          "totalItems": { "type": "integer", "format": "int32" },
+          "totalWeight": { "type": "number", "format": "double" },
+          "subtotal": { "type": "number" },
+          "totalTax": { "type": "number" },
+          "shippingCost": { "type": "number" },
+          "grandTotal": { "type": "number" }
+        }
+      },
+      "DocumentGenerateRequestDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "PURCHASE_ORDER",
+              "PROFORMA_INVOICE",
+              "INVOICE",
+              "DELIVERY_NOTE"
+            ]
+          },
+          "force": { "type": "boolean" }
+        }
+      },
+      "PayoutRequestDTO": {
+        "type": "object",
+        "properties": { "amount": { "type": "number" } }
+      },
+      "TransactionResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "orderId": { "type": "string" },
+          "orderNumber": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["ORDER_REVENUE", "PAYOUT", "PLATFORM_FEE"]
+          },
+          "amount": { "type": "number" },
+          "status": {
+            "type": "string",
+            "enum": ["PROCESSING", "COMPLETED", "FAILED"]
+          },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CartItemRequestDto": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "string", "minLength": 1 },
+          "requestedQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          }
+        },
+        "required": ["productId", "requestedQuantity"]
+      },
+      "CartSyncDTO": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CartItemRequestDto" }
+          }
+        },
+        "required": ["items"]
+      },
+      "ResetPasswordRequestDTO": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string", "minLength": 1 },
+          "newPassword": { "type": "string", "minLength": 1 }
+        },
+        "required": ["newPassword", "token"]
+      },
+      "RegisterDTO": {
+        "type": "object",
+        "description": "DTO to register a new user",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "User name (Latin)",
+            "example": "John",
+            "maxLength": 50,
+            "minLength": 2,
+            "pattern": "^[A-Za-z\\-]{2,50}$"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "User name (Latin)",
+            "example": "Doe",
+            "maxLength": 50,
+            "minLength": 2,
+            "pattern": "^[A-Za-z\\-]{2,50}$"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email user (unique)",
+            "example": "john.doe@example.com",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "description": "Password",
+            "example": "Secure123",
+            "maxLength": 2147483647,
+            "minLength": 8,
+            "pattern": "^(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "Company name",
+            "example": "Wine&Co",
+            "maxLength": 100,
+            "minLength": 2,
+            "pattern": "^[A-Za-z0-9&.\\-'\\s]{2,100}$"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number in international format",
+            "example": "+380931234567",
+            "minLength": 1,
+            "pattern": "\\+?[1-9]\\d{9,14}$"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role user (BUYER або SELLER)",
+            "enum": ["BUYER", "SELLER", "ADMIN"],
+            "example": "SELLER"
+          }
+        },
+        "required": [
+          "companyName",
+          "email",
+          "firstName",
+          "lastName",
+          "password",
+          "phoneNumber"
+        ]
+      },
+      "LoginDTO": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "AuthDTO": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" },
+          "user": { "$ref": "#/components/schemas/UserResponseDTO" }
+        }
+      },
+      "ForgotPasswordRequestDTO": {
+        "type": "object",
+        "properties": { "email": { "type": "string", "minLength": 1 } },
+        "required": ["email"]
+      },
+      "OrderStatusUpdateRequestDto": {
+        "type": "object",
+        "properties": {
+          "orderStatus": {
+            "type": "string",
+            "enum": ["NEW", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"]
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": ["AWAITING_PAYMENT", "PAID", "FAILED", "REFUNDED"]
+          },
+          "trackingNumber": { "type": "string" }
+        }
+      },
+      "PublicSellerProfileDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "displayName": { "type": "string" },
+          "companyName": { "type": "string" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "phoneNumber": { "type": "string" },
+          "logoUrl": { "type": "string" },
+          "city": { "type": "string" },
+          "country": { "type": "string" },
+          "verificationStatus": {
+            "type": "string",
+            "enum": ["PENDING", "VERIFIED", "REJECTED", "NOT_VERIFIED"]
+          },
+          "verifiedSeller": { "type": "boolean" },
+          "hasLiquorLicense": { "type": "boolean" },
+          "activeProductsCount": { "type": "integer", "format": "int32" },
+          "inStockProductsCount": { "type": "integer", "format": "int32" },
+          "mainCategories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BESTSELLERS",
+                "RELATED_PRODUCTS",
+                "TOP_SELECT",
+                "NORMAL"
+              ]
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "WINE",
+                "BEER",
+                "STRONG_DRINKS",
+                "LOW_ALCOHOL_DRINKS",
+                "SOFT_DRINKS",
+                "BARWARE_ACCESSORIES"
+              ]
+            }
+          },
+          "minPrice": { "type": "number" },
+          "maxPrice": { "type": "number" },
+          "averageRating": { "type": "number", "format": "double" },
+          "totalReviewsCount": { "type": "integer", "format": "int32" }
+        }
+      },
+      "PageProductResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ProductResponseDto" }
+          },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "offset": { "type": "integer", "format": "int64" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "unpaged": { "type": "boolean" },
+          "pageNumber": { "type": "integer", "format": "int32" },
+          "paged": { "type": "boolean" },
+          "pageSize": { "type": "integer", "format": "int32" }
+        }
+      },
+      "SortObject": {
+        "type": "object",
+        "properties": {
+          "empty": { "type": "boolean" },
+          "unsorted": { "type": "boolean" },
+          "sorted": { "type": "boolean" }
+        }
+      },
+      "ProductSuggestionDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "mainImage": { "$ref": "#/components/schemas/ImageResponseDto" },
+          "price": { "type": "number" },
+          "discountPrice": { "type": "number" },
+          "wholesalePrices": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WholesalePrice" }
+          },
+          "producer": { "type": "string" },
+          "sku": { "type": "string" },
+          "volume": { "type": "number", "format": "double" },
+          "alcohol": { "type": "number", "format": "double" },
+          "quantity": { "type": "integer", "format": "int32" },
+          "minimumOrderQuantity": { "type": "integer", "format": "int32" }
+        }
+      },
+      "CategoryFiltersDto": {
+        "type": "object",
+        "properties": {
+          "minPrice": { "type": "number" },
+          "maxPrice": { "type": "number" },
+          "volumes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FilterOptionDto" }
+          },
+          "strengths": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FilterOptionDto" }
+          },
+          "countries": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FilterOptionDto" }
+          },
+          "producers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FilterOptionDto" }
+          },
+          "hasPromotionsAvailable": { "type": "boolean" }
+        }
+      },
+      "FilterOptionDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "count": { "type": "integer", "format": "int64" }
+        }
+      },
+      "PageOrderResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrderResponseDto" }
+          },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": { "type": "array", "items": {} },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "PageImageResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ImageResponseDto" }
+          },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "FinanceSummaryDTO": {
+        "type": "object",
+        "properties": {
+          "availableBalance": { "type": "number" },
+          "expectedPayments": { "type": "number" }
+        }
+      },
+      "CategoryTreeDto": {
+        "type": "object",
+        "properties": {
+          "category": { "type": "string" },
+          "subcategories": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "CartItemDto": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "string" },
+          "sku": { "type": "string" },
+          "barcode": { "type": "string" },
+          "name": { "type": "string" },
+          "mainImage": { "type": "string" },
+          "sellerId": { "type": "string" },
+          "sellerName": { "type": "string" },
+          "sellerCompany": { "type": "string" },
+          "requestedQuantity": { "type": "integer", "format": "int32" },
+          "volume": { "type": "number", "format": "double" },
+          "alcohol": { "type": "number", "format": "double" },
+          "producer": { "type": "string" },
+          "country": { "type": "string" },
+          "taxRate": { "type": "number", "format": "double" },
+          "appliedPrice": { "type": "number" },
+          "originalPrice": { "type": "number" },
+          "priceType": {
+            "type": "string",
+            "enum": ["RETAIL", "WHOLESALE", "DISCOUNT"]
+          },
+          "itemSubtotal": { "type": "number" },
+          "itemTax": { "type": "number" },
+          "itemWeight": { "type": "number", "format": "double" },
+          "availableStock": { "type": "integer", "format": "int32" },
+          "minimumOrderQuantity": { "type": "integer", "format": "int32" },
+          "isAvailable": { "type": "boolean" }
+        }
+      },
+      "CartResponseDto": {
+        "type": "object",
+        "properties": {
+          "cartId": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CartItemDto" }
+          },
+          "summary": { "$ref": "#/components/schemas/CartSummaryDto" }
+        }
+      },
+      "CartSummaryDto": {
+        "type": "object",
+        "properties": {
+          "totalItems": { "type": "integer", "format": "int32" },
+          "totalWeight": { "type": "number", "format": "double" },
+          "subtotal": { "type": "number" },
+          "totalTax": { "type": "number" },
+          "grandTotal": { "type": "number" }
+        }
+      },
+      "DashboardResponseDTO": {
+        "type": "object",
+        "properties": {
+          "mainMetrics": { "$ref": "#/components/schemas/MainMetrics" },
+          "orderStats": { "$ref": "#/components/schemas/OrderStats" },
+          "revenueChart": { "$ref": "#/components/schemas/RevenueChart" }
+        }
+      },
+      "MainMetrics": {
+        "type": "object",
+        "properties": {
+          "salesAmountUnits": { "type": "integer", "format": "int32" },
+          "totalRevenue": { "type": "number" },
+          "netProfit": { "type": "number" },
+          "revenueTrendPercentage": { "type": "number", "format": "double" }
+        }
+      },
+      "OrderStats": {
+        "type": "object",
+        "properties": {
+          "totalOrders": { "type": "integer", "format": "int64" },
+          "outOfStockProducts": { "type": "integer", "format": "int64" },
+          "newB2bClients": { "type": "integer", "format": "int64" },
+          "inProgressOrders": { "type": "integer", "format": "int64" },
+          "completedOrders": { "type": "integer", "format": "int64" },
+          "totalB2bClients": { "type": "integer", "format": "int64" }
+        }
+      },
+      "RevenueChart": {
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "object",
+            "additionalProperties": { "type": "number" }
+          },
+          "previousYear": {
+            "type": "object",
+            "additionalProperties": { "type": "number" }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "name": "bearerAuth",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

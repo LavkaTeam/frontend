@@ -1,9 +1,9 @@
 import React from 'react';
-import type { Order } from '@/types/order';
+import type { OrderResponseDto } from '@/types/order';
 import styles from './BuyerOrdersList.module.css';
 
 interface BuyerOrdersListProps {
-  orders: Order[];
+  orders: OrderResponseDto[];
   onOrderClick: (orderId: string) => void;
 }
 
@@ -41,16 +41,16 @@ const BuyerOrdersList: React.FC<BuyerOrdersListProps> = ({
           <tbody>
             {orders.map((order, index) => (
               <tr
-                key={`${order.orderId}-${index}`}
+                key={`${order.id}-${index}`}
                 className={styles.row}
-                onClick={() => onOrderClick(order.orderId)}
+                onClick={() => onOrderClick(order.id)}
               >
-                <td className={styles.cellWithBorder}>{order.orderId}</td>
+                <td className={styles.cellWithBorder}>{order.orderNumber}</td>
                 <td className={styles.cellWithBorder}>
-                  {formatDate(order.orderCreatedAt)}
+                  {formatDate(order.createdAt)}
                 </td>
                 <td className={styles.cellWithBorder}>
-                  {formatPrice(order.orderTotalPrice)}
+                  {formatPrice(order.summary.grandTotal)}
                 </td>
                 <td className={styles.cellWithBorder}>
                   <span
@@ -66,7 +66,7 @@ const BuyerOrdersList: React.FC<BuyerOrdersListProps> = ({
                     className={styles.detailsButton}
                     onClick={(e) => {
                       e.stopPropagation();
-                      onOrderClick(order.orderId);
+                      onOrderClick(order.id);
                     }}
                   >
                     Details
