@@ -26,7 +26,7 @@ interface CardSectionProps<T extends WithId> {
   leadCard?: React.ReactNode;
   footer?: React.ReactNode;
   noBottomMargin?: boolean;
-  isFetching?: boolean;
+  overlayActive?: boolean;
 }
 
 const CardSection = <T extends WithId>({
@@ -38,7 +38,7 @@ const CardSection = <T extends WithId>({
   leadCard,
   footer,
   noBottomMargin = false,
-  isFetching = false,
+  overlayActive = false,
 }: CardSectionProps<T>) => {
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
@@ -54,11 +54,7 @@ const CardSection = <T extends WithId>({
       <div className={noPaddings ? '' : 'container'}>
         {title ? <HeadingH3>{title}</HeadingH3> : null}
 
-        <div
-          className={`${styles.sliderWrapper} ${
-            isFetching ? styles.sliderWrapperFetching : ''
-          }`}
-        >
+        <div className={styles.sliderWrapper}>
           {hasCards ? (
             withSlider ? (
               <>
@@ -146,6 +142,9 @@ const CardSection = <T extends WithId>({
             <NoProductsFound />
           )}
 
+          {overlayActive ? (
+            <div className={styles.contentOverlay} aria-hidden='true' />
+          ) : null}
         </div>
 
         {footer ? <div className={styles.sectionFooter}>{footer}</div> : null}

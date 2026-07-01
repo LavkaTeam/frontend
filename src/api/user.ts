@@ -14,6 +14,25 @@ const getUser = (): Promise<UserResponse> => {
   });
 };
 
+const getUserId = async (): Promise<string> => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return Promise.reject('No token');
+  }
+
+  const response = await fetchData<string | { id: string }>('/user/me/id', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (typeof response === 'string' || typeof response === 'number') {
+    return String(response);
+  }
+
+  return String(response.id);
+};
+
 interface UpdateUserData {
   name: string;
   lastName: string;
@@ -47,4 +66,4 @@ const updateUser = (
   });
 };
 
-export { getUser, updateUser };
+export { getUser, getUserId, updateUser };

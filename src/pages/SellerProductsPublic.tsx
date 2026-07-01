@@ -1,4 +1,5 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 import { usePublicSellerProducts } from '@/hooks/usePublicSellerProducts';
 import { usePublicSellerProfile } from '@/hooks/usePublicSellerProfile';
@@ -31,16 +32,27 @@ const SellerProductsPublic = () => {
 
   const pageParam = searchParams.get('page');
   const currentPage = pageParam ? Math.max(1, Number(pageParam)) : 1;
+  const [isSellerPageLoading, setIsSellerPageLoading] = useState(false);
 
   const {
     seller,
     isLoading: isSellerLoading,
-    isFetching: isSellerFetching,
   } = usePublicSellerProfile(sellerId);
   const { products, totalPages, isLoading, isFetching } =
     usePublicSellerProducts(sellerId, currentPage - 1, 12);
 
+  useEffect(() => {
+    if (!isSellerPageLoading) return;
+
+    if (!isFetching) {
+      setIsSellerPageLoading(false);
+    }
+  }, [isFetching, isSellerPageLoading]);
+
   const handlePageChange = (page: number) => {
+    if (page === currentPage) return;
+
+    setIsSellerPageLoading(true);
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.set('page', String(page));
@@ -89,11 +101,7 @@ const SellerProductsPublic = () => {
           </span>
         </div>
 
-        <div
-          className={`${styles.headerContent} ${
-            isSellerFetching ? styles.fetching : ''
-          }`}
-        >
+        <div className={styles.headerContent}>
           <div className={styles.headerMain}>
             <div className={styles.summaryBlock}>
               {isSellerLoading ? (
@@ -275,14 +283,12 @@ const SellerProductsPublic = () => {
         <NoProductsFound />
       ) : (
         <>
-          <div className={isFetching ? styles.fetching : undefined}>
-            <CardSection
-              cards={products}
-              CardComponent={CardProduct}
-              isFetching={isFetching}
-              noPaddings
-            />
-          </div>
+          <CardSection
+            cards={products}
+            CardComponent={CardProduct}
+            noPaddings
+            overlayActive={isSellerPageLoading}
+          />
 
           {totalPages > 1 && (
             <div className={styles.paginationWrap}>

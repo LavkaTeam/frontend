@@ -1,5 +1,5 @@
 import { useParams, useSearchParams, Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useSearchProducts } from '@/hooks/useSearchProducts';
 import { useProductFilters } from '@/hooks/useProductFilters';
@@ -24,6 +24,7 @@ const Products = () => {
 
   const pageParam = searchParams.get('page');
   const currentPage = pageParam ? Math.max(1, Number(pageParam)) : 1;
+  const [isCatalogPageLoading, setIsCatalogPageLoading] = useState(false);
 
   const category = pathCategory || searchParams.get('category') || undefined;
   const subcategory =
@@ -111,6 +112,9 @@ const Products = () => {
   });
 
   const handlePageChange = (newPage: number) => {
+    if (newPage === currentPage) return;
+
+    setIsCatalogPageLoading(true);
     shouldScrollRef.current = true;
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
@@ -157,6 +161,14 @@ const Products = () => {
       shouldScrollRef.current = false;
     }
   }, [currentPage]);
+
+  useEffect(() => {
+    if (!isCatalogPageLoading) return;
+
+    if (!isNormalProductsFetching) {
+      setIsCatalogPageLoading(false);
+    }
+  }, [isCatalogPageLoading, isNormalProductsFetching]);
 
   useEffect(() => {
     if (!hasMountedFiltersRef.current) {
@@ -324,18 +336,13 @@ const Products = () => {
             ) : (
               <div
                 className={styles.productsContainer}
-                style={{
-                  position: 'relative',
-                  transition: 'opacity 0.2s',
-                  opacity: isNormalProductsFetching ? 0.4 : 1,
-                  pointerEvents: isNormalProductsFetching ? 'none' : 'auto',
-                }}
               >
                 <CardSection
                   title={false}
                   cards={normalProducts}
                   CardComponent={CardProduct}
                   noPaddings={true}
+                  overlayActive={isCatalogPageLoading}
                 />
 
                 <Pagination

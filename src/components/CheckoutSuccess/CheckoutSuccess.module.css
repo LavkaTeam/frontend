@@ -1,0 +1,402 @@
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 52px 24px 56px;
+  background: var(--color-primary-white);
+  text-align: center;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.heroIcon {
+  width: 100px;
+  height: 100px;
+  color: var(--color-green);
+  filter: drop-shadow(0 1px 20px #627d52);
+}
+
+.title {
+  max-width: 760px;
+  color: var(--color-gray-900);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.title span {
+  display: block;
+}
+
+.splitBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-600);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-top: 12px;
+}
+
+.content {
+  padding: 32px 0;
+}
+
+.ordersContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.ordersSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  color: var(--color-gray-900);
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.orderCard,
+.summaryCard {
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-primary-white);
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.orderCard {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 24px 26px;
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.supplierTitle {
+  color: var(--color-gray-900);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.orderNumber {
+  margin-top: 6px;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.supplierMeta {
+  margin-top: 6px;
+  color: var(--color-gray-600);
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.badgeReady {
+  border: 1px solid var(--color-green);
+  color: var(--color-green);
+}
+
+.badgePending {
+  border: 1px solid var(--color-error-300);
+  color: var(--color-error-300);
+}
+
+.badgeFailed {
+  border: 1px solid var(--color-error-500);
+  color: var(--color-error-500);
+}
+
+.progressBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.progressTrack {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-gray-200);
+  overflow: visible;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--color-green);
+}
+
+.progressThumb {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--color-green);
+  border-radius: 999px;
+  background: var(--color-primary-white);
+  transform: translate(-50%, -50%);
+}
+
+.progressLabels {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  text-align: right;
+}
+
+.progressLabel,
+.progressLabelActive {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.progressLabel {
+  color: var(--color-gray-500);
+}
+
+.progressLabelActive {
+  color: var(--color-green);
+}
+
+.progressLabels span:first-child {
+  text-align: center;
+}
+
+.progressLabels span:last-child {
+  text-align: right;
+}
+
+.cancelledState {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 18px;
+  border-radius: 18px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-error-300);
+  color: var(--color-error-500);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ghostAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 16px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 8px;
+  background: var(--color-primary-white);
+  color: var(--color-gray-800);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.ghostAction:hover:not(:disabled) {
+  border-color: var(--color-brand-burgundy);
+  color: var(--color-brand-burgundy);
+  box-shadow: 0 10px 18px -16px rgba(15, 23, 42, 0.4);
+}
+
+.ghostAction:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ghostAction svg {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  height: fit-content;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.summaryCard {
+  overflow: hidden;
+  min-width: 380px;
+  width: 100%;
+  padding: 18px;
+  box-shadow: none;
+}
+
+.summaryTitle {
+  padding: 0 0 24px;
+  color: var(--color-gray-900);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.summaryBlock {
+  padding-bottom: 12px;
+}
+
+.summaryBlock + .summaryBlock {
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-300);
+}
+
+.totalInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  color: var(--color-gray-800);
+  font-size: 16px;
+  line-height: 1.4;
+  padding-bottom: 12px;
+}
+
+.totalInfo:last-child {
+  padding-bottom: 0;
+}
+
+.totalInfo p {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.price {
+  color: var(--color-gray-900);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+}
+
+.mutedValue {
+  color: var(--color-gray-500);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: right;
+}
+
+.totalBlock {
+  margin-top: 4px;
+}
+
+.totalLabel {
+  color: var(--color-gray-900);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 30px;
+}
+
+.greenPrice {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 32px;
+  color: var(--color-brand-burgundy);
+}
+
+.checkoutButton {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.checkoutButton + a,
+.summaryCard > a {
+  display: block;
+}
+
+.sectionContainer {
+  display: flex;
+  gap: 24px;
+}

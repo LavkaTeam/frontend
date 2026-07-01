@@ -46,6 +46,20 @@
   cursor: not-allowed;
 }
 
+.button[aria-disabled='true'],
+.buttonSecondary[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button[aria-disabled='true']:hover {
+  background: var(--burgundy, #af261f);
+}
+
+.buttonSecondary[aria-disabled='true']:hover {
+  border: 2px solid var(--burgundy, #af261f);
+}
+
 @keyframes buttonPress {
   0% {
     transform: scale(1);

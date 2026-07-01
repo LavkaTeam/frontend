@@ -16,9 +16,12 @@
   position: relative;
 }
 
-.sliderWrapperFetching {
-  transition: opacity 0.2s ease;
-  opacity: 0.4;
+.contentOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(3px);
+  z-index: 12;
   pointer-events: none;
 }
 

@@ -5,6 +5,10 @@ export interface CartItemRequestDto {
   requestedQuantity: number;
 }
 
+export interface CartSyncRequestDto {
+  items: CartItemRequestDto[];
+}
+
 export interface CartUpdateRequestDto {
   requestedQuantity: number;
 }
@@ -28,6 +32,13 @@ export interface CartItemDto {
   taxRate?: number;
   appliedPrice?: number;
   totalPrice?: number;
+  originalPrice?: number;
+  priceType?: 'RETAIL' | 'WHOLESALE' | 'DISCOUNT';
+  itemSubtotal?: number;
+  itemTax?: number;
+  itemWeight?: number;
+  availableStock?: number;
+  isAvailable?: boolean;
   discountPrice?: number;
   wholesalePrices?: WholesalePrice[];
 }

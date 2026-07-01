@@ -1,5 +1,20 @@
 import type { QueryClient } from '@tanstack/react-query';
 
+const isMissingSyncEndpointError = (error: unknown) => {
+  if (!error || typeof error !== 'object') {
+    return false;
+  }
+
+  const status =
+    'status' in error && typeof error.status === 'number' ? error.status : undefined;
+  const message =
+    'message' in error && typeof error.message === 'string'
+      ? error.message.toLowerCase()
+      : '';
+
+  return status === 404 || message.includes('404') || message.includes('not found');
+};
+
 export const syncLocalUserData = async (queryClient: QueryClient) => {
   try {
     const { store } = await import('@/store');
@@ -11,21 +26,43 @@ export const syncLocalUserData = async (queryClient: QueryClient) => {
       const localCart = JSON.parse(localCartStr);
 
       if (Array.isArray(localCart) && localCart.length > 0) {
-        const { addCartItem } = await import('@/api/cart');
+        const cartItems = localCart
+          .filter(
+            (
+              item,
+            ): item is {
+              id: string;
+              quantity: number;
+            } =>
+              typeof item?.id === 'string' && typeof item?.quantity === 'number',
+          )
+          .map((item) => ({
+            productId: item.id,
+            requestedQuantity: item.quantity,
+          }));
 
-        await Promise.all(
-          localCart.map((item) =>
-            addCartItem({
-              productId: item.id,
-              requestedQuantity: item.quantity,
-            }).catch((error) =>
-              console.error('Failed to add item to cart', error),
-            ),
-          ),
-        );
+        if (cartItems.length > 0) {
+          const { addCartItem, syncCart } = await import('@/api/cart');
+
+          try {
+            await syncCart({ items: cartItems });
+          } catch (error) {
+            if (!isMissingSyncEndpointError(error)) {
+              throw error;
+            }
+
+            await Promise.all(
+              cartItems.map((item) =>
+                addCartItem(item).catch((cartItemError) =>
+                  console.error('Failed to add item to cart', cartItemError),
+                ),
+              ),
+            );
+          }
+        }
 
         store.dispatch(clearCart());
-        queryClient.invalidateQueries({ queryKey: ['cart'] });
+        await queryClient.invalidateQueries({ queryKey: ['cart'] });
       }
     }
 
@@ -44,7 +81,7 @@ export const syncLocalUserData = async (queryClient: QueryClient) => {
       }
     }
 
-    queryClient.invalidateQueries({ queryKey: ['favorites'] });
+    await queryClient.invalidateQueries({ queryKey: ['favorites'] });
   } catch (error) {
     console.error('Failed to sync local data to backend', error);
   }

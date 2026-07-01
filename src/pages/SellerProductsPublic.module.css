@@ -281,11 +281,6 @@
   margin-bottom: 80px;
 }
 
-.fetching {
-  opacity: 0.45;
-  pointer-events: none;
-}
-
 .paginationWrap {
   margin-top: 24px;
 }

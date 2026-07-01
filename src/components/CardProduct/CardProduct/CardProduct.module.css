@@ -18,6 +18,28 @@
   box-sizing: border-box;
 }
 
+.ownProductBanner {
+  width: calc(100% + 32px);
+  margin: -16px -16px 0;
+  padding: 10px 16px;
+  background: linear-gradient(
+    90deg,
+    #7f2231 0%,
+    var(--color-brand-burgundy) 100%
+  );
+  background: var(--color-brand-dark-burgundy);
+  color: var(--color-primary-white);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow:
+    0px 12px 16px 0px rgba(10, 13, 18, 0.08),
+    0px 4px 6px 0px rgba(10, 13, 18, 0.03);
+  z-index: 11;
+}
+
 .badgesWrapper {
   position: absolute;
   top: 14px;
@@ -27,6 +49,10 @@
   gap: 12px;
   z-index: 10;
   pointer-events: none;
+}
+
+.badgesWrapperWithBanner {
+  top: 54px;
 }
 
 .cardLinkArea {
