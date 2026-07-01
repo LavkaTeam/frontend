@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { OutlineHeart, SolidHeart } from '@/components/ui/icons/Heart';
 import { ShoppingCart } from '@/components/ShoppingCart';
@@ -7,9 +7,12 @@ import type { Product } from '@/types/productCard';
 import { useAppSelector } from '@/store/hooks';
 import { useCartActions } from '@/hooks/useCartActions';
 import { useFavoriteActions } from '@/hooks/useFavoriteProducts';
+import { useAuthenticatedUserId } from '@/hooks/useAuthenticatedUserId';
+import { useUser } from '@/hooks/useUser';
 import { RatingStars } from '@/components/ui/RatingStars';
 import { Badge } from '@/components/ui/Badge';
 import { resolvePricing } from '@/utils/pricing';
+import { isOwnProduct as isOwnProductForUser } from '@/utils/ownership';
 import styles from './CardProduct.module.css';
 
 // --- 1. Pure Utility Functions (SOLID / DRY) ---
@@ -70,6 +73,7 @@ type CardProductProps = {
 };
 
 const CardProduct = ({ card }: CardProductProps) => {
+  const navigate = useNavigate();
   const {
     addItem,
     updateQuantity,
@@ -78,6 +82,8 @@ const CardProduct = ({ card }: CardProductProps) => {
     isRemovingItem,
   } = useCartActions();
   const { toggleFavorite } = useFavoriteActions();
+  const { data: authenticatedUserId } = useAuthenticatedUserId();
+  const { data: currentUser } = useUser();
 
   // Selectors
   const isFavorite = useAppSelector((state) =>
@@ -89,6 +95,11 @@ const CardProduct = ({ card }: CardProductProps) => {
   const minOrderQty = card.minimumOrderQuantity || 1;
   const isMaxQuantityReached = quantityInCart >= card.quantity;
   const hasMinOrderRule = minOrderQty > 1;
+  const isOwnProduct = isOwnProductForUser(
+    card,
+    currentUser,
+    authenticatedUserId,
+  );
 
   const {
     discountedPrice,
@@ -108,7 +119,8 @@ const CardProduct = ({ card }: CardProductProps) => {
   const { showMaxTooltip, triggerMaxTooltip } = useMaxQuantityTooltip();
 
   // Handlers
-  const handleAddToCart = () => addItem(card, Math.max(1, card.minimumOrderQuantity || 1));
+  const handleAddToCart = () =>
+    addItem(card, Math.max(1, card.minimumOrderQuantity || 1));
   const handleFavoriteClick = () => void toggleFavorite(card.id);
 
   const handleIncreaseQuantity = (e: React.MouseEvent) => {
@@ -144,7 +156,15 @@ const CardProduct = ({ card }: CardProductProps) => {
 
   return (
     <article className={styles.cardProduct}>
-      <div className={styles.badgesWrapper}>
+      {isOwnProduct && (
+        <div className={styles.ownProductBanner}>Your product</div>
+      )}
+
+      <div
+        className={`${styles.badgesWrapper} ${
+          isOwnProduct ? styles.badgesWrapperWithBanner : ''
+        }`}
+      >
         {card.mainCategory === 'BESTSELLERS' && <Badge type='bestseller' />}
         {discountedPrice !== null && <Badge type='sale' />}
       </div>
@@ -208,7 +228,11 @@ const CardProduct = ({ card }: CardProductProps) => {
               </div>
 
               <div className={styles.ratingBlock}>
-                <RatingStars rating={card.averageRating || 0} max={5} size={16} />
+                <RatingStars
+                  rating={card.averageRating || 0}
+                  max={5}
+                  size={16}
+                />
                 <span className={styles.ratingValue}>
                   {card.averageRating ? card.averageRating.toFixed(1) : '0.0'}
                 </span>
@@ -243,7 +267,13 @@ const CardProduct = ({ card }: CardProductProps) => {
             Min. order: {minOrderQty} pcs
           </span>
         )}
-        {quantityInCart === 0 ? (
+        {isOwnProduct ? (
+          <div className={styles.actionStateWrapper}>
+            <Button variant='secondary' onClick={() => navigate('/account')}>
+              Manage product
+            </Button>
+          </div>
+        ) : quantityInCart === 0 ? (
           <div className={styles.actionStateWrapper}>
             <Button
               disabled={card.quantity <= 0}

@@ -16,12 +16,6 @@
   position: relative;
 }
 
-.sliderWrapperFetching {
-  transition: opacity 0.2s ease;
-  opacity: 0.4;
-  pointer-events: none;
-}
-
 .sectionFooter {
   margin-top: 24px;
 }

@@ -35,9 +35,8 @@ const SellerProductsPublic = () => {
   const {
     seller,
     isLoading: isSellerLoading,
-    isFetching: isSellerFetching,
   } = usePublicSellerProfile(sellerId);
-  const { products, totalPages, isLoading, isFetching } =
+  const { products, totalPages, isLoading } =
     usePublicSellerProducts(sellerId, currentPage - 1, 12);
 
   const handlePageChange = (page: number) => {
@@ -89,11 +88,7 @@ const SellerProductsPublic = () => {
           </span>
         </div>
 
-        <div
-          className={`${styles.headerContent} ${
-            isSellerFetching ? styles.fetching : ''
-          }`}
-        >
+        <div className={styles.headerContent}>
           <div className={styles.headerMain}>
             <div className={styles.summaryBlock}>
               {isSellerLoading ? (
@@ -275,14 +270,11 @@ const SellerProductsPublic = () => {
         <NoProductsFound />
       ) : (
         <>
-          <div className={isFetching ? styles.fetching : undefined}>
-            <CardSection
-              cards={products}
-              CardComponent={CardProduct}
-              isFetching={isFetching}
-              noPaddings
-            />
-          </div>
+          <CardSection
+            cards={products}
+            CardComponent={CardProduct}
+            noPaddings
+          />
 
           {totalPages > 1 && (
             <div className={styles.paginationWrap}>

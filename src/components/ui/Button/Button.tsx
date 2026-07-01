@@ -9,12 +9,20 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
 }
 
-const Button = ({ children, variant, icon, isLoading, disabled, ...rest }: ButtonProps) => {
+const Button = ({
+  children,
+  variant,
+  icon,
+  isLoading,
+  disabled,
+  className,
+  ...rest
+}: ButtonProps) => {
   return (
     <button
       className={`${variant ? styles.buttonSecondary : styles.button} ${
         isLoading ? 'opacity-70 cursor-not-allowed pointer-events-none' : ''
-      }`}
+      } ${className || ''}`.trim()}
       disabled={disabled || isLoading}
       {...rest}
     >

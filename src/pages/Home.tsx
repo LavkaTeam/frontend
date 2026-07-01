@@ -62,7 +62,6 @@ const Home = () => {
   const {
     products: topSelectProducts,
     isLoading: isTopSelectLoading,
-    isFetching: isTopSelectFetching,
     totalPages,
     isLastPage: isTopSelectLastPage,
   } = useSearchProducts(
@@ -141,11 +140,10 @@ const Home = () => {
           ) : (
             <>
               <div className={styles.topSelectSection}>
-                <CardSection
+                  <CardSection
                   cards={topSelectProducts}
                   CardComponent={CardProduct}
                   noBottomMargin
-                  isFetching={isTopSelectFetching}
                   footer={
                     isTopSelectLastPage && totalPages > 0 ? (
                       <Link

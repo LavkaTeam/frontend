@@ -16,10 +16,7 @@ import {
 } from './useCartQueries';
 import { useToast } from './useToast';
 import type { Product } from '@/types/productCard';
-
-type CartActionError = {
-  message?: string;
-};
+import { extractErrorMessage } from '@/utils/error';
 
 const cartQueryKey = ['cart'] as const;
 const cartQuantityDebounceMs = 500;
@@ -96,15 +93,10 @@ export const useCartActions = () => {
   }, [isAuthenticated, remoteCart]);
 
   const handleActionError = (error: unknown) => {
-    const errorMessage =
-      typeof error === 'object' &&
-      error !== null &&
-      'message' in error &&
-      typeof (error as CartActionError).message === 'string'
-        ? (error as CartActionError).message
-        : undefined;
-
-    const message = errorMessage ?? 'An error occurred with your cart action.';
+    const message = extractErrorMessage(
+      error,
+      'An error occurred with your cart action.',
+    );
 
     showToast(message, 'error');
   };

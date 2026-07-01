@@ -44,6 +44,21 @@
       var(--fold-size) var(--fold-size) no-repeat;
 }
 
+.badgeOwnProduct {
+  --bg-color: #f1e0e2;
+  --fold-color: #d4a0a5;
+
+  color: var(--color-brand-burgundy);
+
+  background:
+    linear-gradient(var(--bg-color), var(--bg-color)) top left / 100%
+      calc(100% - var(--fold-size)) no-repeat,
+    linear-gradient(var(--bg-color), var(--bg-color)) top left /
+      calc(100% - var(--fold-size)) 100% no-repeat,
+    linear-gradient(-45deg, transparent 50%, var(--bg-color) 50%) bottom right /
+      var(--fold-size) var(--fold-size) no-repeat;
+}
+
 .badge::after {
   content: '';
   position: absolute;

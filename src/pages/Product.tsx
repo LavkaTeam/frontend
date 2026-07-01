@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addToHistory } from '@/store/viewingHistorySlice';
 import { useCartActions } from '@/hooks/useCartActions';
 import { useFavoriteActions } from '@/hooks/useFavoriteProducts';
+import { useAuthenticatedUserId } from '@/hooks/useAuthenticatedUserId';
+import { useUser } from '@/hooks/useUser';
 import { useProduct } from '@/hooks/useProduct';
 import { useSearchProducts } from '@/hooks/useSearchProducts';
 
@@ -23,6 +25,7 @@ import { RatingStars } from '@/components/ui/RatingStars';
 import { Badge } from '@/components/ui/Badge';
 import { ProductPageSkeleton } from '@/components/ProductPageSkeleton/ProductPageSkeleton';
 import { resolvePricing } from '@/utils/pricing';
+import { isOwnProduct as isOwnProductForUser } from '@/utils/ownership';
 import NotFound from './NotFound';
 
 import styles from './Product.module.css';
@@ -142,6 +145,7 @@ const buildWholesaleRanges = (
 };
 
 const Product = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { productId } = useParams();
 
@@ -169,6 +173,8 @@ const Product = () => {
     isRemovingItem,
   } = useCartActions();
   const { toggleFavorite } = useFavoriteActions();
+  const { data: authenticatedUserId } = useAuthenticatedUserId();
+  const { data: currentUser } = useUser();
   const quantityInCart = productId ? getCartItemQuantity(productId) : 0;
   const isFavorite = useAppSelector((state) =>
     productId ? state.favorites.includes(productId) : false,
@@ -205,7 +211,10 @@ const Product = () => {
       scrollContainer.previousElementSibling instanceof HTMLElement
         ? scrollContainer.previousElementSibling.offsetHeight
         : 0;
-    const targetTop = Math.max(targetNode.offsetTop - drawerHeaderHeight - 24, 0);
+    const targetTop = Math.max(
+      targetNode.offsetTop - drawerHeaderHeight - 24,
+      0,
+    );
 
     smoothScrollTo(scrollContainer, targetTop, DRAWER_SCROLL_DURATION_MS);
 
@@ -355,6 +364,11 @@ const Product = () => {
   };
 
   const isMaxQuantityReached = quantityInCart >= product.quantity;
+  const isOwnProduct = isOwnProductForUser(
+    product,
+    currentUser,
+    authenticatedUserId,
+  );
 
   return (
     <main className='container'>
@@ -471,6 +485,7 @@ const Product = () => {
                 <Badge type='bestseller' />
               )}
               {discountedPrice !== null && <Badge type='sale' />}
+              {isOwnProduct && <Badge type='ownProduct' />}
             </div>
             <ProductGallery
               mainImage={product.mainImage}
@@ -481,6 +496,14 @@ const Product = () => {
         </div>
 
         <div className={styles.contentBlock}>
+          {isOwnProduct && (
+            <div className={styles.ownProductNotice}>
+              <span className={styles.ownProductNoticeLabel}>Your product</span>
+              <span className={styles.ownProductNoticeText}>
+                Manage this item from your seller account.
+              </span>
+            </div>
+          )}
           <HeadingH3>{product.name}</HeadingH3>
           <Space height='18px' />
 
@@ -615,7 +638,11 @@ const Product = () => {
                   Min. order: {minOrderQty} pcs
                 </span>
               )}
-              {quantityInCart === 0 ? (
+              {isOwnProduct ? (
+                <Button variant='secondary' onClick={() => navigate('/account')}>
+                  Manage product
+                </Button>
+              ) : quantityInCart === 0 ? (
                 <Button
                   onClick={() => addItem(product, Math.max(1, minOrderQty))}
                   icon={<ShoppingCart />}
@@ -660,12 +687,17 @@ const Product = () => {
 
                         <button
                           onClick={() => {
-                            if (quantityInCart > 0 && quantityInCart < product.quantity) {
+                            if (
+                              quantityInCart > 0 &&
+                              quantityInCart < product.quantity
+                            ) {
                               updateQuantity(product.id, quantityInCart + 1);
                             }
                           }}
                           className={styles.quantityBtn}
-                          disabled={isMaxQuantityReached || isRemovingItem(product.id)}
+                          disabled={
+                            isMaxQuantityReached || isRemovingItem(product.id)
+                          }
                         >
                           +
                         </button>
