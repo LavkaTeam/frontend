@@ -1,6 +1,7 @@
 import { fetchData } from './fetchData';
 import type {
   CartItemRequestDto,
+  CartSyncRequestDto,
   CartUpdateRequestDto,
   CartResponseDto,
 } from '@/types/cart';
@@ -11,6 +12,13 @@ export const getCart = (): Promise<CartResponseDto> => {
 
 export const addCartItem = (data: CartItemRequestDto): Promise<void> => {
   return fetchData<void>('/cart/items', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+};
+
+export const syncCart = (data: CartSyncRequestDto): Promise<void> => {
+  return fetchData<void>('/cart/me/sync', {
     method: 'POST',
     body: JSON.stringify(data),
   });
