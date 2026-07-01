@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { discoverCards } from '@/data/discoverData';
@@ -33,6 +33,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [isTopSelectPageLoading, setIsTopSelectPageLoading] = useState(false);
 
   const { products: rawBestsellers, isLoading: isBestsellersLoading } =
     useSearchProducts(
@@ -62,6 +63,7 @@ const Home = () => {
   const {
     products: topSelectProducts,
     isLoading: isTopSelectLoading,
+    isFetching: isTopSelectFetching,
     totalPages,
     isLastPage: isTopSelectLastPage,
   } = useSearchProducts(
@@ -74,8 +76,21 @@ const Home = () => {
     { skipFilters: true },
   );
 
+  useEffect(() => {
+    if (!isTopSelectPageLoading) return;
+
+    if (!isTopSelectFetching) {
+      setIsTopSelectPageLoading(false);
+    }
+  }, [isTopSelectFetching, isTopSelectPageLoading]);
+
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage - 1);
+    const nextPage = newPage - 1;
+
+    if (nextPage === currentPage) return;
+
+    setIsTopSelectPageLoading(true);
+    setCurrentPage(nextPage);
 
     requestAnimationFrame(() => {
       const section = document.getElementById('top-select-anchor');
@@ -140,10 +155,11 @@ const Home = () => {
           ) : (
             <>
               <div className={styles.topSelectSection}>
-                  <CardSection
+                <CardSection
                   cards={topSelectProducts}
                   CardComponent={CardProduct}
                   noBottomMargin
+                  overlayActive={isTopSelectPageLoading}
                   footer={
                     isTopSelectLastPage && totalPages > 0 ? (
                       <Link

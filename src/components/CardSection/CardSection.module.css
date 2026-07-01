@@ -16,6 +16,15 @@
   position: relative;
 }
 
+.contentOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(3px);
+  z-index: 12;
+  pointer-events: none;
+}
+
 .sectionFooter {
   margin-top: 24px;
 }
