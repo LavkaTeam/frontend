@@ -17,10 +17,9 @@
   line-height: 38px;
 }
 
-.loaderContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
   width: 100%;
-  min-height: 200px;
 }

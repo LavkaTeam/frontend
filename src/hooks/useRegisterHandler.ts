@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRegister } from './useAuth';
 import { useNavigate } from 'react-router';
 import type { AuthPayload } from '@/types/auth';
+import { syncLocalUserData } from './syncLocalUserData';
 
 export const useRegisterHandler = () => {
   const queryClient = useQueryClient();
@@ -13,23 +14,25 @@ export const useRegisterHandler = () => {
     setError: (field: keyof AuthPayload, error: { message: string }) => void,
   ) => {
     register.mutate(data, {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         localStorage.setItem('token', response.token);
         queryClient.invalidateQueries({ queryKey: ['user'] });
+        await syncLocalUserData(queryClient);
 
         navigate('/account');
       },
-      onError: (error: any) => {
-        if (error.email) {
-          setError('email', { message: error.email });
+      onError: (error: unknown) => {
+        const err = error as Record<string, string | undefined>;
+        if (err?.email) {
+          setError('email', { message: err.email });
         }
-        if (error.password) {
-          setError('password', { message: error.password });
+        if (err?.password) {
+          setError('password', { message: err.password });
         }
-        if (error.telephoneNumber) {
-          setError('telephoneNumber', { message: error.telephoneNumber });
+        if (err?.telephoneNumber) {
+          setError('telephoneNumber', { message: err.telephoneNumber });
         }
-        if (!error.email && !error.password && !error.telephoneNumber) {
+        if (!err?.email && !err?.password && !err?.telephoneNumber) {
           alert('Something went wrong');
         }
       },

@@ -7,23 +7,48 @@ export interface CartItem extends Product {
 
 type CartState = CartItem[];
 
-const initialState: CartState = [];
+const loadCartFromStorage = (): CartState => {
+  try {
+    const serializedState = localStorage.getItem('cart');
+    if (serializedState === null) {
+      return [];
+    }
+    return JSON.parse(serializedState);
+  } catch {
+    return [];
+  }
+};
+
+const initialState: CartState = loadCartFromStorage();
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addItem: (state, action: PayloadAction<Product>) => {
-      if (action.payload.quantity <= 0) {
+    addItem: (
+      state,
+      action: PayloadAction<{ product: Product; quantity?: number }>,
+    ) => {
+      const { product, quantity } = action.payload;
+
+      if (product.quantity <= 0) {
         return;
       }
 
-      const existingItem = state.find((item) => item.id === action.payload.id);
+      const existingItem = state.find((item) => item.id === product.id);
+      const minQty = product.minimumOrderQuantity || 1;
+      const requestedQuantity = Math.max(quantity ?? minQty, minQty);
+
       if (!existingItem) {
-        state.push({ ...action.payload, quantity: 1 });
+        state.push({
+          ...product,
+          quantity: Math.min(requestedQuantity, product.quantity),
+        });
       } else {
-        // якщо товар вже в корзині - то ще раз клік додає його ще раз (+1)
-        existingItem.quantity += 1;
+        existingItem.quantity = Math.min(
+          existingItem.quantity + requestedQuantity,
+          product.quantity,
+        );
       }
     },
 
@@ -36,7 +61,9 @@ const cartSlice = createSlice({
 
     decreaseQuantity: (state, action: PayloadAction<{ id: string }>) => {
       const item = state.find((item) => item.id === action.payload.id);
-      if (item && item.quantity > 1) {
+      const minQty = item?.minimumOrderQuantity || 1;
+
+      if (item && item.quantity > minQty) {
         item.quantity -= 1;
       } else {
         return state.filter((item) => item.id !== action.payload.id);
@@ -49,7 +76,9 @@ const cartSlice = createSlice({
     ) => {
       const item = state.find((item) => item.id === action.payload.id);
       if (item) {
-        item.quantity = action.payload.quantity;
+        const minQty = item.minimumOrderQuantity || 1;
+        const boundedQty = Math.max(action.payload.quantity, minQty);
+        item.quantity = boundedQty;
       }
     },
 

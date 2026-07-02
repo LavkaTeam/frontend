@@ -10,8 +10,11 @@ const Login = lazy(() => import('@/pages/Login'));
 const Account = lazy(() => import('@/pages/Account'));
 const Favorites = lazy(() => import('@/pages/Favorites'));
 const Cart = lazy(() => import('@/pages/Cart'));
+const Checkout = lazy(() => import('@/pages/Checkout'));
+const OrderDetails = lazy(() => import('@/pages/OrderDetails'));
 const Product = lazy(() => import('@/pages/Product'));
 const Products = lazy(() => import('@/pages/Products'));
+const SellerProductsPublic = lazy(() => import('@/pages/SellerProductsPublic'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
@@ -72,6 +75,26 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: '/checkout',
+        element: (
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
+            <Suspense fallback={<Loader />}>
+              <Checkout />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/orders/:orderId',
+        element: (
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
+            <Suspense fallback={<Loader />}>
+              <OrderDetails />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: '/favorites',
         element: (
           <Suspense fallback={<Loader />}>
@@ -108,6 +131,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <Products />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/sellerProducts/:sellerId',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <SellerProductsPublic />
           </Suspense>
         ),
       },

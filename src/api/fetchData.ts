@@ -9,20 +9,45 @@ const fetchData = async <T = unknown>(
   endpoint: string,
   options: FetchOptions = {},
 ): Promise<T> => {
-  const response = await fetch(`${apiUrl}${endpoint}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-    ...options,
-  });
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw errorData;
+  if (token && !headers.Authorization) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
-  return response.json();
+  const response = await fetch(`${apiUrl}${endpoint}`, {
+    ...options,
+    headers,
+  });
+
+  const contentType = response.headers.get('content-type') || '';
+  const isJsonResponse = contentType.includes('application/json');
+  const hasBody =
+    response.status !== 204 &&
+    response.status !== 205 &&
+    response.headers.get('content-length') !== '0';
+
+  if (!response.ok) {
+    if (isJsonResponse) {
+      throw await response.json();
+    }
+
+    throw new Error(await response.text());
+  }
+
+  if (!hasBody) {
+    return undefined as T;
+  }
+
+  if (isJsonResponse) {
+    return response.json() as Promise<T>;
+  }
+
+  return (await response.text()) as T;
 };
 
 export { fetchData };

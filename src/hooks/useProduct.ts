@@ -15,9 +15,15 @@ export const useProduct = (id: string | undefined) => {
         setIsLoading(true);
         const data = await getProductById(id);
         setProduct(data);
-      } catch (err: any) {
+      } catch (err) {
         console.error('Failed to fetch product:', err);
-        setError(err.message || 'Something went wrong');
+        let errorMessage = 'Something went wrong';
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        } else if (err && typeof err === 'object' && 'message' in err) {
+          errorMessage = String((err as { message: unknown }).message);
+        }
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }

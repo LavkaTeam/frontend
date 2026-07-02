@@ -1,7 +1,7 @@
 import type { UserResponse } from '@/types/user';
 import { fetchData } from './fetchData';
 
-export const getUser = (): Promise<UserResponse> => {
+const getUser = (): Promise<UserResponse> => {
   const token = localStorage.getItem('token');
   if (!token) {
     return Promise.reject('No token');
@@ -12,6 +12,25 @@ export const getUser = (): Promise<UserResponse> => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+const getUserId = async (): Promise<string> => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return Promise.reject('No token');
+  }
+
+  const response = await fetchData<string | { id: string }>('/user/me/id', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (typeof response === 'string' || typeof response === 'number') {
+    return String(response);
+  }
+
+  return String(response.id);
 };
 
 export interface UpdateUserData {
@@ -31,7 +50,7 @@ export interface UpdateUserData {
   logoUrl?: string;
 }
 
-export const updateUser = (
+const updateUser = (
   id: string,
   userData: UpdateUserData,
 ): Promise<UserResponse> => {
@@ -48,3 +67,5 @@ export const updateUser = (
     body: JSON.stringify(userData),
   });
 };
+
+export { getUser, getUserId, updateUser };

@@ -1,6 +1,11 @@
+import { Button } from '@/components/ui/Button';
 import styles from './NoProductsFound.module.css';
 
-const NoProductsFound = () => {
+interface NoProductsFoundProps {
+  onClearFilters?: () => void;
+}
+
+const NoProductsFound = ({ onClearFilters }: NoProductsFoundProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.iconWrapper}>
@@ -32,8 +37,15 @@ const NoProductsFound = () => {
       <h2 className={styles.title}>No products found</h2>
 
       <p className={styles.description}>
-        We couldn’t find what you’re looking for.
+        We couldn’t find what you’re looking for. Try adjusting your filters or
+        search query.
       </p>
+
+      {onClearFilters && (
+        <div className={styles.buttonWrapper}>
+          <Button onClick={onClearFilters}>Clear all filters</Button>
+        </div>
+      )}
     </div>
   );
 };

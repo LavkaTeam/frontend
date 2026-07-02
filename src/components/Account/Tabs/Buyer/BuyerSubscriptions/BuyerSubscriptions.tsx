@@ -84,7 +84,7 @@ const BuyerSubscriptions = () => {
 
       <div className={styles.toastContainer}>
         {toasts &&
-          toasts.map((toast: any) => (
+          toasts.map((toast) => (
             <Toast
               key={toast.id}
               message={toast.message}

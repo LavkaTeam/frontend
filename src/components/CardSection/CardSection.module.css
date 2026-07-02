@@ -2,6 +2,10 @@
   margin-bottom: 80px;
 }
 
+.noBottomMargin {
+  margin-bottom: 0;
+}
+
 .gridCardContainer {
   display: flex;
   flex-wrap: wrap;
@@ -12,10 +16,27 @@
   position: relative;
 }
 
+.contentOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(3px);
+  z-index: 12;
+  pointer-events: none;
+}
+
+.sectionFooter {
+  margin-top: 24px;
+}
+
 .swiperContainer {
   overflow: hidden !important;
   padding-bottom: 54px !important;
   margin-bottom: -24px;
+}
+
+.mixedSwiperContainer {
+  padding-right: 8px;
 }
 
 .slideItem {
@@ -23,8 +44,12 @@
   display: flex;
 }
 
+.autoWidthSlide {
+  width: auto !important;
+}
+
 .cardWrapper {
-  width: 100%;
+  /* width: 100%; */
 }
 
 /* === Pagination (Mobile/Tablet default) === */
@@ -96,6 +121,10 @@
 @media (min-width: 1024px) {
   .swiperContainer {
     padding-bottom: 24px !important;
+  }
+
+  .mixedSwiperContainer {
+    padding-right: 20px;
   }
 
   .swiperContainer :global(.swiper-pagination) {

@@ -1,10 +1,10 @@
 import { useFavoriteProducts } from '@/hooks/useFavoriteProducts';
 import { CardSection } from '@/components/CardSection/CardSection';
 import { CardProduct } from '@/components/CardProduct/CardProduct/CardProduct';
+import { CardProductSkeleton } from '@/components/CardProduct';
 import { Space } from '@/components/ui/Space';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { EmptyFavoritesIcon } from '@/components/ui/icons/EmptyFavoritesIcon';
-import { Loader } from '@/components/ui/Loader';
 
 import styles from './BuyerFavorites.module.css';
 
@@ -19,8 +19,10 @@ const BuyerFavorites = () => {
       </div>
 
       {isLoading ? (
-        <div className={styles.loaderContainer}>
-          <Loader variant='section' />
+        <div className={styles.skeletonGrid}>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <CardProductSkeleton key={index} />
+          ))}
         </div>
       ) : favoriteProducts.length > 0 ? (
         <CardSection

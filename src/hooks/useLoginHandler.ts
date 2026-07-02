@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useLogin } from './useAuth';
 import { useNavigate } from 'react-router';
 import type { LoginPayload } from '@/types/auth';
+import { syncLocalUserData } from './syncLocalUserData';
 
 export const useLoginHandler = () => {
   const queryClient = useQueryClient();
@@ -13,21 +14,25 @@ export const useLoginHandler = () => {
     setError: (field: keyof LoginPayload, error: { message: string }) => void,
   ) => {
     login.mutate(data, {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         localStorage.setItem('token', response.token);
         queryClient.invalidateQueries({ queryKey: ['user'] });
+        await syncLocalUserData(queryClient);
 
-        navigate('/account');
+        const locationState = window.history.state as { usr?: { from?: string } };
+        const from = locationState?.usr?.from || '/account';
+        navigate(from);
       },
-      onError: (error: any) => {
-        console.log('Server error:', error);
-        if (error.email) {
-          setError('email', { message: error.email });
+      onError: (error: unknown) => {
+        const err = error as Record<string, string | undefined>;
+        console.log('Server error:', err);
+        if (err?.email) {
+          setError('email', { message: err.email });
         }
-        if (error.password) {
-          setError('password', { message: error.password });
+        if (err?.password) {
+          setError('password', { message: err.password });
         }
-        if (!error.email && !error.password) {
+        if (!err?.email && !err?.password) {
           alert('Something went wrong');
         }
       },

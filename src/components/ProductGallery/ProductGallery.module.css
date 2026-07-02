@@ -19,6 +19,7 @@
   box-shadow:
     0 4px 8px -2px rgba(10, 13, 18, 0.1),
     0 2px 4px -2px rgba(10, 13, 18, 0.06);
+  cursor: zoom-in;
 }
 
 .mainImage {
@@ -30,6 +31,7 @@
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   will-change: opacity;
+  pointer-events: none;
 }
 
 .fading {
@@ -82,6 +84,7 @@
   align-items: center;
   justify-content: center;
   transition: border-color 0.2s ease;
+  padding: 0;
 }
 
 .thumbnailItem img {
@@ -97,4 +100,104 @@
 
 .thumbnailItem.active {
   border: 2px solid var(--color-brand-burgundy);
+}
+
+.fullscreenOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30000;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.26s ease;
+}
+
+.fullscreenOverlayVisible {
+  opacity: 1;
+}
+
+.fullscreenDialog {
+  position: relative;
+  z-index: 30001;
+  width: min(1100px, 100%);
+  border-radius: 18px;
+  background: var(--color-primary-white);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 0.26s ease,
+    transform 0.26s ease;
+}
+
+.fullscreenDialogVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.closeButton {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: var(--color-gray-900);
+  font-size: 40px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fullscreenImage {
+  width: 100%;
+  max-width: 900px;
+  max-height: 82vh;
+  object-fit: contain;
+  opacity: 1;
+  transition: opacity 0.18s ease-in-out;
+  will-change: opacity;
+}
+
+.fullscreenNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.fullscreenNavLeft {
+  left: 24px;
+}
+
+.fullscreenNavRight {
+  right: 24px;
+}
+
+@media (max-width: 768px) {
+  .fullscreenOverlay {
+    padding: 12px;
+  }
+
+  .fullscreenDialog {
+    padding: 24px 18px;
+  }
+
+  .fullscreenNavLeft {
+    left: 10px;
+  }
+
+  .fullscreenNavRight {
+    right: 10px;
+  }
 }

@@ -9,7 +9,7 @@ interface CardDiscoverProps {
 
 const CardDiscover = ({ card }: CardDiscoverProps) => {
   return (
-    <div className={styles.cardLinkWrapper}>
+    <Link to={card.link} className={styles.cardLinkWrapper}>
       <div className={styles.card}>
         <div className={styles.cardImageWrapper}>
           <img src={card.image} alt={card.title} className={styles.cardImage} />
@@ -17,12 +17,10 @@ const CardDiscover = ({ card }: CardDiscoverProps) => {
         <div className={styles.cardContent}>
           <h3 className={styles.cardTitle}>{card.title}</h3>
           <p className={styles.cardDescription}>{card.description}</p>
-          <Link to={card.link} className={styles.cardLink}>
-            Read more...
-          </Link>
+          <div className={styles.cardLink}>Read more...</div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -1,68 +1,85 @@
-// import { fetchData } from './fetchData';
+import { fetchData } from './fetchData';
+import type {
+  GenerateDocumentRequestDto,
+  OrderDocumentDto,
+  OrderRequestDto,
+  OrderResponseDto,
+  OrdersPageDto,
+  UpdateOrderStatusRequestDto,
+} from '@/types/order';
 
-// const getAllUserOrders = (userId: number): Promise<unknown[]> => {
-//   return fetchData<unknown[]>(`/orders/api/orders/user/${userId}`, {
-//     method: 'GET',
-//   });
-// };
+export const createOrder = (
+  data: OrderRequestDto,
+): Promise<OrderResponseDto[]> => {
+  return fetchData<OrderResponseDto[]>('/orders', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+};
 
-// const getOrderById = (orderId: number): Promise<unknown[]> => {
-//   return fetchData<unknown[]>(`/api/orders/api/orders/${orderId}`, {
-//     method: 'GET',
-//   });
-// };
+export const getMyOrders = (
+  page = 0,
+  size = 10,
+): Promise<OrdersPageDto> => {
+  return fetchData<OrdersPageDto>(`/orders/me?page=${page}&size=${size}`);
+};
 
-// interface PostOrderData {
-//   id: string;
-//   name: string;
-//   lastName: string;
-//   email: string;
-//   password: string;
-//   productIds: string[];
-//   companyName: string;
-//   registration_Number: string;
-//   liquor_License: string;
-//   tax_ID: string;
-//   vat_Number: string;
-//   bank_Name: string;
-//   iban: string;
-//   bic: string;
-//   telephoneNumber: string;
-//   role: 'BUYER';
-// }
+export const getOrderDetails = (orderId: string): Promise<OrderResponseDto> => {
+  return fetchData<OrderResponseDto>(`/orders/${orderId}`);
+};
 
-// const postOrder = (options: RequestInit = {}): Promise<unknown[]> => {
-//   const orderData: PostOrderData = {
-//     id: '00231',
-//     name: 'Nazarii',
-//     lastName: 'Fito',
-//     email: 'testEmail3@gmail.com',
-//     password: '1234567A',
-//     productIds: ['68c81f7dd7d1beaa347439b2'],
-//     companyName: 'Craft and Style',
-//     registration_Number: '',
-//     liquor_License: '',
-//     tax_ID: '',
-//     vat_Number: '',
-//     bank_Name: '',
-//     iban: '',
-//     bic: '',
-//     telephoneNumber: '+380991234567',
-//     role: 'BUYER',
-//   };
+export const getOrderDocuments = (
+  orderId: string,
+): Promise<OrderDocumentDto[]> => {
+  return fetchData<OrderDocumentDto[]>(`/orders/${orderId}/documents`);
+};
 
-//   // Отримуємо токен і забезпечуємо, що він є рядком
-//   const token = localStorage.getItem('token');
-//   const headers: Record<string, string> | undefined = token
-//     ? { Authorization: token, 'Content-Type': 'application/json' }
-//     : { 'Content-Type': 'application/json' };
+export const generateOrderDocument = (
+  orderId: string,
+  data: GenerateDocumentRequestDto,
+): Promise<OrderDocumentDto> => {
+  return fetchData<OrderDocumentDto>(`/orders/${orderId}/documents/generate`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+};
 
-//   return fetchData<unknown[]>(`/orders/create`, {
-//     method: 'POST',
-//     headers: headers,
-//     body: JSON.stringify(orderData),
-//     ...options,
-//   });
-// };
+export const updateOrderStatus = (
+  orderId: string,
+  data: UpdateOrderStatusRequestDto,
+): Promise<OrderResponseDto> => {
+  return fetchData<OrderResponseDto>(`/orders/${orderId}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+};
 
-// export { getAllUserOrders, getOrderById, postOrder };
+export const downloadOrderDocument = async (
+  orderId: string,
+  documentId: string,
+) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL || 'https://lavka-api.onrender.com/api'}/orders/${orderId}/documents/${documentId}/download`,
+    {
+      method: 'GET',
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    },
+  );
+
+  if (!response.ok) {
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      throw await response.json();
+    }
+
+    throw new Error(await response.text());
+  }
+
+  const blob = await response.blob();
+  const disposition = response.headers.get('content-disposition');
+  const fileNameMatch = disposition?.match(/filename="?([^"]+)"?/i);
+  const fileName = fileNameMatch?.[1] || 'document.pdf';
+
+  return { blob, fileName };
+};

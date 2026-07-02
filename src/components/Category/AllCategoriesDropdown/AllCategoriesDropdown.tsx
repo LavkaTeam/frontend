@@ -2,8 +2,11 @@ import { useDropdown } from '@/hooks/useDropdown';
 import CategoryList from '../CategoryList/CategoryList';
 import SubcategoryList from '../SubcategoryList/SubcategoryList';
 import styles from './AllCategoriesDropdown.module.css';
+import { useCategoryTree } from '@/hooks/useCategoryTree';
 
 const AllCategoriesDropdown = () => {
+  const { categories } = useCategoryTree();
+
   const {
     isOpen,
     selectedCategory,
@@ -13,21 +16,18 @@ const AllCategoriesDropdown = () => {
     toggleDropdown,
     handleCategoryHover,
     closeDropdown,
-  } = useDropdown();
+  } = useDropdown(categories);
 
   const handleCategoryClick = () => {
     closeDropdown();
   };
 
   return (
-    <div
-      className={styles.categoryMenu}
-      ref={menuRef}
-    >
+    <div className={styles.categoryMenu} ref={menuRef}>
       <button
         className={`${styles.categoryButton} ${isOpen ? styles.categoryButtonOpen : ''}`}
         onClick={toggleDropdown}
-        >
+      >
         <p className={styles.label}>All</p>
         <img
           src='/icons/dropdown-arrow.svg'
@@ -40,25 +40,25 @@ const AllCategoriesDropdown = () => {
       </button>
 
       {isOpen && (
-        <div
-          className={styles.dropdownContainer}
-        >
+        <div className={styles.dropdownContainer}>
           <CategoryList
+            categories={categories}
             categoryRefs={categoryRefs}
             selectedCategory={selectedCategory}
             handleCategoryHover={handleCategoryHover}
             handleCategoryClick={handleCategoryClick}
           />
+
           {selectedCategory &&
             selectedCategory.subcategories &&
             selectedCategory.subcategories.length > 0 && (
-            <SubcategoryList
-              selectedCategory={selectedCategory}
-              isSubCollapsing={false}
-              subcategoriesTop={subcategoriesTop}
-              closeDropdown={closeDropdown}
-            />
-          )}
+              <SubcategoryList
+                selectedCategory={selectedCategory}
+                isSubCollapsing={false}
+                subcategoriesTop={subcategoriesTop}
+                closeDropdown={closeDropdown}
+              />
+            )}
         </div>
       )}
     </div>

@@ -2,22 +2,25 @@ import { Link } from 'react-router';
 import { Logo } from '../Logo';
 import { ShoppingCart } from '../ShoppingCart';
 import { OutlineHeart } from '../ui/icons/Heart';
-import { Input } from '@ui/Input';
 import { useLogOutHandler } from '@/hooks/useLogOutHandler';
-import { SearchIcon } from '../ui/icons/SearchIcon';
 import { AccountIcon } from '../ui/icons/AccountIcon';
 import { LogoutIcon } from '../ui/icons/LogoutIcon';
 import { HeaderIcon } from '../HeaderIcon';
+import { HeaderSearch } from './HeaderSearch';
 import { useAppSelector } from '@/store/hooks';
+import { useGetCart } from '@/hooks/useCartQueries';
 import styles from './Header.module.css';
 
 const Header = () => {
   const isAuthenticated = Boolean(localStorage.getItem('token'));
 
   const cart = useAppSelector((state) => state.cart);
-  const favorites = useAppSelector((state: any) => state.favorites);
+  const favorites = useAppSelector((state) => state.favorites);
 
+  const { data: remoteCart } = useGetCart(isAuthenticated);
   const { handleSubmit: handleLogOut } = useLogOutHandler();
+
+  const cartCount = isAuthenticated ? (remoteCart?.items?.length || 0) : cart.length;
 
   return (
     <header className={styles.wrapper}>
@@ -26,12 +29,7 @@ const Header = () => {
           <Logo />
 
           <div className={styles.headerContent}>
-            <div className={styles.searchBox}>
-              <Input name='text' type='text' placeholder='Search' />
-              <div className={styles.searchBoxIcon}>
-                <SearchIcon />
-              </div>
-            </div>
+            <HeaderSearch />
 
             <div className={styles.userActions}>
               <div className={styles.actions}>
@@ -51,7 +49,7 @@ const Header = () => {
                   <HeaderIcon
                     icon={<ShoppingCart currentColor='#252B37' />}
                     iconText='Cart'
-                    count={cart.length}
+                    count={cartCount}
                   />
                 </Link>
               </div>

@@ -38,8 +38,25 @@ const favoritesSlice = createSlice({
       state.splice(0, state.length);
       localStorage.setItem('favorites', JSON.stringify(state));
     },
+    setFavorites: (_state, action: PayloadAction<Product['id'][]>) => {
+      return action.payload;
+    },
+    addFavorite: (state, action: PayloadAction<Product['id']>) => {
+      if (!state.includes(action.payload)) {
+        state.push(action.payload);
+      }
+    },
+    removeFavorite: (state, action: PayloadAction<Product['id']>) => {
+      return state.filter((id) => id !== action.payload);
+    },
   },
 });
 
-export const { toggleFavorite, clearFavorites } = favoritesSlice.actions;
+export const {
+  toggleFavorite,
+  clearFavorites,
+  setFavorites,
+  addFavorite,
+  removeFavorite,
+} = favoritesSlice.actions;
 export default favoritesSlice.reducer;

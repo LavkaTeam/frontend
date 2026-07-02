@@ -1,26 +1,38 @@
 import { useSearchParams } from 'react-router-dom';
 import { BuyerOrdersList } from './BuyerOrdersList/BuyerOrdersList';
 import BuyerOrder from './BuyerOrder/BuyerOrder';
-import { mockOrders } from '@/data/ordersData';
+import { Loader } from '@/components/ui/Loader';
+import { useMyOrders } from '@/hooks/useOrders';
 import styles from './BuyerOrders.module.css';
 
 const BuyerOrders = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedOrderId = searchParams.get('orderId');
+  const { data, isLoading, isError } = useMyOrders();
 
   const handleOrderSelect = (orderId: string) => {
     setSearchParams((prev) => {
-      prev.set('orderId', orderId);
-      return prev;
+      const nextParams = new URLSearchParams(prev);
+      nextParams.set('orderId', orderId);
+      return nextParams;
     });
   };
 
   const handleBackToList = () => {
     setSearchParams((prev) => {
-      prev.delete('orderId');
-      return prev;
+      const nextParams = new URLSearchParams(prev);
+      nextParams.delete('orderId');
+      return nextParams;
     });
   };
+
+  if (isLoading) {
+    return <Loader variant='section' />;
+  }
+
+  if (isError) {
+    return <div className={styles.description}>Failed to load orders.</div>;
+  }
 
   return (
     <div className={styles.BuyerOrders}>
@@ -33,7 +45,7 @@ const BuyerOrders = () => {
             List of your orders since registration
           </p>
           <BuyerOrdersList
-            orders={mockOrders}
+            orders={data?.content || []}
             onOrderClick={handleOrderSelect}
           />
         </>

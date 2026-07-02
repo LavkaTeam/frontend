@@ -1,0 +1,78 @@
+.searchBox {
+  display: flex;
+  align-items: center;
+  position: relative;
+  max-width: 566px;
+  width: 100%;
+  height: 44px;
+  transition: all 0.3s ease;
+}
+
+.inputWrapper {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px 10px 42px !important;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 12px;
+  background: var(--color-gray-50);
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--color-gray-900);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-brand-burgundy);
+  background: var(--color-primary-white);
+  box-shadow: 0 4px 12px rgba(175, 38, 31, 0.08);
+  transform: translateY(-1px);
+}
+
+.input::placeholder {
+  color: var(--color-gray-500);
+}
+
+.searchBoxIcon {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gray-500);
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+.input:focus + .searchBoxIcon {
+  color: var(--color-brand-burgundy);
+}
+
+.clearButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-gray-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  background: var(--color-gray-200);
+  color: var(--color-gray-700);
+}

@@ -2,14 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useFilterDropdown } from '@/hooks/useFilterDropdown';
 import { SearchIcon } from '@/components/ui/icons/SearchIcon';
 import styles from './CountryDropdownMenu.module.css';
-
-interface Country {
-  value: string;
-  iconId: string;
-}
+import { getCountryFlagUrl } from '@/utils/flagUtils';
+import type { FilterCount } from '@/types/api';
 
 interface CountryDropdownProps {
-  countries: Country[];
+  countries: FilterCount[];
   selectedCountry: string;
   onSelect: (value: string) => void;
 }
@@ -39,12 +36,11 @@ const CountryDropdownMenu: React.FC<CountryDropdownProps> = ({
         setSearch('');
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [close]);
 
   const filteredCountries = countries.filter((country) =>
-    country.value.toLowerCase().includes(search.toLowerCase()),
+    country.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -79,14 +75,14 @@ const CountryDropdownMenu: React.FC<CountryDropdownProps> = ({
             <div className={styles.valueWrapper}>
               {selectedCountry ? (
                 <>
-                  <svg className={styles.flagIcon}>
-                    <use
-                      href={`/icons/flags.svg#${
-                        countries.find((c) => c.value === selectedCountry)
-                          ?.iconId
-                      }`}
-                    />
-                  </svg>
+                  <img
+                    src={getCountryFlagUrl(selectedCountry)}
+                    alt={`${selectedCountry} flag`}
+                    className={styles.flagIcon}
+                    onError={(e) => {
+                      e.currentTarget.src = '/icons/fallback-globe.svg';
+                    }}
+                  />
                   <span className={styles.selectedText}>{selectedCountry}</span>
                 </>
               ) : (
@@ -126,17 +122,22 @@ const CountryDropdownMenu: React.FC<CountryDropdownProps> = ({
 
         {filteredCountries.map((country) => (
           <div
-            key={country.value}
+            key={country.name}
             className={`${styles.option} ${
-              selectedCountry === country.value ? styles.selected : ''
+              selectedCountry === country.name ? styles.selected : ''
             }`}
-            onClick={() => handleSelect(country.value)}
+            onClick={() => handleSelect(country.name)}
           >
-            <svg className={styles.flagIcon}>
-              <use href={`/icons/flags.svg#${country.iconId}`} />
-            </svg>
-            <span>{country.value}</span>
-            {selectedCountry === country.value && (
+            <img
+              src={getCountryFlagUrl(country.name)}
+              alt={`${country.name} flag`}
+              className={styles.flagIcon}
+              onError={(e) => {
+                e.currentTarget.src = '/icons/fallback-globe.svg';
+              }}
+            />
+            <span>{country.name}{country.count !== undefined ? ` (${country.count})` : ''}</span>
+            {selectedCountry === country.name && (
               <img
                 src='/icons/checkTick.svg'
                 alt='Checkmark'

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { mockOrders } from '@/data/ordersData';
-import type { Order } from '@/types/order';
+import { Loader } from '@/components/ui/Loader';
+import { OrderDocuments } from '@/components/OrderDocuments';
+import { useOrderDetails, useOrderDocuments } from '@/hooks/useOrders';
 import styles from './BuyerOrder.module.css';
 
 interface BuyerOrderProps {
@@ -10,42 +11,38 @@ interface BuyerOrderProps {
 }
 
 const BuyerOrder: React.FC<BuyerOrderProps> = ({ orderId, onBack }) => {
-  const [order, setOrder] = useState<Order | null>(null);
   const navigate = useNavigate();
+  const orderQuery = useOrderDetails(orderId);
+  const documentsQuery = useOrderDocuments(orderId, {
+    initialData: orderQuery.data?.documents,
+    enabled: Boolean(orderId),
+  });
 
-  useEffect(() => {
-    const foundOrder = mockOrders.find((o) => o.orderId === orderId);
-    setOrder(foundOrder || null);
-  }, [orderId]);
+  if (orderQuery.isLoading) {
+    return <Loader variant='section' />;
+  }
 
-  if (!order) {
+  if (orderQuery.isError || !orderQuery.data) {
     return <div>Order not found</div>;
   }
 
-  // (Дата створення + 7 днів)
-  const calculateDeliveryDate = (dateString: string) => {
-    const createdDate = new Date(dateString);
-    const deliveryDate = new Date(createdDate);
-    deliveryDate.setDate(createdDate.getDate() + 7);
-
-    // Форматуємо дату (May 18, 2025)
-    return deliveryDate.toLocaleDateString('en-US', {
+  const order = orderQuery.data;
+  const deliveryDateString = new Date(order.createdAt).toLocaleDateString(
+    'en-US',
+    {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
-    });
-  };
-
-  const deliveryDateString = calculateDeliveryDate(order.orderCreatedAt);
-
-  const handleProductClick = (productId: string) => {
-    navigate(`/product/${productId}`);
-  };
-
-  // Логіка Reorder очищена (буде перероблена під API)
-  const handleReorder = () => {
-    console.log('Reorder logic to be implemented');
-  };
+    },
+  );
+  const deliveryAddress =
+    order.shippingDetails.deliveryType === 'COURIER'
+      ? [order.shippingDetails.city, order.shippingDetails.addressLine]
+          .filter(Boolean)
+          .join(', ')
+      : [order.shippingDetails.city, order.shippingDetails.warehouseNumber]
+          .filter(Boolean)
+          .join(', ');
 
   return (
     <div className={styles.container}>
@@ -67,46 +64,52 @@ const BuyerOrder: React.FC<BuyerOrderProps> = ({ orderId, onBack }) => {
 
       <div className={styles.header}>
         <div className={styles.titleBlock}>
-          <h1 className={styles.title}>Order Details</h1>
+          <h1 className={styles.title}>Order {order.orderNumber}</h1>
           <p className={styles.subTitle}>
-            Expected Delivery – {deliveryDateString}
+            Created on {deliveryDateString} • {order.sellerCompany || order.sellerName}
           </p>
         </div>
-        <button className={styles.reorderButton} onClick={handleReorder}>
-          Reorder
-        </button>
       </div>
 
       <div className={styles.infoSection}>
         <div className={styles.infoBox}>
           <div className={styles.infoGroup}>
             <span className={styles.labelDark}>Delivery:</span>
-            <span className={styles.valueGray}>
-              {order.deliveryType || 'Courier delivery'}
-            </span>
+            <span className={styles.valueGray}>{order.shippingDetails.deliveryType}</span>
           </div>
 
           <div className={styles.infoGroup}>
             <span className={styles.labelDark}>Payment method:</span>
-            <span className={styles.valueGray}>
-              {order.paymentMethod || 'Online'}
-            </span>
+            <span className={styles.valueGray}>{order.paymentMethod}</span>
           </div>
         </div>
 
         <div className={styles.infoBox}>
           <span className={styles.labelGray}>Delivery address:</span>
           <span className={styles.valueDark}>
-            {order.deliveryAddress || 'No address provided'}
+            {deliveryAddress || 'No address provided'}
           </span>
         </div>
       </div>
 
+      <section className={styles.documentsSection}>
+        <div className={styles.documentsHeader}>
+          <h2 className={styles.documentsTitle}>Documents</h2>
+          <p className={styles.documentsDescription}>
+            Download generated order files and track generation status.
+          </p>
+        </div>
+        <OrderDocuments
+          orderId={order.id}
+          documents={documentsQuery.data}
+          isLoading={documentsQuery.isLoading}
+          onRefetch={documentsQuery.refetch}
+        />
+      </section>
+
       <div className={styles.goodsSection}>
         <div className={styles.goodsHeader}>
-          <span className={styles.goodsCount}>
-            {order.orderItems.length} Goods
-          </span>
+          <span className={styles.goodsCount}>{order.items.length} Goods</span>
           <div className={styles.goodsHeaderRight}>
             <span className={styles.headerAmount}>Amount</span>
             <span className={styles.headerPrice}>Price</span>
@@ -114,17 +117,17 @@ const BuyerOrder: React.FC<BuyerOrderProps> = ({ orderId, onBack }) => {
         </div>
 
         <div className={styles.goodsList}>
-          {order.orderItems.map((item, index) => (
+          {order.items.map((item) => (
             <div
-              key={index}
+              key={item.productId}
               className={styles.itemRow}
-              onClick={() => handleProductClick(item.productId)}
+              onClick={() => navigate(`/product/${item.productId}`)}
             >
               <div className={styles.itemLeft}>
-                {item.productImage ? (
+                {item.mainImage?.url ? (
                   <img
-                    src={item.productImage}
-                    alt={item.productName}
+                    src={item.mainImage.url}
+                    alt={item.name || 'Product'}
                     className={styles.itemImage}
                   />
                 ) : (
@@ -133,21 +136,18 @@ const BuyerOrder: React.FC<BuyerOrderProps> = ({ orderId, onBack }) => {
 
                 <div className={styles.itemText}>
                   <span>
-                    {item.productName.split(',')[0]}, {item.productVolume},
+                    {item.name || 'Product'}
+                    {item.volume ? `, ${item.volume}` : ''}
                   </span>
                   <span style={{ color: '#252b37' }}>
-                    {item.productProducer}
+                    {item.producer || 'Unknown producer'}
                   </span>
                 </div>
               </div>
 
               <div className={styles.itemRight}>
-                <span className={styles.itemAmount}>
-                  {item.productQuantity}
-                </span>
-                <span className={styles.itemPrice}>
-                  ${item.productPrice.toFixed(2)}
-                </span>
+                <span className={styles.itemAmount}>{item.quantity}</span>
+                <span className={styles.itemPrice}>${item.price.toFixed(2)}</span>
               </div>
             </div>
           ))}
