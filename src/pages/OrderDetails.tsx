@@ -1,19 +1,13 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import BuyerOrder from '@/components/Account/Tabs/BuyerOrders/BuyerOrder/BuyerOrder';
+import { Navigate, useParams } from 'react-router-dom';
 
 const OrderDetails = () => {
-  const navigate = useNavigate();
   const { orderId } = useParams();
 
   if (!orderId) {
     return null;
   }
 
-  return (
-    <main className='container'>
-      <BuyerOrder orderId={orderId} onBack={() => navigate('/account')} />
-    </main>
-  );
+  return <Navigate to={`/account?tab=orders&orderId=${orderId}`} replace />;
 };
 
 export default OrderDetails;

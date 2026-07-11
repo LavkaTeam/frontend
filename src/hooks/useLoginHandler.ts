@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useLogin } from './useAuth';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import type { LoginPayload } from '@/types/auth';
 import { syncLocalUserData } from './syncLocalUserData';
 
@@ -19,9 +19,8 @@ export const useLoginHandler = () => {
         queryClient.invalidateQueries({ queryKey: ['user'] });
         await syncLocalUserData(queryClient);
 
-        // Check if there's a redirect state, otherwise go to home
         const locationState = window.history.state as { usr?: { from?: string } };
-        const from = locationState?.usr?.from || '/';
+        const from = locationState?.usr?.from || '/account';
         navigate(from);
       },
       onError: (error: unknown) => {

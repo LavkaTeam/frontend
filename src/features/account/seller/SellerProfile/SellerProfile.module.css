@@ -1,0 +1,153 @@
+.profileContent {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profileInfo {
+  max-width: 806px;
+}
+
+.infoContent {
+  gap: 40px;
+  margin-bottom: 16px;
+  display: flex;
+}
+
+.profileTitle {
+  color: var(--color-gray-900);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  margin-bottom: 16px;
+}
+
+.profileDescription {
+  color: var(--color-gray-800);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  margin-bottom: 32px;
+}
+
+.subTitles {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 170px;
+}
+
+.subTitle {
+  color: var(--color-gray-800);
+  line-height: 44px;
+}
+
+.Inputs {
+  width: 100%;
+  max-width: 596px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editBlock {
+  display: flex;
+  gap: 40px;
+  align-items: end;
+  justify-content: space-between;
+  height: 44px;
+  margin-bottom: 16px;
+}
+
+.editBlock > *:first-child {
+  flex-grow: 1;
+  max-width: 356px;
+}
+
+.actionWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 200px;
+  gap: 24px;
+}
+
+.actionLink {
+  cursor: pointer;
+  display: flex;
+  align-items: start;
+  gap: 12px;
+  color: var(--color-gray-800);
+  transition: color 0.3s ease;
+}
+
+.actionLink span {
+  line-height: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.actionLink svg {
+  stroke: var(--color-gray-600);
+  transition: stroke 0.3s ease;
+}
+
+.actionLink:hover {
+  color: var(--color-brand-burgundy);
+}
+
+.fileUploaded {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fileName {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  color: var(--color-gray-900);
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+}
+
+.fileName:hover {
+  color: var(--color-brand-burgundy);
+  transition: color 0.3s ease;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.removeBtn:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-brand-burgundy);
+}
+
+.logoAndSave {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.button {
+  width: 212px;
+}

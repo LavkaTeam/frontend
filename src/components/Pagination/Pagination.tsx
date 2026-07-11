@@ -8,6 +8,7 @@ interface PaginationProps {
   totalPages: number;
   onPageChange: (page: number) => void;
   noPaddings?: boolean;
+  disabled?: boolean;
 }
 
 const Pagination = ({
@@ -15,6 +16,7 @@ const Pagination = ({
   totalPages,
   onPageChange,
   noPaddings = false,
+  disabled = false,
 }: PaginationProps) => {
   const paginationRange = usePagination({ currentPage, totalPages });
 
@@ -24,9 +26,11 @@ const Pagination = ({
     <div className={noPaddings ? '' : 'container'}>
       <div className={styles.buttonContainer}>
         <button
-          className={`${styles.buttonWrapper} ${currentPage === 1 ? styles.disabled : ''}`}
-          onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
+          className={styles.buttonWrapper}
+          onClick={() =>
+            !disabled && currentPage > 1 && onPageChange(currentPage - 1)
+          }
+          disabled={disabled || currentPage === 1}
         >
           <span className={styles.arrow}>
             <ArrowLeftPagination />
@@ -45,23 +49,31 @@ const Pagination = ({
             }
 
             return (
-              <span
+              <button
                 key={index}
-                className={pageNumber === currentPage ? styles.activePage : ''}
-                onClick={() => onPageChange(pageNumber as number)}
+                type='button'
+                className={`${styles.pageNumber} ${
+                  pageNumber === currentPage ? styles.activePage : ''
+                }`}
+                onClick={() =>
+                  !disabled && onPageChange(pageNumber as number)
+                }
+                disabled={disabled}
               >
                 {pageNumber}
-              </span>
+              </button>
             );
           })}
         </div>
 
         <button
-          className={`${styles.buttonWrapper} ${currentPage === totalPages ? styles.disabled : ''}`}
+          className={styles.buttonWrapper}
           onClick={() =>
-            currentPage < totalPages && onPageChange(currentPage + 1)
+            !disabled &&
+            currentPage < totalPages &&
+            onPageChange(currentPage + 1)
           }
-          disabled={currentPage === totalPages}
+          disabled={disabled || currentPage === totalPages}
         >
           <span className={styles.button}>Next</span>
           <span className={styles.arrow}>

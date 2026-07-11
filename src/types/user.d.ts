@@ -18,6 +18,13 @@ export interface Address {
   deliveryNotes?: string;
 }
 
+export interface Subscriptions {
+  receiveNews?: boolean;
+  receivePersonalizedOffers?: boolean;
+  receiveOrderStatusUpdates?: boolean;
+  over40Percent?: boolean;
+}
+
 export interface UserResponse {
   id: string;
   email: string;
@@ -38,7 +45,9 @@ export interface UserResponse {
   bic?: string;
   legalAddress?: Address;
   shippingAddresses?: Address[];
+  subscriptions?: Subscriptions;
   verificationStatus?: VerificationStatus;
+  status?: VerificationStatus;
 
   // Legacy aliases kept for compatibility with parts of the current UI.
   name?: string;
@@ -47,5 +56,6 @@ export interface UserResponse {
   tax_ID?: string;
   vat_Number?: string;
   liquor_License?: string;
+  liquor_License_File_Url?: string;
   bank_Name?: string;
 }

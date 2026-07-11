@@ -1,0 +1,98 @@
+.summaryColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: 112px;
+  align-self: start;
+}
+
+.summaryCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 24px;
+  border-radius: 16px;
+  background: var(--color-primary-white);
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.summaryLabel {
+  margin: 0;
+  color: var(--color-gray-500);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.summaryAmount {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 56px;
+  letter-spacing: -0.96px;
+}
+
+.balanceAmount {
+  color: var(--color-green);
+}
+
+.expectedAmount {
+  color: var(--color-brand-orange);
+}
+
+.feeAmount {
+  color: var(--color-brand-burgundy);
+}
+
+.summaryDescription {
+  margin: 0;
+  color: var(--color-gray-600);
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.payFeesButton {
+  align-self: flex-start;
+  padding: 10px 16px;
+  color: var(--color-primary-white);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  background: var(--color-brand-burgundy);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 160ms ease;
+}
+
+.payFeesButton:hover {
+  opacity: 0.88;
+}
+
+@media (max-width: 1120px) {
+  .summaryColumn {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .summaryAmount {
+    font-size: 42px;
+    line-height: 50px;
+  }
+}
+
+@media (max-width: 760px) {
+  .summaryColumn {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryAmount {
+    font-size: 36px;
+    line-height: 44px;
+  }
+}

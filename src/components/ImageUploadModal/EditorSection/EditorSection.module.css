@@ -1,0 +1,301 @@
+.editorSection {
+  flex: 1;
+  display: flex;
+  height: 100%;
+}
+
+.cropperColumn {
+  flex: 1;
+  background: var(--color-gray-50);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.cropperWrapper {
+  flex: 1;
+  position: relative;
+  margin: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--color-primary-white);
+  background-image: radial-gradient(var(--color-gray-300) 1px, transparent 1px);
+  background-size: 20px 20px;
+  box-shadow:
+    inset 0 0 0 1px var(--color-gray-200),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+}
+.cropperInner {
+  position: absolute;
+  inset: 0;
+  transition: filter 0.1s;
+}
+
+.bottomToolbar {
+  height: 64px;
+  background: var(--color-primary-white);
+  border-top: 1px solid var(--color-gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+  position: relative;
+}
+.toolbarLeft,
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 120px;
+}
+.toolbarRight {
+  justify-content: flex-end;
+}
+.toolbarCenter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centeredBadge {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: popIn 0.2s ease-out;
+}
+@keyframes popIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.toolBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-primary-white);
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.toolBtn svg {
+  width: 18px;
+  height: 18px;
+}
+.toolBtn:hover:not(:disabled) {
+  background: var(--color-gray-50);
+}
+.toolBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.compareBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-primary-white);
+  color: var(--color-gray-800);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.compareBtn svg {
+  width: 18px;
+  height: 18px;
+}
+.compareBtn:hover {
+  background: var(--color-gray-50);
+}
+.compareBtn:active {
+  background: var(--color-gray-200);
+}
+
+.toolsArea {
+  width: 300px;
+  background: var(--color-primary-white);
+  border-left: 1px solid var(--color-gray-200);
+  display: flex;
+  flex-direction: column;
+}
+.editorTabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-gray-200);
+  flex-shrink: 0;
+}
+.editorTabs button {
+  flex: 1;
+  padding: 14px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  color: var(--color-gray-600);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.editorTabs button.activeEditorTab {
+  color: var(--color-brand-burgundy);
+  border-bottom-color: var(--color-brand-burgundy);
+}
+
+.toolsContent {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+.animatedTab {
+  width: 100%;
+  height: 100%;
+  animation: simpleFadeIn 0.2s ease-in-out forwards;
+}
+@keyframes simpleFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.toolGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.toolGroupAlt {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.labelActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.autoCenterLink {
+  background: none;
+  border: none;
+  color: var(--color-brand-burgundy);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+.autoCenterLink:hover {
+  text-decoration: underline;
+}
+
+.sliderControl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sliderControl label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray-800);
+}
+.labelRow span {
+  text-align: right;
+  width: 35px;
+  font-size: 12px;
+  color: var(--color-gray-500);
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--color-gray-200);
+  border-radius: 4px;
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-brand-burgundy, #af261f);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.resetBtn {
+  margin-top: 8px;
+  padding: 8px;
+  background: none;
+  border: none;
+  color: var(--color-gray-500);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.aiDivider {
+  height: 1px;
+  background: var(--color-gray-200);
+  margin: 8px 0;
+}
+.aiSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.aiBtn {
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0.6;
+  cursor: not-allowed;
+  user-select: none;
+}
+.aiBadge {
+  background: rgba(255, 255, 255, 0.25);
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

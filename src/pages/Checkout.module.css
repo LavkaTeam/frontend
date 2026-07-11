@@ -6,9 +6,9 @@
 }
 
 .pageLoaderOverlay {
-  background: rgba(10, 13, 18, 0.34);
-  backdrop-filter: blur(3px);
-  z-index: 2001 !important;
+  background: var(--modal-overlay-background);
+  backdrop-filter: blur(var(--modal-overlay-blur));
+  z-index: var(--modal-z-index) !important;
 }
 
 .header {

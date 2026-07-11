@@ -1,0 +1,19 @@
+.skeleton {
+  display: block;
+  background: var(--color-gray-200);
+  animation: skeletonPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes skeletonPulse {
+  0% {
+    opacity: 0.58;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.58;
+  }
+}

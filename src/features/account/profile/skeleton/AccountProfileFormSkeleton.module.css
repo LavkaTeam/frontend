@@ -1,0 +1,274 @@
+.profileContent {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.profileTitle {
+  color: var(--color-gray-900);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  margin-bottom: 16px;
+}
+
+.profileDescription {
+  color: var(--color-gray-800);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  max-width: 880px;
+}
+
+.profileLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 980px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px 20px;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.fieldBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.actionRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.flexGrowField {
+  flex: 1;
+  min-width: 0;
+}
+
+.saveBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.addressHeader,
+.addressCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.addressList {
+  display: grid;
+  gap: 16px;
+}
+
+.addressCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 16px;
+}
+
+.addressCardText {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(420px, 100%);
+}
+
+.addressActions {
+  display: flex;
+  gap: 8px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-gray-400);
+}
+
+.lightDivider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-gray-200);
+}
+
+.licenseCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.licenseCardHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.licenseHeading,
+.licenseFileMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.licenseFileRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.skeletonPulse {
+  background: var(--color-gray-200);
+  border-radius: 6px;
+  animation: profileSkeletonPulse 1.5s infinite ease-in-out;
+}
+
+.sectionTitleSkeleton {
+  width: 180px;
+  height: 24px;
+}
+
+.fieldLabelSkeleton {
+  width: 120px;
+  height: 16px;
+}
+
+.inputSkeleton {
+  width: 100%;
+  height: 60px;
+  border-radius: 16px;
+}
+
+.inlineActionSkeleton {
+  width: 176px;
+  height: 28px;
+}
+
+.licenseLabelSkeleton {
+  width: 112px;
+  height: 14px;
+}
+
+.licenseValueSkeleton {
+  width: 180px;
+  height: 24px;
+}
+
+.licenseFileNameSkeleton {
+  width: 196px;
+  height: 18px;
+}
+
+.licenseFileStatusSkeleton {
+  width: 170px;
+  height: 14px;
+}
+
+.licenseActionSkeleton {
+  width: 122px;
+  height: 22px;
+}
+
+.textActionSkeleton {
+  width: 126px;
+  height: 24px;
+}
+
+.buttonSkeleton {
+  width: 212px;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.addressButtonSkeleton {
+  width: 142px;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.addressTitleSkeleton {
+  width: 190px;
+  height: 22px;
+}
+
+.addressLineSkeleton {
+  width: 100%;
+  height: 16px;
+}
+
+.addressLineShortSkeleton {
+  width: 74%;
+  height: 16px;
+}
+
+.iconSkeleton {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+@keyframes profileSkeletonPulse {
+  0% {
+    opacity: 0.58;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.58;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actionRow,
+  .saveBar,
+  .addressHeader,
+  .addressCardHeader,
+  .licenseFileRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .buttonSkeleton,
+  .addressButtonSkeleton,
+  .inlineActionSkeleton,
+  .licenseActionSkeleton {
+    width: 100%;
+  }
+}

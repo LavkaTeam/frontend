@@ -1,0 +1,1 @@
+export { CompareIcon } from './CompareIcon';

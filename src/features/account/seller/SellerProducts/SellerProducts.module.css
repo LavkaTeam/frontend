@@ -1,0 +1,129 @@
+.pageContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  color: var(--color-gray-900);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: -0.72px;
+  margin: 0;
+}
+
+.subTitle {
+  color: var(--color-gray-800);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  margin: 0;
+  max-width: 720px;
+}
+
+.actionBlock {
+  width: 212px;
+  flex-shrink: 0;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.filterSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filterWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filterBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -8px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filterBtn:hover,
+.filterBtnActive {
+  background-color: var(--color-gray-200);
+}
+
+.fetchingLabel {
+  color: var(--color-gray-500);
+  font-size: 14px;
+}
+
+.listSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feedbackState {
+  padding: 56px 24px;
+  border: 1px dashed var(--color-gray-300);
+  border-radius: 16px;
+  background: var(--color-primary-white);
+  text-align: center;
+}
+
+.feedbackState h3 {
+  margin: 0 0 10px;
+  color: var(--color-gray-900);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.feedbackState p {
+  margin: 0;
+  color: var(--color-gray-600);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .actionBlock {
+    width: 100%;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

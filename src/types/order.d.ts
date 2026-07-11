@@ -3,8 +3,10 @@ import { UserRole } from './user';
 export type OrderStatus =
   | 'NEW'
   | 'PENDING'
+  | 'PROCESSING'
   | 'SHIPPED'
   | 'DELIVERED'
+  | 'COMPLETED'
   | 'CANCELLED';
 
 export interface OrderItem {
@@ -52,8 +54,11 @@ export type OrderDocumentType =
   | 'PURCHASE_ORDER'
   | 'DELIVERY_NOTE'
   | 'PROFORMA_INVOICE'
-  | 'INVOICE';
+  | 'INVOICE'
+  | 'SELLER_SETTLEMENT_STATEMENT';
 export type DocumentStatus = 'PENDING' | 'GENERATED' | 'FAILED';
+export type PlatformFeeBaseType = 'SUBTOTAL' | 'GRAND_TOTAL' | string;
+export type PlatformFeeStatus = 'PENDING' | 'COMPLETED' | string;
 
 export interface ShippingDetailsDto {
   firstName: string;
@@ -87,7 +92,17 @@ export interface OrderSummaryDto {
   subtotal: number;
   totalTax: number;
   shippingCost?: number;
+  shippingCostDisplay?: string;
   grandTotal: number;
+}
+
+export interface PlatformFeeInfoDto {
+  rate: number;
+  base: number;
+  baseType: PlatformFeeBaseType;
+  amount: number;
+  netProceeds: number;
+  status: PlatformFeeStatus;
 }
 
 export interface OrderDocumentDto {
@@ -106,6 +121,18 @@ export interface OrdersPageDto {
   totalPages: number;
   size: number;
   content: OrderResponseDto[];
+  number: number;
+  numberOfElements: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
+
+export interface OrdersSummaryPageDto {
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  content: OrderSummaryListItemDto[];
   number: number;
   numberOfElements: number;
   first: boolean;
@@ -158,17 +185,38 @@ export interface OrderResponseDto {
   sellerId?: string;
   sellerName?: string;
   sellerCompany?: string;
-  orderStatus: 'NEW' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+  orderStatus:
+    | 'NEW'
+    | 'PROCESSING'
+    | 'SHIPPED'
+    | 'DELIVERED'
+    | 'COMPLETED'
+    | 'CANCELLED';
   paymentStatus: PaymentStatus;
   paymentMethod: OrderPaymentMethod;
+  paymentBatchId?: string;
   orderComment?: string;
   shippingDetails: ShippingDetailsDto;
   billingDetails: BillingDetailsDto;
   summary: OrderSummaryDto;
   items: OrderResponseItemDto[];
   documents: OrderDocumentDto[];
+  platformFee?: PlatformFeeInfoDto;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface OrderSummaryListItemDto {
+  id: string;
+  orderNumber: string;
+  createdAt: string;
+  orderStatus: OrderResponseDto['orderStatus'];
+  paymentStatus: PaymentStatus;
+  summary: OrderSummaryDto;
+  buyerCompany?: string;
+  buyerName?: string;
+  sellerCompany?: string;
+  sellerName?: string;
 }
 
 export interface postOrder {

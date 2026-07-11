@@ -1,1 +1,2 @@
-export { OrderDocuments, documentLabels, statusLabels } from './OrderDocuments';
+export { OrderDocuments } from './OrderDocuments';
+export { documentLabels, statusLabels } from './orderDocument.constants';

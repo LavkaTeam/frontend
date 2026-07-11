@@ -1,0 +1,117 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: transparent;
+  backdrop-filter: blur(var(--modal-overlay-blur));
+  opacity: 0;
+  visibility: hidden;
+  z-index: var(--modal-z-index);
+  transition:
+    opacity 0.28s ease,
+    visibility 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.modalOverlayOpen {
+  opacity: 1;
+  visibility: visible;
+  background: var(--modal-overlay-background);
+}
+
+.modalCard {
+  width: min(720px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  border-radius: 18px;
+  background: var(--color-primary-white);
+  box-shadow: 0 20px 32px rgba(10, 13, 18, 0.12);
+  transform: translateY(18px) scale(0.98);
+  opacity: 0;
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.modalCardOpen {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.modalTitle {
+  color: var(--color-gray-900);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.modalDescription {
+  margin-top: 6px;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.modalCloseButton {
+  border: none;
+  background: transparent;
+  color: var(--color-gray-500);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modalCloseButton:hover {
+  color: var(--color-gray-900);
+}
+
+.modalBody {
+  padding: 20px 24px 24px;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.modalFooter :global(button) {
+  width: auto;
+  min-width: 156px;
+}
+
+@media (max-width: 900px) {
+  .modalOverlay {
+    padding: 16px;
+  }
+
+  .modalHeader,
+  .modalBody,
+  .modalFooter {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .modalFooter {
+    flex-direction: column-reverse;
+  }
+
+  .modalFooter :global(button) {
+    width: 100%;
+  }
+}

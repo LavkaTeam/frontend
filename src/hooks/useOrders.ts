@@ -1,26 +1,58 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {
+  downloadMyOrdersReport,
   downloadOrderDocument,
+  downloadSellerOrdersReport,
   generateOrderDocument,
   getMyOrders,
   getOrderDetails,
   getOrderDocuments,
+  getSellerOrders,
   updateOrderStatus,
 } from '@/api/orders';
+import { completeSellerOrder } from '@/api/payments';
 import type {
   GenerateDocumentRequestDto,
   OrderDocumentDto,
+  OrderResponseDto,
   UpdateOrderStatusRequestDto,
 } from '@/types/order';
 
 const hasPendingDocuments = (documents: OrderDocumentDto[]) =>
   documents.some((document) => document.status === 'PENDING');
 
-export const useMyOrders = (page = 0, size = 10) => {
+export const useMyOrders = (
+  page = 0,
+  size = 10,
+  statuses: OrderResponseDto['orderStatus'][] = [],
+  options?: { enabled?: boolean },
+) => {
   return useQuery({
-    queryKey: ['orders', 'me', page, size],
-    queryFn: () => getMyOrders(page, size),
+    queryKey: ['orders', 'me', page, size, statuses],
+    queryFn: () => getMyOrders(page, size, statuses),
+    placeholderData: keepPreviousData,
     staleTime: 30_000,
+    enabled: options?.enabled ?? true,
+  });
+};
+
+export const useSellerOrders = (
+  page = 0,
+  size = 10,
+  statuses: OrderResponseDto['orderStatus'][] = [],
+  options?: { enabled?: boolean },
+) => {
+  return useQuery({
+    queryKey: ['orders', 'seller', page, size, statuses],
+    queryFn: () => getSellerOrders(page, size, statuses),
+    placeholderData: keepPreviousData,
+    staleTime: 30_000,
+    enabled: options?.enabled ?? true,
   });
 };
 
@@ -84,6 +116,36 @@ export const useUpdateOrderStatus = (orderId: string) => {
         queryClient.invalidateQueries({
           queryKey: ['orders', 'me'],
         }),
+        queryClient.invalidateQueries({
+          queryKey: ['orders', 'seller'],
+        }),
+      ]);
+    },
+  });
+};
+
+export const useCompleteSellerOrder = (orderId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => completeSellerOrder(orderId),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['orders', 'documents', orderId],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['orders', 'details', orderId],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['orders', 'me'],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['orders', 'seller'],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['finances'],
+        }),
       ]);
     },
   });
@@ -105,9 +167,25 @@ export const useDownloadOrderDocument = () => {
     mutationFn: ({
       orderId,
       documentId,
+      fallbackFileName,
     }: {
       orderId: string;
       documentId: string;
-    }) => downloadOrderDocument(orderId, documentId),
+      fallbackFileName?: string;
+    }) => downloadOrderDocument(orderId, documentId, fallbackFileName),
+  });
+};
+
+export const useDownloadMyOrdersReport = () => {
+  return useMutation({
+    mutationFn: (statuses: OrderResponseDto['orderStatus'][] = []) =>
+      downloadMyOrdersReport(statuses),
+  });
+};
+
+export const useDownloadSellerOrdersReport = () => {
+  return useMutation({
+    mutationFn: (statuses: OrderResponseDto['orderStatus'][] = []) =>
+      downloadSellerOrdersReport(statuses),
   });
 };

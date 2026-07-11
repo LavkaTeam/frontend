@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/store/hooks';
 import { clearCart } from '@/store/cartSlice';
 import { clearFavorites } from '@/store/favoritesSlice';

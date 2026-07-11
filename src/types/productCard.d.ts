@@ -4,6 +4,26 @@ export interface ProductImage {
   publicId?: string;
 }
 
+export type ProductStatus =
+  | 'ACTIVE'
+  | 'HIDDEN'
+  | 'UNDER_REVIEW'
+  | 'ARCHIVED';
+
+export type ProductCategory =
+  | 'WINE'
+  | 'BEER'
+  | 'STRONG_DRINKS'
+  | 'LOW_ALCOHOL_DRINKS'
+  | 'SOFT_DRINKS'
+  | 'BARWARE_ACCESSORIES';
+
+export type ProductMainCategory =
+  | 'BESTSELLERS'
+  | 'RELATED_PRODUCTS'
+  | 'TOP_SELECT'
+  | 'NORMAL';
+
 export interface Seller {
   id: string;
   firstName: string;
@@ -19,6 +39,11 @@ export interface WholesalePrice {
   price: number;
 }
 
+export interface CategoryTreeItem {
+  category: ProductCategory;
+  subcategories: string[];
+}
+
 export interface Product {
   id: string;
   mainImage: ProductImage;
@@ -27,12 +52,12 @@ export interface Product {
   producer: string;
   price: number;
   quantity: number;
-  mainCategory: 'BESTSELLERS' | 'RELATED_PRODUCTS' | 'TOP_SELECT' | 'NORMAL';
+  mainCategory: ProductMainCategory;
   alcohol: number;
   description: string;
-  status: 'ACTIVE' | 'HIDDEN' | 'UNDER_REVIEW' | 'ARCHIVED';
+  status: ProductStatus;
   inStock: boolean;
-  category: 'WINE' | 'BEER' | 'STRONG_DRINKS' | 'LOW_ALCOHOL_DRINKS' | 'SOFT_DRINKS' | 'BARWARE_ACCESSORIES';
+  category: ProductCategory;
   subcategory: string;
   volume: number;
   sku: string;
@@ -54,6 +79,20 @@ export interface Product {
   updatedAt: string;
 }
 
+export interface SellerProductSummary {
+  id: string;
+  name: string;
+  volume: number;
+  producer: string;
+  price: number;
+  category: ProductCategory;
+  status: ProductStatus;
+  quantity: number;
+  mainImage?: ProductImage;
+  subcategory: string;
+  country?: string;
+}
+
 export interface ProductRequest {
   mainImageId?: string;
   imageIds?: string[];
@@ -61,10 +100,10 @@ export interface ProductRequest {
   producer: string;
   price: number;
   quantity: number;
-  mainCategory: 'BESTSELLERS' | 'RELATED_PRODUCTS' | 'TOP_SELECT' | 'NORMAL';
+  mainCategory: ProductMainCategory;
   alcohol: number;
   description: string;
-  category: 'WINE' | 'BEER' | 'STRONG_DRINKS' | 'LOW_ALCOHOL_DRINKS' | 'SOFT_DRINKS' | 'BARWARE_ACCESSORIES';
+  category: ProductCategory;
   subcategory: string;
   volume: number;
   sku: string;
@@ -76,6 +115,6 @@ export interface ProductRequest {
   barcode: string;
   weight: number;
   dimensions: string;
-  taxRate: number;
+  taxRate?: number;
   wholesalePrices: WholesalePrice[];
 }

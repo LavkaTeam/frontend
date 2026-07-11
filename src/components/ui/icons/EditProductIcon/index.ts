@@ -1,0 +1,1 @@
+export { EditProductIcon } from './EditProductIcon';

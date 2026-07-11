@@ -15,6 +15,7 @@ import { HeaderMenu } from '@/components/HeaderMenu';
 import { NoProductsFound } from '@/components/NoProductsFound/NoProductsFound';
 import { CardProductSkeleton } from '@/components/CardProduct';
 import { ProductSort } from '@/components/ProductSort';
+import { BlockingOverlay } from '@/components/ui/BlockingOverlay';
 
 import styles from './Products.module.css';
 
@@ -334,23 +335,26 @@ const Products = () => {
             ) : normalProducts.length === 0 ? (
               <NoProductsFound onClearFilters={clearAllFilters} />
             ) : (
-              <div
-                className={styles.productsContainer}
-              >
-                <CardSection
-                  title={false}
-                  cards={normalProducts}
-                  CardComponent={CardProduct}
-                  noPaddings={true}
-                  overlayActive={isCatalogPageLoading}
-                />
+              <div className={styles.productsContainer}>
+                <BlockingOverlay
+                  active={isCatalogPageLoading}
+                  className={styles.productsSection}
+                >
+                  <CardSection
+                    title={false}
+                    cards={normalProducts}
+                    CardComponent={CardProduct}
+                    noPaddings={true}
+                  />
 
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                  noPaddings={true}
-                />
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                    noPaddings={true}
+                    disabled={isCatalogPageLoading}
+                  />
+                </BlockingOverlay>
               </div>
             )}
           </div>

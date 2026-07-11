@@ -1,9 +1,10 @@
 .field {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  padding-bottom: 16px;
+  scroll-margin-top: 120px;
 }
 
 .inputWrapper {
@@ -14,6 +15,7 @@
 
 .inputWrapper input {
   flex: 1;
+  padding-right: 52px;
 }
 
 .inputWrapper span {
@@ -24,11 +26,26 @@
 }
 
 .error {
-  color: var(--color-error-500);
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  color: #cf5f58;
   font-family: Inter;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 20px;
+  line-height: 18px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
+  pointer-events: none;
+}
+
+.errorVisible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .icon {
@@ -36,4 +53,15 @@
   align-self: center;
   align-items: center;
   user-select: none;
+  color: #cf5f58;
+  transition: color 0.2s ease;
+}
+
+.errorIcon {
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--color-primary-white);
+  box-shadow: 0 0 0 4px var(--color-primary-white);
 }

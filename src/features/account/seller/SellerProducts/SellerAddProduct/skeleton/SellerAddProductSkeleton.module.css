@@ -1,0 +1,253 @@
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.headerCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 448px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.leftCol,
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.leftCol {
+  gap: 16px;
+  position: sticky;
+  top: 112px;
+  align-self: start;
+}
+
+.imageStage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+}
+
+.thumbnailList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.thumbnailCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px 8px 8px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  background: var(--color-primary-white);
+}
+
+.thumbnailMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.sectionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 16px;
+  background: var(--color-primary-white);
+  box-shadow: 0 6px 18px -14px rgba(10, 13, 18, 0.18);
+}
+
+.sectionCard + .sectionCard {
+  margin-top: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.sectionHeaderCompact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.formGrid,
+.formGridWide,
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.pricingGrid {
+  margin-top: 2px;
+}
+
+.formGridWide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fieldBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toggleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pricingCard,
+.wholesalePanel,
+.tierCard,
+.descriptionBlock,
+.tagsBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pricingCard {
+  margin-top: 8px;
+  padding: 18px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfcfd 100%);
+}
+
+.pricingCardHeader,
+.wholesaleHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.wholesalePanel {
+  margin-top: 4px;
+  padding: 18px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfcfd 100%);
+}
+
+.tierList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tierCard {
+  position: relative;
+  padding: 16px;
+  padding-right: 72px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 14px;
+  background: var(--color-primary-white);
+}
+
+.tierGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tierSummary {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.removeTierButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+}
+
+.descriptionBlock {
+  margin-bottom: 10px;
+}
+
+.tagsBlock {
+  gap: 8px;
+}
+
+@media (max-width: 1024px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .leftCol {
+    position: static;
+    max-width: 448px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .formGrid,
+  .formGridWide,
+  .pricingGrid,
+  .tierGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricingCardHeader,
+  .wholesaleHeader,
+  .sectionHeader {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .headerActions {
+    width: 100%;
+    flex-direction: column-reverse;
+  }
+}

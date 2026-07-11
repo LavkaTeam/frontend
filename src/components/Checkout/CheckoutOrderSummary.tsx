@@ -2,7 +2,13 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import type { SellerGroup } from './checkoutTypes';
 import type { NormalizedCartItem } from './checkoutTypes';
-import { formatCurrency, formatWeight, getItemTax, getItemTotal, getItemUnitPrice } from './checkoutUtils';
+import {
+  formatCurrency,
+  formatWeight,
+  getItemTax,
+  getItemTotal,
+  getItemUnitPrice,
+} from './checkoutUtils';
 import styles from '@/pages/Checkout.module.css';
 
 type CheckoutOrderSummaryProps = {
@@ -20,14 +26,28 @@ type CheckoutOrderSummaryProps = {
   onPlaceOrder: () => void;
 };
 
-const SummaryItem = ({ item, sellerId }: { item: NormalizedCartItem; sellerId: string }) => {
+const SummaryItem = ({
+  item,
+  sellerId,
+}: {
+  item: NormalizedCartItem;
+  sellerId: string;
+}) => {
   const productLink = `/product/${item.productId}`;
 
   return (
     <div key={`${sellerId}-${item.productId}`} className={styles.summaryItem}>
-      <Link to={productLink} className={styles.productImageLink} aria-label={`Open ${item.name || 'product'}`}>
+      <Link
+        to={productLink}
+        className={styles.productImageLink}
+        aria-label={`Open ${item.name || 'product'}`}
+      >
         <div className={styles.productImage}>
-          {item.mainImage ? <img src={item.mainImage} alt={item.name || 'Product'} /> : <span>No image</span>}
+          {item.mainImage ? (
+            <img src={item.mainImage} alt={item.name || 'Product'} />
+          ) : (
+            <span>No image</span>
+          )}
         </div>
       </Link>
       <div className={styles.productMeta}>
@@ -39,8 +59,12 @@ const SummaryItem = ({ item, sellerId }: { item: NormalizedCartItem; sellerId: s
         </span>
       </div>
       <div className={styles.productPriceBlock}>
-        <strong className={styles.productPrice}>{formatCurrency(getItemTotal(item))}</strong>
-        <span className={styles.productTax}>incl. {formatCurrency(getItemTax(item))} tax</span>
+        <strong className={styles.productPrice}>
+          {formatCurrency(getItemTotal(item))}
+        </strong>
+        <span className={styles.productTax}>
+          incl. {formatCurrency(getItemTax(item))} tax
+        </span>
       </div>
     </div>
   );
@@ -67,13 +91,19 @@ const CheckoutOrderSummary = ({
                 <div className={styles.sellerOrderHeader}>
                   <div>
                     <p className={styles.sellerOrderEyebrow}>Separate order</p>
-                    <h4 className={styles.sellerOrderTitle}>{group.sellerCompany}</h4>
+                    <h4 className={styles.sellerOrderTitle}>
+                      {group.sellerCompany}
+                    </h4>
                   </div>
                 </div>
 
                 <div className={styles.sellerOrderItems}>
                   {group.items.map((item) => (
-                    <SummaryItem key={`${group.sellerId}-${item.productId}`} item={item} sellerId={group.sellerId} />
+                    <SummaryItem
+                      key={`${group.sellerId}-${item.productId}`}
+                      item={item}
+                      sellerId={group.sellerId}
+                    />
                   ))}
                 </div>
 
@@ -94,7 +124,11 @@ const CheckoutOrderSummary = ({
               </article>
             ))
           : sellerGroups[0]?.items.map((item) => (
-              <SummaryItem key={`${sellerGroups[0].sellerId}-${item.productId}`} item={item} sellerId={sellerGroups[0].sellerId} />
+              <SummaryItem
+                key={`${sellerGroups[0].sellerId}-${item.productId}`}
+                item={item}
+                sellerId={sellerGroups[0].sellerId}
+              />
             ))}
       </div>
 
@@ -102,7 +136,9 @@ const CheckoutOrderSummary = ({
         <div className={styles.summaryBlock}>
           <div className={styles.totalInfo}>
             <p>Sub-Total (excl. tax):</p>
-            <span className={styles.price}>{formatCurrency(cartSummary.subtotal)}</span>
+            <span className={styles.price}>
+              {formatCurrency(cartSummary.subtotal)}
+            </span>
           </div>
         </div>
         <div className={styles.summaryBlock}>
@@ -112,7 +148,9 @@ const CheckoutOrderSummary = ({
           </div>
           <div className={styles.totalInfo}>
             <p>Total weight:</p>
-            <span className={styles.price}>{formatWeight(cartSummary.totalWeight || 0)}</span>
+            <span className={styles.price}>
+              {formatWeight(cartSummary.totalWeight || 0)}
+            </span>
           </div>
           <div className={styles.totalInfo}>
             <p>Shipping fee:</p>
@@ -122,11 +160,15 @@ const CheckoutOrderSummary = ({
         <div className={`${styles.summaryBlock} ${styles.totalBlock}`}>
           <div className={styles.totalInfo}>
             <p>Total tax:</p>
-            <span className={styles.price}>{formatCurrency(cartSummary.totalTax || 0)}</span>
+            <span className={styles.price}>
+              {formatCurrency(cartSummary.totalTax || 0)}
+            </span>
           </div>
           <div className={styles.totalInfo}>
             <p className={styles.totalLabel}>Total:</p>
-            <span className={styles.greenPrice}>{formatCurrency(cartSummary.grandTotal)}</span>
+            <span className={styles.greenPrice}>
+              {formatCurrency(cartSummary.grandTotal)}
+            </span>
           </div>
         </div>
         <div className={styles.checkoutButton}>

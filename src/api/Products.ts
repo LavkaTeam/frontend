@@ -1,6 +1,18 @@
 import { fetchData } from './fetchData';
-import type { Product, ProductRequest, WholesalePrice } from '@/types/productCard';
-import type { PaginatedResponse, SearchParams, SearchFiltersResponse, ProductSuggestion } from '@/types/api';
+import type {
+  CategoryTreeItem,
+  Product,
+  ProductRequest,
+  ProductStatus,
+  SellerProductSummary,
+  WholesalePrice,
+} from '@/types/productCard';
+import type {
+  PaginatedResponse,
+  SearchParams,
+  SearchFiltersResponse,
+  ProductSuggestion,
+} from '@/types/api';
 
 // Отримати всі товари
 export const getAllProducts = (): Promise<Product[]> => {
@@ -143,11 +155,27 @@ export const getPublicSellerProducts = (
 export const getMyProducts = (
   page: number = 0,
   size: number = 10,
-): Promise<PaginatedResponse<Product>> => {
-  return fetchData<PaginatedResponse<Product>>(
-    `/products/seller/me?page=${page}&size=${size}`,
+  status?: ProductStatus,
+): Promise<PaginatedResponse<SellerProductSummary>> => {
+  const queryParams = new URLSearchParams({
+    page: String(page),
+    size: String(size),
+  });
+
+  if (status) {
+    queryParams.set('status', status);
+  }
+
+  return fetchData<PaginatedResponse<SellerProductSummary>>(
+    `/products/seller/me?${queryParams.toString()}`,
     {
       method: 'GET',
     },
   );
+};
+
+export const getCategoryTree = (): Promise<CategoryTreeItem[]> => {
+  return fetchData<CategoryTreeItem[]>('/categories/tree', {
+    method: 'GET',
+  });
 };

@@ -67,6 +67,19 @@ const getSummaryTotals = (orders: OrderResponseDto[]) =>
     { items: 0, weight: 0, subtotal: 0, tax: 0, total: 0 },
   );
 
+const getAccountOrderLink = (orderId: string, section?: 'documents') => {
+  const params = new URLSearchParams({
+    tab: 'orders',
+    orderId,
+  });
+
+  if (section) {
+    params.set('section', section);
+  }
+
+  return `/account?${params.toString()}`;
+};
+
 const CheckIcon = () => (
   <svg viewBox='0 0 80 80' className={styles.heroIcon} aria-hidden='true'>
     <circle cx='40' cy='40' r='34' fill='currentColor' />
@@ -181,6 +194,9 @@ const SupplierOrderCard = ({ order }: { order: OrderResponseDto }) => {
       const { blob, fileName } = await downloadMutation.mutateAsync({
         orderId: order.id,
         documentId: purchaseOrder.id,
+        fallbackFileName:
+          purchaseOrder.fileName ||
+          `${purchaseOrder.documentNumber || 'document'}.pdf`,
       });
       saveDocumentBlob(blob, fileName);
     } catch (error) {
@@ -214,11 +230,14 @@ const SupplierOrderCard = ({ order }: { order: OrderResponseDto }) => {
       <SupplierOrderProgress status={order.orderStatus} />
 
       <div className={styles.actions}>
-        <Link to={`/orders/${order.id}`} className={styles.ghostAction}>
+        <Link to={getAccountOrderLink(order.id)} className={styles.ghostAction}>
           <EyeIcon />
           View Details
         </Link>
-        <Link to={`/orders/${order.id}`} className={styles.ghostAction}>
+        <Link
+          to={getAccountOrderLink(order.id, 'documents')}
+          className={styles.ghostAction}
+        >
           <DocumentIcon />
           Documents
         </Link>

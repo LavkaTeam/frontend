@@ -1,0 +1,174 @@
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  background: rgba(10, 13, 18, 0.32);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s ease;
+}
+
+.drawerOverlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1401;
+  width: min(440px, 100%);
+  height: 100vh;
+  padding: 24px;
+  background: var(--color-primary-white);
+  box-shadow: -12px 0 24px rgba(10, 13, 18, 0.12);
+  transform: translateX(100%);
+  transition: transform 0.24s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.drawerTitle {
+  margin: 0 0 4px;
+  color: var(--color-gray-900);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.drawerSubtitle {
+  margin: 0;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-gray-700);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background: var(--color-gray-200);
+}
+
+.drawerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.drawerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  background: #fcfcfd;
+}
+
+.drawerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.drawerRow span {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.drawerRow strong {
+  color: var(--color-gray-900);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: right;
+}
+
+.drawerLink,
+.drawerOrderLink {
+  color: var(--color-gray-900);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.drawerLink:hover,
+.drawerOrderLink:hover {
+  color: var(--color-brand-burgundy);
+}
+
+.drawerNote {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.drawerNote span {
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.drawerNote p {
+  margin: 0;
+  color: var(--color-gray-900);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 122px;
+  padding: 4px 16px;
+  border-radius: 8px 0 0 8px;
+  color: var(--color-primary-white);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: center;
+}
+
+.success {
+  background: var(--color-green);
+}
+
+.warning {
+  background: var(--color-brand-orange);
+}
+
+.danger {
+  background: var(--color-brand-burgundy);
+}
+
+.neutral {
+  background: var(--color-gray-500);
+}

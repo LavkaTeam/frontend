@@ -5,7 +5,7 @@
 .cardWrapper {
   width: 100%;
   padding: 16px 20px;
-  border: 1px solid var(--Gray-300, #d5d7da);
+  border: 1px solid var(--color-gray-200);
   background: var(--color-primary-white);
   box-sizing: border-box;
 }

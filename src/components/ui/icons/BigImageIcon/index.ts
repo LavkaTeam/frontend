@@ -1,0 +1,1 @@
+export { BigImageIcon } from './BigImageIcon';
