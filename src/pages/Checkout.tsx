@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { CheckoutSuccess } from '@/components/CheckoutSuccess';
+import { useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { CheckoutCompanyCard } from '@/components/Checkout/CheckoutCompanyCard';
 import { CheckoutDeliveryCard } from '@/components/Checkout/CheckoutDeliveryCard';
 import { CheckoutOrderSummary } from '@/components/Checkout/CheckoutOrderSummary';
@@ -13,21 +12,23 @@ import { EmptyCartIcon } from '@/components/ui/icons/EmptyCartIcon';
 import { useGetCart } from '@/hooks/useCartQueries';
 import { useCheckoutFormState } from '@/hooks/useCheckoutFormState';
 import { useCheckoutOrder } from '@/hooks/useCheckoutOrder';
+import { useCreateDemoPaymentSession } from '@/hooks/usePayments';
 import { useToast } from '@/hooks/useToast';
 import { useUser } from '@/hooks/useUser';
 import {
   checkoutSchema,
   type CheckoutFormData,
 } from '@/schemas/checkoutSchema';
-import type { OrderResponseDto } from '@/types/order';
 import type { UserResponse } from '@/types/user';
-import { groupBy } from '@/utils/groupBy';
-import type { SellerGroup } from '@/components/Checkout/checkoutTypes';
+import { extractErrorMessage } from '@/utils/error';
+import { buildSellerGroups } from '@/features/checkout/model/sellerGroups';
+import {
+  saveCheckoutSuccessOrders,
+  savePaymentBatchContext,
+} from '@/utils/checkoutSuccessStorage';
 import {
   formatAddressLine,
   getBankName,
-  getItemSubtotal,
-  getItemTax,
   getMissingBillingFields,
   getRegistrationNumber,
   getTaxId,
@@ -42,13 +43,14 @@ import styles from './Checkout.module.css';
 
 const Checkout = () => {
   const { showToast } = useToast();
+  const navigate = useNavigate();
   const { data: cart, isLoading: isCartLoading } = useGetCart(true);
   const { data: user, isLoading: isUserLoading } = useUser();
   const checkoutOrder = useCheckoutOrder();
+  const createDemoSessionMutation = useCreateDemoPaymentSession();
   const companyCardRef = useRef<HTMLDivElement | null>(null);
   const deliveryCardRef = useRef<HTMLDivElement | null>(null);
   const paymentCardRef = useRef<HTMLDivElement | null>(null);
-  const [createdOrders, setCreatedOrders] = useState<OrderResponseDto[]>([]);
 
   const {
     register,
@@ -159,14 +161,6 @@ const Checkout = () => {
   }
 
   if (!cart || cart.items.length === 0) {
-    if (createdOrders.length > 0) {
-      return (
-        <main className={`container ${styles.checkout}`}>
-          <CheckoutSuccess orders={createdOrders} />
-        </main>
-      );
-    }
-
     return (
       <main className={`container ${styles.checkout}`}>
         <div className={styles.header}>
@@ -199,29 +193,7 @@ const Checkout = () => {
     );
   }
 
-  const normalizedItems = cart.items.map((item) => ({
-    ...item,
-    sellerName: item.sellerName || item.sellerCompany || 'Independent seller',
-    sellerCompany:
-      item.sellerCompany || item.sellerName || 'Independent seller',
-  }));
-
-  const sellerGroups: SellerGroup[] = Object.entries(
-    groupBy(normalizedItems, 'sellerName'),
-  ).map(([sellerName, items], index) => {
-    const subtotal = items.reduce((sum, item) => sum + getItemSubtotal(item), 0);
-    const totalTax = items.reduce((sum, item) => sum + getItemTax(item), 0);
-
-    return {
-      sellerId: String(items[0]?.sellerId || sellerName || `seller-${index}`),
-      sellerName,
-      sellerCompany: items[0]?.sellerCompany || sellerName,
-      items,
-      subtotal,
-      totalTax,
-      total: subtotal + totalTax,
-    };
-  });
+  const sellerGroups = buildSellerGroups(cart.items);
 
   const hasMultipleSellers = sellerGroups.length > 1;
 
@@ -248,21 +220,52 @@ const Checkout = () => {
         },
       });
 
-      setCreatedOrders(orders);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (error) {
-      let message = 'Failed to create order';
+      if (data.paymentMethod === 'CARD_ONLINE') {
+        const paymentBatchId = orders.find((order) => order.paymentBatchId)
+          ?.paymentBatchId;
 
-      if (error && typeof error === 'object' && 'message' in error) {
-        message = String((error as { message: unknown }).message);
+        if (!paymentBatchId) {
+          throw new Error('Unable to start online payment for this order.');
+        }
+
+        savePaymentBatchContext({
+          batchId: paymentBatchId,
+          paymentMethod: 'CARD_ONLINE',
+          paymentStatus: 'AWAITING_PAYMENT',
+          totalAmount: orders.reduce(
+            (sum, order) => sum + (order.summary.grandTotal || 0),
+            0,
+          ),
+          currency: 'USD',
+          orderIds: orders.map((order) => order.id),
+          orderNumbers: orders.map((order) => order.orderNumber),
+        });
+
+        const session =
+          await createDemoSessionMutation.mutateAsync(paymentBatchId);
+
+        window.location.assign(session.checkoutUrl);
+        return;
       }
+
+      saveCheckoutSuccessOrders(orders);
+      navigate('/payment/success?source=checkout');
+    } catch (error) {
+      const status =
+        error && typeof error === 'object' && 'status' in error
+          ? Number((error as { status?: unknown }).status)
+          : undefined;
+      const message =
+        status === 404 && data.paymentMethod === 'CARD_ONLINE'
+          ? 'Online payment is currently unavailable. Please choose another payment method.'
+          : extractErrorMessage(error, 'Failed to create order.');
 
       showToast(message, 'error');
     }
   };
 
   const handlePlaceOrderClick = async () => {
-    if (checkoutOrder.isPending) return;
+    if (checkoutOrder.isPending || createDemoSessionMutation.isPending) return;
 
     const isValid = await trigger();
 
@@ -276,81 +279,79 @@ const Checkout = () => {
 
   return (
     <main className={`container ${styles.checkout}`}>
-      {checkoutOrder.isPending ? (
+      {checkoutOrder.isPending || createDemoSessionMutation.isPending ? (
         <Loader variant='fullscreen' className={styles.pageLoaderOverlay} />
       ) : null}
 
-      {createdOrders.length > 0 ? (
-        <CheckoutSuccess orders={createdOrders} />
-      ) : (
-        <>
-          <div className={styles.header}>
-            <HeadingH3>Checkout</HeadingH3>
-          </div>
+      <>
+        <div className={styles.header}>
+          <HeadingH3>Checkout</HeadingH3>
+        </div>
 
-          <form
-            className={styles.layout}
-            onSubmit={handleSubmit(onSubmit, scrollToFirstInvalidCard)}
-            noValidate
-          >
-            <section className={styles.formColumn}>
-              <CheckoutCompanyCard
-                ref={companyCardRef}
-                companyName={user?.companyName}
-                companyStatus={companyStatus}
-                legalAddress={legalAddress}
-                managerName={managerName}
-                managerPhone={managerPhone}
-                email={user?.email}
-                registrationNumber={getRegistrationNumber(user)}
-                taxId={getTaxId(user)}
-                iban={(user?.iban || '').toUpperCase()}
-                bankName={getBankName(user)}
-                companyRequirements={companyRequirements}
-              />
-
-              <CheckoutDeliveryCard
-                ref={deliveryCardRef}
-                register={register}
-                control={control}
-                errors={errors}
-                selectedDeliveryType={selectedDeliveryType}
-                addressMode={addressMode}
-                setAddressMode={setAddressMode}
-                selectedAddressKey={selectedAddressKey}
-                setSelectedAddressKey={setSelectedAddressKey}
-                setValue={setValue}
-                canShowSavedAddresses={canShowSavedAddresses}
-                savedAddresses={savedAddresses}
-                selectedAddress={selectedAddress}
-                deliveryAddressSummary={deliveryAddressSummary}
-                deliveryContactName={deliveryContactName}
-                recipientPhone={recipientPhone}
-                user={user}
-                applySelectedAddress={applySelectedAddress}
-              />
-
-              <CheckoutPaymentCard
-                ref={paymentCardRef}
-                register={register}
-                errors={errors}
-                selectedPaymentMethod={selectedPaymentMethod}
-                paymentWarning={paymentWarning}
-                user={user}
-              />
-            </section>
-
-            <CheckoutOrderSummary
-              sellerGroups={sellerGroups}
-              hasMultipleSellers={hasMultipleSellers}
-              cartSummary={cart.summary}
-              canPlaceOrder={canPlaceOrder}
-              isSubmitting={checkoutOrder.isPending}
-              onPlaceOrder={handlePlaceOrderClick}
+        <form
+          className={styles.layout}
+          onSubmit={handleSubmit(onSubmit, scrollToFirstInvalidCard)}
+          noValidate
+        >
+          <section className={styles.formColumn}>
+            <CheckoutCompanyCard
+              ref={companyCardRef}
+              companyName={user?.companyName}
+              companyStatus={companyStatus}
+              legalAddress={legalAddress}
+              managerName={managerName}
+              managerPhone={managerPhone}
+              email={user?.email}
+              registrationNumber={getRegistrationNumber(user)}
+              taxId={getTaxId(user)}
+              iban={(user?.iban || '').toUpperCase()}
+              bankName={getBankName(user)}
+              companyRequirements={companyRequirements}
             />
-          </form>
-        </>
-      )}
+
+            <CheckoutDeliveryCard
+              ref={deliveryCardRef}
+              register={register}
+              control={control}
+              errors={errors}
+              selectedDeliveryType={selectedDeliveryType}
+              addressMode={addressMode}
+              setAddressMode={setAddressMode}
+              selectedAddressKey={selectedAddressKey}
+              setSelectedAddressKey={setSelectedAddressKey}
+              setValue={setValue}
+              canShowSavedAddresses={canShowSavedAddresses}
+              savedAddresses={savedAddresses}
+              selectedAddress={selectedAddress}
+              deliveryAddressSummary={deliveryAddressSummary}
+              deliveryContactName={deliveryContactName}
+              recipientPhone={recipientPhone}
+              user={user}
+              applySelectedAddress={applySelectedAddress}
+            />
+
+            <CheckoutPaymentCard
+              ref={paymentCardRef}
+              register={register}
+              errors={errors}
+              selectedPaymentMethod={selectedPaymentMethod}
+              paymentWarning={paymentWarning}
+              user={user}
+            />
+          </section>
+
+          <CheckoutOrderSummary
+            sellerGroups={sellerGroups}
+            hasMultipleSellers={hasMultipleSellers}
+            cartSummary={cart.summary}
+            canPlaceOrder={canPlaceOrder}
+            isSubmitting={
+              checkoutOrder.isPending || createDemoSessionMutation.isPending
+            }
+            onPlaceOrder={handlePlaceOrderClick}
+          />
+        </form>
+      </>
     </main>
   );
 };

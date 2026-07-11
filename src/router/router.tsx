@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { Layout } from '@/Layout';
 import { Loader } from '@/components/ui/Loader';
 import { lazy, Suspense } from 'react';
@@ -11,7 +11,11 @@ const Account = lazy(() => import('@/pages/Account'));
 const Favorites = lazy(() => import('@/pages/Favorites'));
 const Cart = lazy(() => import('@/pages/Cart'));
 const Checkout = lazy(() => import('@/pages/Checkout'));
+const MockPayment = lazy(() => import('@/pages/MockPayment'));
 const OrderDetails = lazy(() => import('@/pages/OrderDetails'));
+const PaymentCancelled = lazy(() => import('@/pages/PaymentCancelled'));
+const PaymentFailed = lazy(() => import('@/pages/PaymentFailed'));
+const PaymentSuccess = lazy(() => import('@/pages/PaymentSuccess'));
 const Product = lazy(() => import('@/pages/Product'));
 const Products = lazy(() => import('@/pages/Products'));
 const SellerProductsPublic = lazy(() => import('@/pages/SellerProductsPublic'));
@@ -80,6 +84,46 @@ export const router = createBrowserRouter([
           <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
             <Suspense fallback={<Loader />}>
               <Checkout />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/mock-payment/:batchId',
+        element: (
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
+            <Suspense fallback={<Loader />}>
+              <MockPayment />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/payment/success',
+        element: (
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
+            <Suspense fallback={<Loader />}>
+              <PaymentSuccess />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/payment/failed',
+        element: (
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
+            <Suspense fallback={<Loader />}>
+              <PaymentFailed />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/payment/cancel',
+        element: (
+          <ProtectedRoute allowedRoles={['SELLER', 'BUYER']}>
+            <Suspense fallback={<Loader />}>
+              <PaymentCancelled />
             </Suspense>
           </ProtectedRoute>
         ),

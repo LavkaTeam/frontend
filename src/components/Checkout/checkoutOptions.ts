@@ -46,7 +46,7 @@ const paymentMethodOptions: PaymentMethodOption[] = [
   {
     value: 'CARD_ONLINE',
     title: 'Online card payment',
-    description: 'Secure online payment for verified company accounts.',
+    description: 'Pay securely online after placing your order.',
     disabledReason: 'Complete company profile first',
     icon: CreditCardIcon,
   },
