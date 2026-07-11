@@ -21,17 +21,14 @@ const Button = ({
   return (
     <button
       className={`${variant ? styles.buttonSecondary : styles.button} ${
-        isLoading ? 'opacity-70 cursor-not-allowed pointer-events-none' : ''
+        isLoading ? styles.loading : ''
       } ${className || ''}`.trim()}
       disabled={disabled || isLoading}
       {...rest}
     >
-      {isLoading ? (
-        <span className="inline-block mr-2 h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></span>
-      ) : (
-        icon && <span className={styles.icon}>{icon}</span>
-      )}
-      {children}
+      {isLoading ? <span className={styles.spinner} aria-hidden='true' /> : null}
+      {!isLoading && icon ? <span className={styles.icon}>{icon}</span> : null}
+      <span className={styles.label}>{children}</span>
     </button>
   );
 };

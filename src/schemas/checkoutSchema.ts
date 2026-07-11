@@ -11,7 +11,7 @@ const deliveryTypes = z.enum(['COURIER', 'WAREHOUSE']);
 
 const phoneRegex = /^\+380\d{9}$/;
 const nameRegex = /^[A-Za-zА-Яа-яІіЇїЄєҐґ' -]+$/;
-const addressRegex = /^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9'".,\/\-()# ]+$/;
+const addressRegex = /^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9'".,/\-()# ]+$/;
 
 const trimmedOptionalString = z.string().trim().optional();
 
@@ -73,7 +73,7 @@ export const checkoutSchema = z
       .trim()
       .max(400, 'Comment must contain at most 400 characters')
       .regex(
-        /^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9'".,!?():;\/\-#\n\r ]*$/,
+        /^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9'".,!?():;/\-#\n\r ]*$/,
         'Comment contains unsupported characters',
       )
       .optional(),

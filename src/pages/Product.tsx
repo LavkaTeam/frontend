@@ -26,34 +26,15 @@ import { Badge } from '@/components/ui/Badge';
 import { ProductPageSkeleton } from '@/components/ProductPageSkeleton/ProductPageSkeleton';
 import { resolvePricing } from '@/utils/pricing';
 import { isOwnProduct as isOwnProductForUser } from '@/utils/ownership';
+import {
+  buildProductSpecifications,
+  buildWholesaleRanges,
+  formatProductEnumLabel,
+  formatProductNumberValue,
+} from '@/features/catalog/product-details/model/productDetails';
 import NotFound from './NotFound';
 
 import styles from './Product.module.css';
-
-const formatEnumLabel = (value: string | undefined) => {
-  if (!value) return 'N/A';
-
-  return value
-    .toLowerCase()
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
-
-const formatNumberValue = (value: number | undefined, suffix = '') => {
-  if (typeof value !== 'number') return 'N/A';
-  return `${value}${suffix}`;
-};
-
-interface WholesaleTier {
-  minQuantity: number;
-  price: number;
-}
-
-interface WholesaleRange {
-  price: number;
-  label: string;
-}
 
 const DRAWER_OPEN_DURATION_MS = 400;
 const DRAWER_SCROLL_DURATION_MS = DRAWER_OPEN_DURATION_MS;
@@ -88,60 +69,6 @@ const smoothScrollTo = (
   };
 
   window.requestAnimationFrame(step);
-};
-
-const buildWholesaleRanges = (
-  basePrice: number,
-  minimumOrderQuantity: number,
-  tiers: WholesaleTier[],
-) => {
-  const effectiveMinQuantity = Math.max(1, minimumOrderQuantity);
-  const priceBreaks = new Map<number, number>([
-    [effectiveMinQuantity, basePrice],
-  ]);
-
-  tiers
-    .filter((tier) => tier.minQuantity > 0 && tier.price > 0)
-    .sort(
-      (firstTier, secondTier) => firstTier.minQuantity - secondTier.minQuantity,
-    )
-    .forEach((tier) => {
-      priceBreaks.set(
-        Math.max(tier.minQuantity, effectiveMinQuantity),
-        tier.price,
-      );
-    });
-
-  const normalizedBreaks = [...priceBreaks.entries()]
-    .sort((firstBreak, secondBreak) => firstBreak[0] - secondBreak[0])
-    .reduce<Array<{ minQuantity: number; price: number }>>(
-      (accumulator, [minQuantity, price]) => {
-        const lastBreak = accumulator[accumulator.length - 1];
-
-        if (lastBreak && lastBreak.price === price) {
-          return accumulator;
-        }
-
-        accumulator.push({ minQuantity, price });
-        return accumulator;
-      },
-      [],
-    );
-
-  return normalizedBreaks.map<WholesaleRange>((tier, index) => {
-    const nextTier = normalizedBreaks[index + 1];
-    const rangeEnd = nextTier ? nextTier.minQuantity - 1 : null;
-    const quantityLabel = nextTier
-      ? rangeEnd !== null && rangeEnd > tier.minQuantity
-        ? `${tier.minQuantity}-${rangeEnd}`
-        : `${tier.minQuantity}`
-      : `${tier.minQuantity}+`;
-
-    return {
-      price: tier.price,
-      label: `${quantityLabel} pcs`,
-    };
-  });
 };
 
 const Product = () => {
@@ -317,31 +244,11 @@ const Product = () => {
 
   const visibleSpecs = [
     { title: 'Brand', value: product.producer || 'N/A' },
-    { title: 'Alcohol', value: formatNumberValue(product.alcohol, '%') },
+    { title: 'Alcohol', value: formatProductNumberValue(product.alcohol, '%') },
     { title: 'Country', value: product.countryOfOrigin || 'N/A' },
-    { title: 'Volume', value: formatNumberValue(product.volume, ' L') },
+    { title: 'Volume', value: formatProductNumberValue(product.volume, ' L') },
   ];
-
-  const fullSpecifications = [
-    { label: 'SKU', value: product.sku || 'N/A' },
-    { label: 'Country of origin', value: product.countryOfOrigin || 'N/A' },
-    { label: 'Main category', value: formatEnumLabel(product.mainCategory) },
-    { label: 'Category', value: formatEnumLabel(product.category) },
-    { label: 'Subcategory', value: formatEnumLabel(product.subcategory) },
-    { label: 'Volume', value: formatNumberValue(product.volume, ' L') },
-    { label: 'Alcohol', value: formatNumberValue(product.alcohol, '%') },
-    ...(minOrderQty > 1
-      ? [{ label: 'Minimum order quantity', value: `${minOrderQty} pcs` }]
-      : []),
-    { label: 'Material', value: product.material || 'N/A' },
-    { label: 'Barcode', value: product.barcode || 'N/A' },
-    { label: 'Weight', value: formatNumberValue(product.weight, ' kg') },
-    { label: 'Tax rate', value: formatNumberValue(product.taxRate, '%') },
-    { label: 'Dimensions', value: product.dimensions || 'N/A' },
-    { label: 'Seller company', value: product.seller.companyName || 'N/A' },
-    { label: 'Seller email', value: product.seller.email || 'N/A' },
-    { label: 'Seller phone', value: product.seller.phoneNumber || 'N/A' },
-  ];
+  const fullSpecifications = buildProductSpecifications(product, minOrderQty);
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = parseInt(e.target.value, 10);
@@ -463,14 +370,14 @@ const Product = () => {
             to={`/products?category=${product.category}`}
             className={styles.breadcrumbLink}
           >
-            {formatEnumLabel(product.category)}
+            {formatProductEnumLabel(product.category)}
           </Link>
           <span className={styles.breadcrumbSeparator}>&gt;</span>
           <Link
             to={`/products?category=${product.category}&subcategory=${product.subcategory}`}
             className={styles.breadcrumbLink}
           >
-            {formatEnumLabel(product.subcategory)}
+            {formatProductEnumLabel(product.subcategory)}
           </Link>
           <span className={styles.breadcrumbSeparator}>&gt;</span>
           <span className={styles.breadcrumbCurrent}>{product.name}</span>

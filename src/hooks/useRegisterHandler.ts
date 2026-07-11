@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useRegister } from './useAuth';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import type { AuthPayload } from '@/types/auth';
 import { syncLocalUserData } from './syncLocalUserData';
 

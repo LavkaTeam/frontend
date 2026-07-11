@@ -167,7 +167,7 @@ export const useImageEditor = (initialConfig?: EditorConfig | null) => {
     }
   };
 
-  const resetEditor = () => {
+  const resetEditor = useCallback(() => {
     setZoom(1);
     setRotation(0);
     setCrop({ x: 0, y: 0 });
@@ -182,7 +182,7 @@ export const useImageEditor = (initialConfig?: EditorConfig | null) => {
     ]);
     setHistoryIndex(0);
     setEditorTab('layout');
-  };
+  }, []);
 
   const autoCenter = () => {
     setCrop({ x: 0, y: 0 });

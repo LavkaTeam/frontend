@@ -7,7 +7,7 @@ export interface SortConfig<T> {
   direction: SortDirection;
 }
 
-export const useTableSort = <T extends Record<string, any>>(data: T[]) => {
+export const useTableSort = <T extends object>(data: T[]) => {
   const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(null);
 
   const requestSort = (key: keyof T) => {

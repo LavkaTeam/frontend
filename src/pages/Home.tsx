@@ -179,6 +179,7 @@ const Home = () => {
                     currentPage={currentPage + 1}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
+                    disabled={isTopSelectPageLoading}
                   />
                 </div>
               )}

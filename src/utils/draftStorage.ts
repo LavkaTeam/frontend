@@ -15,7 +15,7 @@ const initDB = (): Promise<IDBDatabase> => {
   });
 };
 
-export const saveDraftToDB = async (key: string, data: any) => {
+export const saveDraftToDB = async <T>(key: string, data: T) => {
   const db = await initDB();
   return new Promise<void>((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
@@ -26,7 +26,7 @@ export const saveDraftToDB = async (key: string, data: any) => {
   });
 };
 
-export const getDraftFromDB = async (key: string): Promise<any> => {
+export const getDraftFromDB = async <T>(key: string): Promise<T | undefined> => {
   const db = await initDB();
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readonly');

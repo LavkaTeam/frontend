@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Logo } from '../Logo';
 import { ShoppingCart } from '../ShoppingCart';
 import { OutlineHeart } from '../ui/icons/Heart';

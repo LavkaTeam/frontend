@@ -12,67 +12,14 @@ import { HeaderMenu } from '@/components/HeaderMenu';
 
 import { useCartActions } from '@/hooks/useCartActions';
 import { useGetCart } from '@/hooks/useCartQueries';
-import type { WholesalePrice } from '@/types/productCard';
-import type { ProductImage } from '@/types/productCard';
-import { resolvePricing } from '@/utils/pricing';
+import {
+  buildSellerCartGroups,
+  formatCartWeight,
+  getCartTotals,
+  toCartDisplayItems,
+} from '@/features/cart/model/cartView';
 
 import styles from './Cart.module.css';
-
-type CartDisplayItem = {
-  id: string;
-  name: string;
-  price: number;
-  mainImage?: ProductImage;
-  producer: string;
-  volume?: number;
-  minimumOrderQuantity?: number;
-  sku?: string;
-  barcode?: string;
-  country?: string;
-  alcohol?: number;
-  stock?: number;
-  discountPrice?: number;
-  wholesalePrices?: WholesalePrice[];
-  sellerId?: string;
-  sellerCompany?: string;
-  sellerName?: string;
-  quantity: number;
-  weight?: number;
-  taxRate?: number;
-};
-
-type SellerCartGroup = {
-  sellerId: string;
-  sellerCompany: string;
-  sellerName?: string;
-  items: CartDisplayItem[];
-  uniqueItems: number;
-  totalItems: number;
-  subtotal: number;
-  totalWeight: number;
-  totalTax: number;
-  total: number;
-};
-
-const formatWeight = (value: number) => {
-  return Number.isFinite(value) ? value.toFixed(1) : '0.0';
-};
-
-const normalizeTaxRate = (value?: number) => {
-  if (!value) return 0;
-  return value > 1 ? value / 100 : value;
-};
-
-const getDisplayUnitPrice = (
-  item: CartDisplayItem,
-  isAuthenticated: boolean,
-) => {
-  if (isAuthenticated) {
-    return item.price;
-  }
-
-  return resolvePricing(item, item.quantity).currentUnitPrice;
-};
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -84,46 +31,11 @@ const Cart = () => {
 
   const showSkeletons = (isAuthenticated && isLoading) || isClearing;
 
-  const cartItems = isAuthenticated
-    ? (remoteCart?.items || []).map(
-        (item): CartDisplayItem => ({
-          id: item.productId,
-          name: item.name || '',
-          price: item.appliedPrice || 0,
-          mainImage: item.mainImage
-            ? { id: item.productId, url: item.mainImage }
-            : undefined,
-          producer: item.producer || '',
-          volume: item.volume || 0,
-          minimumOrderQuantity: item.minimumOrderQuantity || 1,
-          sku: item.sku,
-          barcode: item.barcode,
-          country: item.country,
-          alcohol: item.alcohol,
-          discountPrice: item.discountPrice,
-          wholesalePrices: item.wholesalePrices,
-          sellerId: item.sellerId,
-          sellerCompany: item.sellerCompany,
-          sellerName: item.sellerName,
-          quantity: item.requestedQuantity,
-          taxRate: item.taxRate,
-        }),
-      )
-    : localCartItems.map((item) => ({
-        ...item,
-        sellerId: item.seller?.id,
-        sellerCompany: item.seller?.companyName,
-        sellerName: [item.seller?.firstName, item.seller?.lastName]
-          .filter(Boolean)
-          .join(' '),
-        sku: item.sku,
-        barcode: item.barcode,
-        country: item.countryOfOrigin,
-        alcohol: item.alcohol,
-        discountPrice: item.discountPrice,
-        wholesalePrices: item.wholesalePrices,
-        minimumOrderQuantity: item.minimumOrderQuantity,
-      }));
+  const cartItems = toCartDisplayItems(
+    isAuthenticated,
+    remoteCart?.items,
+    localCartItems,
+  );
 
   const uniqueItemCount = new Set(cartItems.map((item) => item.id)).size;
 
@@ -138,75 +50,12 @@ const Cart = () => {
         localCartItems.map((item) => [item.id, item.quantity]),
       );
 
-  let subTotal = 0;
-  let dph = 0;
-  let total = 0;
-  let totalItems = isAuthenticated
-    ? (remoteCart?.summary.totalItems ??
-      (remoteCart?.items || []).reduce(
-        (sum, item) => sum + item.requestedQuantity,
-        0,
-      ))
-    : localCartItems.reduce((sum, item) => sum + item.quantity, 0);
-  let totalWeight = 0;
-
-  const sellerGroups = cartItems.reduce<SellerCartGroup[]>((groups, item) => {
-    const unitPrice = getDisplayUnitPrice(item, isAuthenticated);
-    const sellerId = item.sellerId || `local-${item.id}`;
-    const sellerCompany =
-      item.sellerCompany || item.sellerName || 'Independent seller';
-    const existingGroup = groups.find((group) => group.sellerId === sellerId);
-
-    if (!existingGroup) {
-      groups.push({
-        sellerId,
-        sellerCompany,
-        sellerName: item.sellerName,
-        items: [item],
-        uniqueItems: 1,
-        totalItems: item.quantity,
-        subtotal: unitPrice * item.quantity,
-        totalWeight: (item.weight || 0) * item.quantity,
-        totalTax: unitPrice * item.quantity * normalizeTaxRate(item.taxRate),
-        total: unitPrice * item.quantity * (1 + normalizeTaxRate(item.taxRate)),
-      });
-
-      return groups;
-    }
-
-    existingGroup.items.push(item);
-    existingGroup.uniqueItems += 1;
-    existingGroup.totalItems += item.quantity;
-    existingGroup.subtotal += unitPrice * item.quantity;
-    existingGroup.totalWeight += (item.weight || 0) * item.quantity;
-    existingGroup.totalTax +=
-      unitPrice * item.quantity * normalizeTaxRate(item.taxRate);
-    existingGroup.total +=
-      unitPrice * item.quantity * (1 + normalizeTaxRate(item.taxRate));
-
-    return groups;
-  }, []);
-
-  if (isAuthenticated && remoteCart?.summary) {
-    subTotal = remoteCart.summary.subtotal || 0;
-    dph = remoteCart.summary.totalTax || subTotal * 0.21;
-    total = remoteCart.summary.grandTotal || 0;
-    totalItems =
-      remoteCart.summary.totalItems ??
-      remoteCart.items.reduce((sum, item) => sum + item.requestedQuantity, 0);
-    totalWeight = remoteCart.summary.totalWeight || 0;
-  } else {
-    subTotal = localCartItems.reduce((acc, item) => {
-      return acc + resolvePricing(item, item.quantity).currentUnitPrice * item.quantity;
-    }, 0);
-    dph = subTotal * 0.21;
-    total = subTotal + dph;
-    totalItems = localCartItems.reduce((sum, item) => sum + item.quantity, 0);
-    totalWeight = localCartItems.reduce(
-      (sum, item) => sum + (item.weight || 0) * item.quantity,
-      0,
-    );
-  }
+  const sellerGroups = buildSellerCartGroups(cartItems, isAuthenticated);
+  const { subTotal, dph, total, totalItems, totalWeight } = getCartTotals(
+    isAuthenticated,
+    remoteCart,
+    localCartItems,
+  );
 
   const handleCheckout = () => {
     if (isAuthenticated) {
@@ -419,7 +268,7 @@ const Cart = () => {
                       <div className={styles.totalInfo}>
                         <p>Total weight:</p>
                         <span className={styles.price}>
-                          {formatWeight(totalWeight)} kg
+                          {formatCartWeight(totalWeight)} kg
                         </span>
                       </div>
                       <div className={styles.totalInfo}>

@@ -29,7 +29,7 @@ const InputField = ({
   const actualType = isPassword && showPassword ? 'text' : type;
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (id === 'telephoneNumber' && !e.target.value) {
+    if ((id === 'telephoneNumber' || id === 'phoneNumber') && !e.target.value) {
       e.target.value = '+380';
       onChange?.({ ...e, target: { ...e.target, value: '+380' } });
     }
@@ -57,13 +57,15 @@ const InputField = ({
           </span>
         ) : (
           error && (
-            <span className={styles.icon}>
+            <span className={`${styles.icon} ${styles.errorIcon}`}>
               <ErrorIcon />
             </span>
           )
         )}
       </div>
-      {error && <p className={styles.error}>{error}</p>}
+      <p className={`${styles.error} ${error ? styles.errorVisible : ''}`}>
+        {error || ' '}
+      </p>
     </div>
   );
 };

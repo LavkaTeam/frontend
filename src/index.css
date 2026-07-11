@@ -59,6 +59,10 @@ a {
 
 /* Variables */
 :root {
+  --modal-overlay-background: rgba(226, 226, 226, 0.6);
+  --modal-overlay-blur: 4px;
+  --modal-z-index: 2200;
+
   --color-brand-dark-burgundy: #57181e;
   --color-brand-deep-auburn: #2a0a09;
   --color-brand-orange: #c8721b;
