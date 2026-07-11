@@ -1,44 +1,18 @@
-import { apiUrl } from './fetchData';
+import { fetchData } from './fetchData';
+import type { ProductImage } from '@/types/productCard';
 
-interface UploadResponse {
-  id: string;
-  url: string;
-  publicId: string;
-}
-
-export const uploadImage = async (file: Blob): Promise<string> => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('No token provided');
-  }
-
+export const uploadImage = async (file: Blob): Promise<ProductImage> => {
   const formData = new FormData();
   formData.append('files', file);
+  const data = await fetchData<ProductImage | ProductImage[]>('/images/upload', {
+    method: 'POST',
+    body: formData,
+  });
 
-  try {
-    const response = await fetch(`${apiUrl}/images/upload`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Upload failed: ${errorText}`);
-    }
-
-    const data: UploadResponse | UploadResponse[] = await response.json();
-
-    if (Array.isArray(data)) {
-      if (data.length > 0) return data[0].url;
-      throw new Error('No url received from server');
-    } else {
-      return data.url;
-    }
-  } catch (error) {
-    console.error('Image upload error:', error);
-    throw error;
+  if (Array.isArray(data)) {
+    if (data.length > 0) return data[0];
+    throw new Error('No image received from server');
   }
+
+  return data;
 };

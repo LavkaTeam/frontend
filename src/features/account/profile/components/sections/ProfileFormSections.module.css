@@ -1,0 +1,357 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionHeaderCompact {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.addAddressButton {
+  width: auto;
+  min-width: 164px;
+}
+
+.sectionTitle {
+  color: var(--color-gray-900);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px 20px;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.actionRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  width: 100%;
+}
+
+.flexGrowField {
+  flex: 1;
+  min-width: 0;
+}
+
+.fileActions {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  min-height: 44px;
+}
+
+.licenseCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px 18px;
+  border: 1px solid var(--color-gray-250, var(--color-gray-300));
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.licenseCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.licenseLabel {
+  color: var(--color-gray-700);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.licenseValue {
+  margin-top: 4px;
+  color: var(--color-gray-900);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.licenseFileRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.licenseFileMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+
+.licenseFileTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 0;
+}
+
+.licenseFileName {
+  color: var(--color-gray-900);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.licenseFileStatus {
+  color: var(--color-gray-600);
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.licenseStatusVerified {
+  color: #2f8f5b;
+}
+
+.licenseStatusPending {
+  color: #b38a10;
+}
+
+.licenseStatusRejected {
+  color: #c7504a;
+}
+
+.licenseActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.textAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--color-gray-800);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.textAction:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.textAction:hover {
+  color: var(--color-brand-burgundy);
+}
+
+.viewAction {
+  width: auto;
+  min-width: 0;
+  justify-content: flex-start;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--color-gray-800);
+  padding: 0;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: none;
+}
+
+.viewAction:hover {
+  background: transparent;
+  color: var(--color-brand-burgundy);
+}
+
+.viewAction:disabled {
+  background: transparent;
+  color: var(--color-gray-500);
+}
+
+.textAction svg {
+  color: currentColor;
+}
+
+.saveBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.buttonWrap {
+  width: 212px;
+}
+
+.addressList {
+  display: grid;
+  gap: 16px;
+}
+
+.addressCard {
+  padding: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.addressDivider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-gray-400);
+}
+
+.addressCardHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.addressCardTitle {
+  color: var(--color-gray-900);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.addressCardMeta {
+  color: var(--color-gray-700);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.addressCardActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.iconActionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 10px;
+  background: var(--color-primary-white);
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.iconActionButton:hover {
+  color: var(--color-brand-burgundy);
+  border-color: var(--color-brand-burgundy);
+}
+
+.deleteActionButton:hover {
+  color: var(--color-brand-burgundy);
+  border-color: var(--color-brand-burgundy);
+}
+
+.emptyState {
+  padding: 4px 0 0;
+  color: var(--color-gray-700);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.helperError {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  color: #cf5f58;
+  font-size: 13px;
+  line-height: 18px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
+  pointer-events: none;
+}
+
+.helperErrorVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeaderCompact,
+  .addressCardHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actionRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fileActions,
+  .saveBar {
+    justify-content: flex-start;
+  }
+
+  .licenseFileRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .licenseActions {
+    justify-content: flex-start;
+  }
+
+  .addAddressButton,
+  .buttonWrap {
+    width: 100%;
+  }
+
+  .saveBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

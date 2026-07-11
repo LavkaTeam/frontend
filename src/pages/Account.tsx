@@ -1,4 +1,4 @@
-import { AccountPage } from '@/components/Account/AccountPage';
+import { AccountShell } from '@/features/account';
 import { Loader } from '@/components/ui/Loader';
 import { useUser } from '@/hooks/useUser';
 
@@ -10,7 +10,7 @@ const Account = () => {
 
   return (
     <div className='container'>
-      <AccountPage />
+      <AccountShell />
     </div>
   );
 };

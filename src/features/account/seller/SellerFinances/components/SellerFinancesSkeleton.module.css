@@ -1,0 +1,150 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 230px;
+}
+
+.downloadSkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 26px;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.35fr) minmax(0, 0.65fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.summaryColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.summaryCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 24px;
+  border-radius: 16px;
+  background: var(--color-primary-white);
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.historyColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filters {
+  display: flex;
+  gap: 24px;
+}
+
+.filterField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 192px;
+}
+
+.dateRangeField {
+  display: flex;
+  flex: 1;
+  align-items: end;
+  gap: 10px;
+}
+
+.dateDivider {
+  padding-bottom: 12px;
+}
+
+.historyCard {
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--color-primary-white);
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.historyHeader {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.historyColumns,
+.skeletonRow {
+  display: grid;
+  grid-template-columns: 1.5fr 1.1fr 122px;
+  gap: 24px;
+  align-items: center;
+}
+
+.historyColumns {
+  margin-top: 12px;
+}
+
+.skeletonRow {
+  min-height: 74px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.skeletonInfoCell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+@media (max-width: 1120px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .headerRow,
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions,
+  .filterField {
+    width: 100%;
+  }
+
+  .historyColumns,
+  .skeletonRow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

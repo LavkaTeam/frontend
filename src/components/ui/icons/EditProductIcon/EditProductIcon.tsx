@@ -11,7 +11,7 @@ const EditProductIcon: React.FC<EditProductIconProps> = ({
   color = '#1F2937',
   width = 24,
   height = 24,
-  strokeWidth = 2,
+  strokeWidth = 1.4,
 }) => (
   <svg
     width={width}

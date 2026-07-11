@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { changePassword } from '@/api/user';
 import { Button } from '@/components/ui/Button';
 import { InputField } from '@/components/Form';
 import styles from './ChangePassword.module.css';
@@ -17,6 +18,7 @@ interface ChangePasswordProps {
 
 const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
 
   // Стан для тоста
   const [toast, setToast] = useState<{
@@ -27,7 +29,7 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<ChangePasswordFormSchema>({
     resolver: zodResolver(changePasswordSchema),
@@ -36,50 +38,103 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
 
   useEffect(() => {
     if (isOpen) {
-      requestAnimationFrame(() => setIsVisible(true));
+      setShouldRender(true);
       reset();
       setToast(null);
-    } else {
+    } else if (shouldRender) {
       setIsVisible(false);
     }
-  }, [isOpen, reset]);
+  }, [isOpen, reset, shouldRender]);
 
-  // 3 секунди -> закриваємо тост -> закриваємо модалку
   useEffect(() => {
-    if (toast) {
-      const timer = setTimeout(() => {
-        setToast(null);
-        onClose();
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [toast, onClose]);
+    if (!shouldRender || !isOpen) return;
 
-  const onSubmit = (data: ChangePasswordFormSchema) => {
-    console.log('Attempted change:', data);
+    const openTimer = window.setTimeout(() => {
+      setIsVisible(true);
+    }, 16);
 
-    setToast({
-      message: 'This feature is temporarily unavailable',
-      type: 'error',
-    });
+    return () => window.clearTimeout(openTimer);
+  }, [isOpen, shouldRender]);
+
+  useEffect(() => {
+    if (!shouldRender) return;
+
+    document.body.style.overflow = 'hidden';
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        requestClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [shouldRender]);
+
+  const requestClose = () => {
+    setIsVisible(false);
   };
 
-  const handleTransitionEnd = () => {
-    if (!isVisible) {
+  const onSubmit = async (data: ChangePasswordFormSchema) => {
+    try {
+      await changePassword({
+        oldPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+
+      setToast({
+        message: 'Password changed successfully',
+        type: 'success',
+      });
+
+      window.setTimeout(() => {
+        requestClose();
+      }, 900);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to change password';
+
+      setToast({
+        message,
+        type: 'error',
+      });
+    }
+  };
+
+  const handleTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
+    if (
+      event.target === event.currentTarget &&
+      event.propertyName === 'opacity' &&
+      !isVisible
+    ) {
+      setShouldRender(false);
       onClose();
     }
   };
 
-  if (!isOpen && !isVisible) return null;
+  if (!shouldRender) return null;
 
   return (
     <div
       className={`${styles.overlay} ${isVisible ? styles.open : ''}`}
-      onClick={onClose}
+      onClick={requestClose}
       onTransitionEnd={handleTransitionEnd}
     >
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <h2 className={styles.title}>Change password</h2>
+        <div className={styles.header}>
+          <h2 className={styles.title}>Change password</h2>
+          <button
+            type='button'
+            className={styles.closeButton}
+            onClick={requestClose}
+            aria-label='Close password modal'
+          >
+            ✕
+          </button>
+        </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <InputField
@@ -107,7 +162,9 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
           />
 
           <div className={styles.buttonContainer}>
-            <Button type='submit'>Change Password</Button>
+            <Button type='submit' isLoading={isSubmitting}>
+              Change Password
+            </Button>
           </div>
         </form>
 

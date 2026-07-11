@@ -1,0 +1,159 @@
+.container {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+.header {
+  margin-bottom: 24px;
+}
+.title {
+  color: var(--color-gray-900);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: -0.72px;
+  margin-bottom: 8px;
+}
+.subtitle {
+  color: var(--color-gray-800);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.segmentedControl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 24px;
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(
+    180deg,
+    rgba(250, 250, 250, 0.96),
+    rgba(244, 244, 245, 0.92)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 16px 30px -24px rgba(10, 13, 18, 0.32);
+}
+
+.segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  border: none;
+  border-radius: 16px 16px 0 0;
+  background: transparent;
+  border-bottom: 4px solid transparent;
+  color: var(--color-gray-900);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.segment:hover {
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.segmentActive {
+  background: var(--color-primary-white);
+  border-bottom-color: var(--color-brand-burgundy);
+  box-shadow: 0 10px 24px -22px rgba(10, 13, 18, 0.4);
+}
+
+.segmentLabel {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.segmentDescription {
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.filterSection {
+  display: flex;
+  align-items: center;
+}
+.filterContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.iconButton {
+  background: transparent;
+  border: none;
+  color: var(--color-gray-900);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  margin-left: -8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+.iconButton:hover,
+.iconButtonActive {
+  background-color: var(--color-gray-200);
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--color-gray-800);
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+.downloadButton:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-brand-burgundy);
+}
+
+.listSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .segmentedControl {
+    grid-template-columns: 1fr;
+    border-radius: 20px;
+  }
+
+  .segment {
+    min-height: 88px;
+    align-items: flex-start;
+  }
+
+  .segmentLabel {
+    font-size: 24px;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+}

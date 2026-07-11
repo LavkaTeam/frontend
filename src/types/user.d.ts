@@ -18,6 +18,13 @@ export interface Address {
   deliveryNotes?: string;
 }
 
+export interface Subscriptions {
+  receiveNews?: boolean;
+  receivePersonalizedOffers?: boolean;
+  receiveOrderStatusUpdates?: boolean;
+  over40Percent?: boolean;
+}
+
 export interface UserResponse {
   id: string;
   email: string;
@@ -38,6 +45,7 @@ export interface UserResponse {
   bic?: string;
   legalAddress?: Address;
   shippingAddresses?: Address[];
+  subscriptions?: Subscriptions;
   verificationStatus?: VerificationStatus;
   status?: VerificationStatus;
 

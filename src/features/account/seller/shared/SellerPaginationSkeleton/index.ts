@@ -1,0 +1,1 @@
+export { SellerPaginationSkeleton } from './SellerPaginationSkeleton';

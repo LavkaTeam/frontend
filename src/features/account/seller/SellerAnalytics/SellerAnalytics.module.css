@@ -1,0 +1,785 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  color: var(--color-gray-900);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: var(--color-gray-600);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.metricCard {
+  min-height: 186px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 23px 17px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.metricCardNeutral {
+  border-color: var(--color-brand-burgundy);
+}
+
+.metricCardGreen {
+  border-color: rgba(93, 146, 60, 0.72);
+}
+
+.metricCardOrange {
+  border-color: rgba(200, 114, 27, 0.72);
+}
+
+.metricLabel {
+  color: var(--color-gray);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.metricValue {
+  align-self: center;
+  font-size: 60px;
+  font-weight: 500;
+  line-height: 72px;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.metricValueNeutral {
+  color: var(--color-brand-burgundy);
+}
+
+.metricValueGreen {
+  color: var(--color-green);
+}
+
+.metricValueOrange {
+  color: var(--color-brand-orange);
+}
+
+.metricTrendRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.metricTrendText {
+  color: var(--color-gray);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.metricTrendValue {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.metricTrendValueUp {
+  color: var(--color-green);
+}
+
+.metricTrendValueDown {
+  color: var(--color-brand-burgundy);
+}
+
+.metricTrendIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-green);
+}
+
+.metricTrendIconDown {
+  color: var(--color-brand-burgundy);
+}
+
+.metricTrendIconUp {
+  color: var(--color-green);
+}
+
+.trendArrow {
+  display: block;
+}
+
+.trendArrowDown {
+  transform: rotate(180deg);
+}
+
+.trendDash {
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-gray-400);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.overviewGrid {
+  display: flex;
+  align-items: start;
+  gap: 24px;
+}
+
+.overviewGrid > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.overviewSidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.highlightsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.statsOverflowGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.fullWidthSection {
+  width: 100%;
+}
+
+.statCard {
+  min-height: 128px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 10px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+  text-align: center;
+}
+
+.statCardGreen {
+  border-color: rgba(93, 146, 60, 0.72);
+}
+
+.statCardBurgundy {
+  border-color: rgba(175, 38, 31, 0.72);
+}
+
+.statCardOrange {
+  border-color: rgba(200, 114, 27, 0.72);
+}
+
+.statValue {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 48px;
+  letter-spacing: -0.02em;
+}
+
+.statValueGreen {
+  color: var(--color-green);
+}
+
+.statValueBurgundy {
+  color: var(--color-brand-burgundy);
+}
+
+.statValueOrange {
+  color: var(--color-brand-orange);
+}
+
+.statLabel {
+  color: var(--color-gray);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.chartCard {
+  position: relative;
+  min-height: 585px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 24px;
+  background: var(--color-primary-white);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.chartHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.chartInfoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.chartTitleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chartLabel {
+  color: var(--color-gray);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+}
+
+.chartTotal {
+  color: var(--color-gray-900);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+}
+
+.chartLegend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.chartLegendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-gray-700);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.chartLegendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.chartLegendDotCurrent {
+  background: var(--color-brand-orange);
+}
+
+.chartLegendDotPrevious {
+  background: var(--color-gray-300);
+}
+
+.chartLegendHint {
+  color: var(--color-gray-500);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.chartYearDropdown {
+  position: relative;
+  z-index: 2;
+}
+
+.chartYearButton {
+  min-width: 104px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 10px;
+  color: var(--color-brand-burgundy);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.chartYearButton:hover {
+  background: rgba(175, 38, 31, 0.06);
+}
+
+.chartYearIcon {
+  transition: transform 0.2s ease;
+}
+
+.chartYearIconOpen {
+  transform: rotate(180deg);
+}
+
+.chartYearMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 132px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.chartYearOption {
+  padding: 10px 12px;
+  color: var(--color-gray-700);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chartYearOption:hover,
+.chartYearOptionActive {
+  color: var(--color-brand-burgundy);
+  background: rgba(175, 38, 31, 0.06);
+}
+
+.chartBars {
+  position: relative;
+  min-height: 445px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: end;
+  gap: 18px;
+  padding: 12px 6px 8px;
+}
+
+.chartColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  border-radius: 14px;
+  padding: 10px 4px 0;
+  transition: background-color 0.2s ease;
+}
+
+.chartColumnActive {
+  background: linear-gradient(
+    180deg,
+    rgba(200, 114, 27, 0.08),
+    rgba(200, 114, 27, 0.02)
+  );
+}
+
+.chartColumnBars {
+  height: 360px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+}
+
+.chartBar {
+  width: 27px;
+  height: var(--bar-height);
+  min-height: 16px;
+  border-radius: 13px 13px 0 0;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.chartBarPrevious {
+  background: var(--color-gray-200);
+}
+
+.chartBarCurrent {
+  background: var(--color-brand-orange);
+}
+
+.chartColumn:hover .chartBarCurrent {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px -10px rgba(200, 114, 27, 0.55);
+}
+
+.chartColumn:hover .chartBarPrevious {
+  filter: brightness(0.97);
+}
+
+.chartColumnLabel {
+  color: var(--color-gray);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+.chartTooltip {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(6px);
+  width: 212px;
+  box-sizing: border-box;
+  min-width: 176px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(135, 130, 126, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 18px 30px -18px rgba(10, 13, 18, 0.3),
+    0 8px 12px -6px rgba(10, 13, 18, 0.12);
+  pointer-events: none;
+  z-index: 2;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.chartTooltipVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chartTooltipTitle {
+  color: var(--color-gray-900);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.chartTooltipRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--color-gray-600);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.chartTooltipRow strong {
+  color: var(--color-gray-900);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.chartTooltipDelta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-gray-200);
+  color: var(--color-brand-orange);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.feedbackState {
+  padding: 28px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.feedbackState h3 {
+  color: var(--color-gray-900);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.feedbackState p {
+  margin-top: 8px;
+  color: var(--color-gray-600);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.metricSkeletonFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.highlightSkeletonCard {
+  min-height: 164px;
+  padding: 22px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.highlightSkeletonColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.categorySkeletonCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  background: var(--color-primary-white);
+  border: 1px solid rgba(135, 130, 126, 0.18);
+  border-radius: 16px;
+}
+
+.categorySkeletonContent {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  align-items: center;
+  gap: 30px;
+}
+
+.categorySkeletonDonut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categorySkeletonRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 6px;
+  border-top: 1px solid rgba(135, 130, 126, 0.14);
+}
+
+.categorySkeletonLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid rgba(135, 130, 126, 0.12);
+  border-radius: 16px;
+}
+
+.categorySkeletonRow:first-child {
+  border-top: none;
+}
+
+.categorySkeletonItem {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 8px;
+}
+
+.chartSkeletonBar {
+  width: 27px;
+  align-self: flex-end;
+}
+
+@media (max-width: 1280px) {
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .overviewGrid {
+    flex-direction: column;
+  }
+
+  .chartBars {
+    gap: 12px;
+  }
+
+  .chartBar {
+    width: 22px;
+  }
+
+  .chartColumnLabel {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .title {
+    font-size: 30px;
+    line-height: 38px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .metricValue {
+    font-size: 44px;
+    line-height: 56px;
+  }
+
+  .statsOverflowGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .categorySkeletonContent {
+    grid-template-columns: 1fr;
+  }
+
+  .chartCard {
+    min-height: 0;
+    padding: 20px 18px;
+  }
+
+  .chartHeader {
+    flex-direction: column;
+  }
+
+  .chartLegend {
+    gap: 12px;
+  }
+
+  .chartBars {
+    min-height: 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .chartColumn {
+    min-width: 52px;
+  }
+
+  .chartColumnBars {
+    height: 260px;
+  }
+
+  .chartTooltip {
+    top: 4px;
+    width: 164px;
+    min-width: 164px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    gap: 14px;
+  }
+
+  .metricCard,
+  .statCard,
+  .chartCard,
+  .highlightSkeletonCard,
+  .categorySkeletonCard {
+    border-radius: 14px;
+  }
+
+  .metricCard {
+    padding: 16px;
+  }
+
+  .metricValue {
+    font-size: 38px;
+    line-height: 48px;
+  }
+
+  .overviewGrid,
+  .overviewSidebar,
+  .highlightsGrid {
+    gap: 14px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .statCard {
+    min-height: 118px;
+  }
+
+  .statValue {
+    font-size: 34px;
+    line-height: 40px;
+  }
+
+  .chartLabel {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .chartTotal {
+    font-size: 30px;
+    line-height: 38px;
+  }
+
+  .statsOverflowGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}

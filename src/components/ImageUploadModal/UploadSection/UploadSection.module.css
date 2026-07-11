@@ -80,7 +80,7 @@
 }
 .dropZoneActive,
 .dropZone:hover {
-  border-color: var(--color-brand-burgundy, #af261f);
+  border-color: var(--color-brand-burgundy);
   background-color: #fefaf9;
 }
 .hiddenInput {

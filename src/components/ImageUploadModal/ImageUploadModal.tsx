@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/Button';
 import { Toast } from '@/components/ui/Toast';
 import { getCroppedImg } from '@/utils/canvasUtils';
@@ -35,6 +36,8 @@ export const ImageUploadModal = ({
   initialOriginalBlob = null,
   initialConfig = null,
 }: ImageUploadModalProps) => {
+  const [shouldRender, setShouldRender] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('file');
 
   const [originalBlob, setOriginalBlob] = useState<Blob | null>(
@@ -60,10 +63,30 @@ export const ImageUploadModal = ({
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const editor = useImageEditor(initialConfig);
+  const { resetEditor } = editor;
+
+  const showToast = useCallback(
+    (message: string, type: 'success' | 'error' = 'error') =>
+      setToast({ message, type }),
+    [],
+  );
+
+  const handleFile = useCallback(
+    (file: File) => {
+      if (!file.type.startsWith('image/')) {
+        showToast('Please upload a valid image file (JPG, PNG, WebP).');
+        return;
+      }
+      setOriginalBlob(file);
+      setImageSrc(URL.createObjectURL(file));
+    },
+    [showToast],
+  );
 
   // ФІКС: Контроль стану при кожному ВІДКРИТТІ модалки
   useEffect(() => {
     if (isOpen) {
+      setShouldRender(true);
       if (initialOriginalBlob) {
         // Якщо ми редагуємо - ставимо існуючий файл
         setOriginalBlob(initialOriginalBlob);
@@ -72,13 +95,22 @@ export const ImageUploadModal = ({
         // Якщо додаємо нове - очищуємо все від попередньої сесії
         setImageSrc(null);
         setOriginalBlob(null);
-        editor.resetEditor();
+        resetEditor();
       }
+    } else if (shouldRender) {
+      setIsVisible(false);
     }
-  }, [isOpen, initialOriginalBlob]);
+  }, [initialOriginalBlob, isOpen, resetEditor, shouldRender]);
 
-  const showToast = (message: string, type: 'success' | 'error' = 'error') =>
-    setToast({ message, type });
+  useEffect(() => {
+    if (!shouldRender || !isOpen) return;
+
+    const openTimer = window.setTimeout(() => {
+      setIsVisible(true);
+    }, 16);
+
+    return () => window.clearTimeout(openTimer);
+  }, [isOpen, shouldRender]);
 
   useEffect(() => {
     if (toast) {
@@ -88,10 +120,10 @@ export const ImageUploadModal = ({
   }, [toast]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (shouldRender) {
       document.body.style.overflow = 'hidden';
       const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') handleReset();
+        if (e.key === 'Escape') requestClose();
       };
       document.addEventListener('keydown', handleKeyDown);
       return () => {
@@ -99,11 +131,11 @@ export const ImageUploadModal = ({
         document.removeEventListener('keydown', handleKeyDown);
       };
     }
-  }, [isOpen]);
+  }, [shouldRender]);
 
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
-      if (!isOpen || imageSrc) return;
+      if (!shouldRender || imageSrc) return;
       const items = e.clipboardData?.items;
       if (!items) return;
       for (const item of items) {
@@ -115,16 +147,7 @@ export const ImageUploadModal = ({
     };
     window.addEventListener('paste', handlePaste);
     return () => window.removeEventListener('paste', handlePaste);
-  }, [isOpen, imageSrc]);
-
-  const handleFile = (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      showToast('Please upload a valid image file (JPG, PNG, WebP).');
-      return;
-    }
-    setOriginalBlob(file);
-    setImageSrc(URL.createObjectURL(file));
-  };
+  }, [handleFile, imageSrc, shouldRender]);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0)
@@ -139,7 +162,7 @@ export const ImageUploadModal = ({
       const blob = await res.blob();
       setOriginalBlob(blob);
       setImageSrc(URL.createObjectURL(blob));
-    } catch (error) {
+    } catch {
       showToast('Cannot load image. The URL is invalid or blocked by CORS.');
     } finally {
       setIsLoading(false);
@@ -170,7 +193,7 @@ export const ImageUploadModal = ({
       if (croppedBlob) {
         const finalOriginalBlob = originalBlob || croppedBlob;
         await onUpload(croppedBlob, finalOriginalBlob, editor.currentConfig);
-        handleReset();
+        requestClose();
       }
     } catch (e) {
       console.error(e);
@@ -180,19 +203,34 @@ export const ImageUploadModal = ({
     }
   };
 
-  const handleReset = () => {
+  const resetContent = () => {
     setImageSrc(null);
     setOriginalBlob(null);
     setUrlInput('');
-    editor.resetEditor();
+    resetEditor();
     if (fileInputRef.current) fileInputRef.current.value = '';
     if (cameraInputRef.current) cameraInputRef.current.value = '';
-    onClose();
   };
 
-  if (!isOpen) return null;
+  const requestClose = () => {
+    setIsVisible(false);
+  };
 
-  return (
+  const handleTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
+    if (
+      event.target === event.currentTarget &&
+      event.propertyName === 'opacity' &&
+      !isVisible
+    ) {
+      resetContent();
+      setShouldRender(false);
+      onClose();
+    }
+  };
+
+  if (!shouldRender) return null;
+
+  return createPortal(
     <>
       {toast && (
         <Toast
@@ -203,19 +241,20 @@ export const ImageUploadModal = ({
       )}
 
       <div
-        className={styles.modalOverlay}
-        onClick={handleReset}
+        className={`${styles.modalOverlay} ${isVisible ? styles.open : ''}`}
+        onClick={requestClose}
+        onTransitionEnd={handleTransitionEnd}
         role='dialog'
         aria-modal='true'
       >
         <div
-          className={styles.modalContent}
+          className={`${styles.modalContent} ${isVisible ? styles.open : ''}`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className={styles.header}>
             <h3 className={styles.title}>{imageSrc ? 'Edit Image' : title}</h3>
             <button
-              onClick={handleReset}
+              onClick={requestClose}
               className={styles.closeBtn}
               aria-label='Close modal'
             >
@@ -252,17 +291,22 @@ export const ImageUploadModal = ({
           <div className={styles.footer}>
             <Button
               variant='secondary'
-              onClick={() => (imageSrc ? setImageSrc(null) : handleReset())}
+              onClick={() => (imageSrc ? setImageSrc(null) : requestClose())}
               disabled={isLoading}
             >
               {imageSrc ? 'Back to Upload' : 'Cancel'}
             </Button>
-            <Button onClick={handleSave} disabled={!imageSrc || isLoading}>
+            <Button
+              onClick={handleSave}
+              disabled={!imageSrc || isLoading}
+              isLoading={isLoading}
+            >
               {isLoading ? 'Processing...' : 'Apply & Save'}
             </Button>
           </div>
         </div>
       </div>
-    </>
+    </>,
+    document.body,
   );
 };

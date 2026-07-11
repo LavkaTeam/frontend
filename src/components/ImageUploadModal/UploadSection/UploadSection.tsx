@@ -112,7 +112,11 @@ export const UploadSection = ({
                   />
                 </div>
                 <div className={styles.urlButtonWrapper}>
-                  <Button onClick={onUrlLoad} disabled={!urlInput || isLoading}>
+                  <Button
+                    onClick={onUrlLoad}
+                    disabled={!urlInput || isLoading}
+                    isLoading={isLoading}
+                  >
                     {isLoading ? 'Loading...' : 'Load'}
                   </Button>
                 </div>
