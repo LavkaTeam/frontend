@@ -370,7 +370,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PageProductResponseDto"
+                  "$ref": "#/components/schemas/PageProductListItemDto"
                 }
               }
             }
@@ -498,6 +498,50 @@
         }
       }
     },
+    "/api/orders/seller/{id}/complete": {
+      "post": {
+        "tags": ["order-controller"],
+        "operationId": "completeOfflineOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/OrderResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/batches/{batchId}/demo-session": {
+      "post": {
+        "tags": ["order-controller"],
+        "operationId": "createDemoSession",
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
     "/api/images/upload": {
       "post": {
         "tags": ["Image"],
@@ -563,6 +607,48 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/demo-payments/{batchId}/success": {
+      "post": {
+        "tags": ["Demo Payments"],
+        "summary": "Simulate a successful payment for a batch",
+        "operationId": "simulateSuccess",
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/api/demo-payments/{batchId}/fail": {
+      "post": {
+        "tags": ["Demo Payments"],
+        "summary": "Simulate a failed payment for a batch",
+        "operationId": "simulateFail",
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
           }
         }
       }
@@ -706,6 +792,79 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/api/admin/finances/sellers/{sellerId}/pay-fees": {
+      "post": {
+        "tags": ["Admin Finances"],
+        "summary": "Mark platform fees as paid by seller",
+        "operationId": "payPlatformFees",
+        "parameters": [
+          {
+            "name": "sellerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FeePaymentRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/api/admin/finances/payouts/{payoutId}/reject": {
+      "post": {
+        "tags": ["Admin Finances"],
+        "operationId": "rejectPayout",
+        "parameters": [
+          {
+            "name": "payoutId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "string" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/api/admin/finances/payouts/{payoutId}/approve": {
+      "post": {
+        "tags": ["Admin Finances"],
+        "operationId": "approvePayout",
+        "parameters": [
+          {
+            "name": "payoutId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
     "/api/products/{id}/status": {
       "patch": {
         "tags": ["Products"],
@@ -814,6 +973,21 @@
         }
       }
     },
+    "/api/user/me/documents/license": {
+      "get": {
+        "tags": ["Users Profile"],
+        "summary": "Download license document securely without exposing Cloudinary URL",
+        "operationId": "getLicenseDocument",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "type": "string", "format": "binary" } }
+            }
+          }
+        }
+      }
+    },
     "/api/sellers/{sellerId}": {
       "get": {
         "tags": ["Sellers"],
@@ -872,7 +1046,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PageProductResponseDto"
+                  "$ref": "#/components/schemas/PageProductListItemDto"
                 }
               }
             }
@@ -897,6 +1071,15 @@
             "in": "query",
             "required": false,
             "schema": { "type": "integer", "format": "int32", "default": 10 }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ACTIVE", "HIDDEN", "UNDER_REVIEW", "ARCHIVED"]
+            }
           }
         ],
         "responses": {
@@ -905,7 +1088,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PageProductResponseDto"
+                  "$ref": "#/components/schemas/PageSellerProductSummaryDto"
                 }
               }
             }
@@ -1052,7 +1235,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PageProductResponseDto"
+                  "$ref": "#/components/schemas/PageProductListItemDto"
                 }
               }
             }
@@ -1325,6 +1508,25 @@
         "operationId": "getSellerOrders",
         "parameters": [
           {
+            "name": "statuses",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "NEW",
+                  "PROCESSING",
+                  "SHIPPED",
+                  "DELIVERED",
+                  "COMPLETED",
+                  "CANCELLED"
+                ]
+              }
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "required": false,
@@ -1342,10 +1544,22 @@
             "description": "OK",
             "content": {
               "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PageOrderResponseDto"
-                }
+                "schema": { "$ref": "#/components/schemas/PageOrderSummaryDto" }
               }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/seller/export": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "exportSellerOrders",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "type": "string", "format": "byte" } }
             }
           }
         }
@@ -1357,6 +1571,25 @@
         "operationId": "getMyOrders",
         "parameters": [
           {
+            "name": "statuses",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "NEW",
+                  "PROCESSING",
+                  "SHIPPED",
+                  "DELIVERED",
+                  "COMPLETED",
+                  "CANCELLED"
+                ]
+              }
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "required": false,
@@ -1374,10 +1607,22 @@
             "description": "OK",
             "content": {
               "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PageOrderResponseDto"
-                }
+                "schema": { "$ref": "#/components/schemas/PageOrderSummaryDto" }
               }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/me/export": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "exportBuyerOrders",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "type": "string", "format": "byte" } }
             }
           }
         }
@@ -1510,6 +1755,15 @@
             }
           },
           {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ORDER_REVENUE", "PAYOUT", "PLATFORM_FEE", "FEE_PAYMENT"]
+            }
+          },
+          {
             "name": "startDate",
             "in": "query",
             "required": false,
@@ -1520,6 +1774,12 @@
             "in": "query",
             "required": false,
             "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": { "$ref": "#/components/schemas/Pageable" }
           }
         ],
         "responses": {
@@ -1528,10 +1788,34 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransactionResponseDTO"
-                  }
+                  "$ref": "#/components/schemas/PageTransactionResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/finances/transactions/{id}": {
+      "get": {
+        "tags": ["Finances & Transactions"],
+        "summary": "Get transaction details",
+        "operationId": "getTransactionDetails",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionDetailsDTO"
                 }
               }
             }
@@ -1551,6 +1835,35 @@
               "*/*": {
                 "schema": { "$ref": "#/components/schemas/FinanceSummaryDTO" }
               }
+            }
+          }
+        }
+      }
+    },
+    "/api/finances/report/download": {
+      "get": {
+        "tags": ["Finances & Transactions"],
+        "summary": "Download financial report PDF",
+        "operationId": "downloadFinancialReport",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "type": "string", "format": "byte" } }
             }
           }
         }
@@ -2177,7 +2490,9 @@
               "PURCHASE_ORDER",
               "PROFORMA_INVOICE",
               "INVOICE",
-              "DELIVERY_NOTE"
+              "DELIVERY_NOTE",
+              "SELLER_SETTLEMENT_STATEMENT",
+              "FINANCE_REPORT"
             ]
           },
           "status": {
@@ -2229,7 +2544,14 @@
           "sellerCompany": { "type": "string" },
           "orderStatus": {
             "type": "string",
-            "enum": ["NEW", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"]
+            "enum": [
+              "NEW",
+              "PROCESSING",
+              "SHIPPED",
+              "DELIVERED",
+              "COMPLETED",
+              "CANCELLED"
+            ]
           },
           "paymentStatus": {
             "type": "string",
@@ -2256,8 +2578,21 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/OrderDocumentDto" }
           },
+          "platformFee": { "$ref": "#/components/schemas/PlatformFeeInfo" },
+          "paymentBatchId": { "type": "string" },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "PlatformFeeInfo": {
+        "type": "object",
+        "properties": {
+          "rate": { "type": "number" },
+          "base": { "type": "number" },
+          "baseType": { "type": "string" },
+          "amount": { "type": "number" },
+          "netProceeds": { "type": "number" },
+          "status": { "type": "string" }
         }
       },
       "Summary": {
@@ -2268,6 +2603,7 @@
           "subtotal": { "type": "number" },
           "totalTax": { "type": "number" },
           "shippingCost": { "type": "number" },
+          "shippingCostDisplay": { "type": "string" },
           "grandTotal": { "type": "number" }
         }
       },
@@ -2280,7 +2616,9 @@
               "PURCHASE_ORDER",
               "PROFORMA_INVOICE",
               "INVOICE",
-              "DELIVERY_NOTE"
+              "DELIVERY_NOTE",
+              "SELLER_SETTLEMENT_STATEMENT",
+              "FINANCE_REPORT"
             ]
           },
           "force": { "type": "boolean" }
@@ -2298,9 +2636,12 @@
           "orderNumber": { "type": "string" },
           "type": {
             "type": "string",
-            "enum": ["ORDER_REVENUE", "PAYOUT", "PLATFORM_FEE"]
+            "enum": ["ORDER_REVENUE", "PAYOUT", "PLATFORM_FEE", "FEE_PAYMENT"]
           },
           "amount": { "type": "number" },
+          "feeRate": { "type": "number" },
+          "feeBase": { "type": "number" },
+          "feeBaseType": { "type": "string" },
           "status": {
             "type": "string",
             "enum": ["PROCESSING", "COMPLETED", "FAILED"]
@@ -2422,12 +2763,23 @@
         "properties": { "email": { "type": "string", "minLength": 1 } },
         "required": ["email"]
       },
+      "FeePaymentRequest": {
+        "type": "object",
+        "properties": { "amount": { "type": "number" } }
+      },
       "OrderStatusUpdateRequestDto": {
         "type": "object",
         "properties": {
           "orderStatus": {
             "type": "string",
-            "enum": ["NEW", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"]
+            "enum": [
+              "NEW",
+              "PROCESSING",
+              "SHIPPED",
+              "DELIVERED",
+              "COMPLETED",
+              "CANCELLED"
+            ]
           },
           "paymentStatus": {
             "type": "string",
@@ -2489,7 +2841,7 @@
           "totalReviewsCount": { "type": "integer", "format": "int32" }
         }
       },
-      "PageProductResponseDto": {
+      "PageProductListItemDto": {
         "type": "object",
         "properties": {
           "totalElements": { "type": "integer", "format": "int64" },
@@ -2497,7 +2849,7 @@
           "size": { "type": "integer", "format": "int32" },
           "content": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/ProductResponseDto" }
+            "items": { "$ref": "#/components/schemas/ProductListItemDto" }
           },
           "number": { "type": "integer", "format": "int32" },
           "sort": { "$ref": "#/components/schemas/SortObject" },
@@ -2513,10 +2865,42 @@
         "properties": {
           "offset": { "type": "integer", "format": "int64" },
           "sort": { "$ref": "#/components/schemas/SortObject" },
-          "unpaged": { "type": "boolean" },
           "pageNumber": { "type": "integer", "format": "int32" },
+          "unpaged": { "type": "boolean" },
           "paged": { "type": "boolean" },
           "pageSize": { "type": "integer", "format": "int32" }
+        }
+      },
+      "ProductListItemDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "mainImage": { "$ref": "#/components/schemas/ImageResponseDto" },
+          "images": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ImageResponseDto" }
+          },
+          "price": { "type": "number" },
+          "discountPrice": { "type": "number" },
+          "wholesalePrices": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WholesalePrice" }
+          },
+          "quantity": { "type": "integer", "format": "int32" },
+          "minimumOrderQuantity": { "type": "integer", "format": "int32" },
+          "mainCategory": {
+            "type": "string",
+            "enum": ["BESTSELLERS", "RELATED_PRODUCTS", "TOP_SELECT", "NORMAL"]
+          },
+          "volume": { "type": "number", "format": "double" },
+          "alcohol": { "type": "number", "format": "double" },
+          "producer": { "type": "string" },
+          "countryOfOrigin": { "type": "string" },
+          "sku": { "type": "string" },
+          "averageRating": { "type": "number", "format": "double" },
+          "sellerId": { "type": "string" },
+          "inStock": { "type": "boolean" }
         }
       },
       "SortObject": {
@@ -2525,6 +2909,54 @@
           "empty": { "type": "boolean" },
           "unsorted": { "type": "boolean" },
           "sorted": { "type": "boolean" }
+        }
+      },
+      "PageSellerProductSummaryDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SellerProductSummaryDto" }
+          },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "SellerProductSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "volume": { "type": "number", "format": "double" },
+          "producer": { "type": "string" },
+          "price": { "type": "number" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "WINE",
+              "BEER",
+              "STRONG_DRINKS",
+              "LOW_ALCOHOL_DRINKS",
+              "SOFT_DRINKS",
+              "BARWARE_ACCESSORIES"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "HIDDEN", "UNDER_REVIEW", "ARCHIVED"]
+          },
+          "quantity": { "type": "integer", "format": "int32" },
+          "mainImage": { "$ref": "#/components/schemas/ImageResponseDto" },
+          "subcategory": { "type": "string" },
+          "country": { "type": "string" }
         }
       },
       "ProductSuggestionDto": {
@@ -2578,7 +3010,35 @@
           "count": { "type": "integer", "format": "int64" }
         }
       },
-      "PageOrderResponseDto": {
+      "OrderSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "orderNumber": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "orderStatus": {
+            "type": "string",
+            "enum": [
+              "NEW",
+              "PROCESSING",
+              "SHIPPED",
+              "DELIVERED",
+              "COMPLETED",
+              "CANCELLED"
+            ]
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": ["AWAITING_PAYMENT", "PAID", "FAILED", "REFUNDED"]
+          },
+          "summary": { "$ref": "#/components/schemas/Summary" },
+          "buyerCompany": { "type": "string" },
+          "buyerName": { "type": "string" },
+          "sellerCompany": { "type": "string" },
+          "sellerName": { "type": "string" }
+        }
+      },
+      "PageOrderSummaryDto": {
         "type": "object",
         "properties": {
           "totalElements": { "type": "integer", "format": "int64" },
@@ -2586,7 +3046,7 @@
           "size": { "type": "integer", "format": "int32" },
           "content": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/OrderResponseDto" }
+            "items": { "$ref": "#/components/schemas/OrderSummaryDto" }
           },
           "number": { "type": "integer", "format": "int32" },
           "sort": { "$ref": "#/components/schemas/SortObject" },
@@ -2632,11 +3092,70 @@
           "empty": { "type": "boolean" }
         }
       },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer", "format": "int32", "minimum": 0 },
+          "size": { "type": "integer", "format": "int32", "minimum": 1 },
+          "sort": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "PageTransactionResponseDTO": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/TransactionResponseDTO" }
+          },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "TransactionDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "orderId": { "type": "string" },
+          "orderNumber": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["ORDER_REVENUE", "PAYOUT", "PLATFORM_FEE", "FEE_PAYMENT"]
+          },
+          "amount": { "type": "number" },
+          "feeRate": { "type": "number" },
+          "feeBase": { "type": "number" },
+          "feeBaseType": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["PROCESSING", "COMPLETED", "FAILED"]
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "bankName": { "type": "string" },
+          "iban": { "type": "string" },
+          "bic": { "type": "string" },
+          "adminComment": { "type": "string" },
+          "processedAt": { "type": "string", "format": "date-time" },
+          "buyerName": { "type": "string" },
+          "buyerCompany": { "type": "string" },
+          "buyerEmail": { "type": "string" },
+          "buyerPhone": { "type": "string" },
+          "buyerLegalAddress": { "$ref": "#/components/schemas/AddressDTO" }
+        }
+      },
       "FinanceSummaryDTO": {
         "type": "object",
         "properties": {
-          "availableBalance": { "type": "number" },
-          "expectedPayments": { "type": "number" }
+          "availableForPayout": { "type": "number" },
+          "pendingPayments": { "type": "number" },
+          "platformFeesDue": { "type": "number" }
         }
       },
       "CategoryTreeDto": {
@@ -2703,7 +3222,17 @@
         "properties": {
           "mainMetrics": { "$ref": "#/components/schemas/MainMetrics" },
           "orderStats": { "$ref": "#/components/schemas/OrderStats" },
-          "revenueChart": { "$ref": "#/components/schemas/RevenueChart" }
+          "productStats": { "$ref": "#/components/schemas/ProductStats" },
+          "revenueChart": { "$ref": "#/components/schemas/RevenueChart" },
+          "revenueByCategory": {
+            "type": "object",
+            "additionalProperties": { "type": "number" }
+          },
+          "averageOrderValue": { "type": "number" },
+          "topSellingProducts": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/TopSellingProductDTO" }
+          }
         }
       },
       "MainMetrics": {
@@ -2719,11 +3248,20 @@
         "type": "object",
         "properties": {
           "totalOrders": { "type": "integer", "format": "int64" },
-          "outOfStockProducts": { "type": "integer", "format": "int64" },
           "newB2bClients": { "type": "integer", "format": "int64" },
           "inProgressOrders": { "type": "integer", "format": "int64" },
           "completedOrders": { "type": "integer", "format": "int64" },
           "totalB2bClients": { "type": "integer", "format": "int64" }
+        }
+      },
+      "ProductStats": {
+        "type": "object",
+        "properties": {
+          "totalProducts": { "type": "integer", "format": "int64" },
+          "activeProducts": { "type": "integer", "format": "int64" },
+          "inStockProducts": { "type": "integer", "format": "int64" },
+          "lowStockProducts": { "type": "integer", "format": "int64" },
+          "outOfStockProducts": { "type": "integer", "format": "int64" }
         }
       },
       "RevenueChart": {
@@ -2737,6 +3275,16 @@
             "type": "object",
             "additionalProperties": { "type": "number" }
           }
+        }
+      },
+      "TopSellingProductDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "mainImage": { "type": "string" },
+          "totalUnitsSold": { "type": "integer", "format": "int32" },
+          "totalRevenue": { "type": "number" }
         }
       }
     },
