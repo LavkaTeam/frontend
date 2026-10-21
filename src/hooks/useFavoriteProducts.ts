@@ -20,6 +20,7 @@ import {
 } from '@/store/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { Product } from '@/types/productCard';
+import { useIsAuthenticated } from './useIsAuthenticated';
 
 const favoritesQueryKey = ['favorites'] as const;
 
@@ -33,7 +34,7 @@ export const useFavoriteProducts = (
   const { loadProducts = true } = options;
   const dispatch = useAppDispatch();
   const favoriteIds = useAppSelector((state) => state.favorites);
-  const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const isAuthenticated = useIsAuthenticated();
 
   const favoritesQuery = useQuery({
     queryKey: favoritesQueryKey,
@@ -88,7 +89,7 @@ export const useFavoriteActions = () => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const favoriteIds = useAppSelector((state) => state.favorites);
-  const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const isAuthenticated = useIsAuthenticated();
 
   const addMutation = useMutation({
     mutationFn: (productId: string) => addFavoriteItem(productId),

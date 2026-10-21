@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "B2bar Platform REST API",
-    "description": "API for marketplace Lavka"
+    "description": "API for B2bar Platform"
   },
   "servers": [{ "url": "http://localhost:8080" }],
   "security": [{ "bearerAuth": [] }],
@@ -522,26 +522,6 @@
         }
       }
     },
-    "/api/orders/batches/{batchId}/demo-session": {
-      "post": {
-        "tags": ["order-controller"],
-        "operationId": "createDemoSession",
-        "parameters": [
-          {
-            "name": "batchId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "type": "string" } } }
-          }
-        }
-      }
-    },
     "/api/images/upload": {
       "post": {
         "tags": ["Image"],
@@ -653,6 +633,27 @@
         }
       }
     },
+    "/api/demo-payments/batches/{batchId}/demo-session": {
+      "post": {
+        "tags": ["Demo Payments"],
+        "summary": "Create a demo payment session",
+        "operationId": "createDemoSession",
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
     "/api/cart/me/sync": {
       "post": {
         "tags": ["cart-controller"],
@@ -702,7 +703,14 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "*/*": { "schema": { "type": "string" } } }
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            }
           }
         },
         "security": [{ "bearerAuth": [] }]
@@ -724,7 +732,40 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "*/*": { "schema": { "type": "object" } } }
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh token",
+        "operationId": "refresh",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/AuthDTO" } }
+            }
           }
         },
         "security": [{ "bearerAuth": [] }]
@@ -738,7 +779,14 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "*/*": { "schema": { "type": "string" } } }
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            }
           }
         },
         "security": [{ "bearerAuth": [] }]
@@ -786,7 +834,14 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "*/*": { "schema": { "type": "string" } } }
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            }
           }
         },
         "security": [{ "bearerAuth": [] }]
@@ -1909,6 +1964,35 @@
         "responses": { "200": { "description": "OK" } }
       }
     },
+    "/api/auth/verify-email": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Verify Email - Step 2 of Registration",
+        "operationId": "verifyEmail",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/analytics/dashboard": {
       "get": {
         "tags": ["Analytics & Dashboard"],
@@ -2744,18 +2828,24 @@
           "phoneNumber"
         ]
       },
-      "LoginDTO": {
+      "RefreshTokenRequestDTO": {
         "type": "object",
-        "properties": {
-          "email": { "type": "string" },
-          "password": { "type": "string" }
-        }
+        "properties": { "refreshToken": { "type": "string", "minLength": 1 } },
+        "required": ["refreshToken"]
       },
       "AuthDTO": {
         "type": "object",
         "properties": {
           "token": { "type": "string" },
+          "refreshToken": { "type": "string" },
           "user": { "$ref": "#/components/schemas/UserResponseDTO" }
+        }
+      },
+      "LoginDTO": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" }
         }
       },
       "ForgotPasswordRequestDTO": {
@@ -2866,9 +2956,9 @@
           "offset": { "type": "integer", "format": "int64" },
           "sort": { "$ref": "#/components/schemas/SortObject" },
           "pageNumber": { "type": "integer", "format": "int32" },
-          "unpaged": { "type": "boolean" },
           "paged": { "type": "boolean" },
-          "pageSize": { "type": "integer", "format": "int32" }
+          "pageSize": { "type": "integer", "format": "int32" },
+          "unpaged": { "type": "boolean" }
         }
       },
       "ProductListItemDto": {
@@ -2907,8 +2997,8 @@
         "type": "object",
         "properties": {
           "empty": { "type": "boolean" },
-          "unsorted": { "type": "boolean" },
-          "sorted": { "type": "boolean" }
+          "sorted": { "type": "boolean" },
+          "unsorted": { "type": "boolean" }
         }
       },
       "PageSellerProductSummaryDto": {
@@ -3217,6 +3307,18 @@
           "grandTotal": { "type": "number" }
         }
       },
+      "CategoryRevenueDTO": {
+        "type": "object",
+        "properties": {
+          "category": { "type": "string" },
+          "revenue": { "type": "number" },
+          "percentage": { "type": "number", "format": "double" },
+          "subcategories": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SubcategoryRevenueDTO" }
+          }
+        }
+      },
       "DashboardResponseDTO": {
         "type": "object",
         "properties": {
@@ -3225,14 +3327,10 @@
           "productStats": { "$ref": "#/components/schemas/ProductStats" },
           "revenueChart": { "$ref": "#/components/schemas/RevenueChart" },
           "revenueByCategory": {
-            "type": "object",
-            "additionalProperties": { "type": "number" }
-          },
-          "averageOrderValue": { "type": "number" },
-          "topSellingProducts": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/TopSellingProductDTO" }
-          }
+            "items": { "$ref": "#/components/schemas/CategoryRevenueDTO" }
+          },
+          "averageOrderValue": { "type": "number" }
         }
       },
       "MainMetrics": {
@@ -3277,14 +3375,12 @@
           }
         }
       },
-      "TopSellingProductDTO": {
+      "SubcategoryRevenueDTO": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "mainImage": { "type": "string" },
-          "totalUnitsSold": { "type": "integer", "format": "int32" },
-          "totalRevenue": { "type": "number" }
+          "subcategory": { "type": "string" },
+          "revenue": { "type": "number" },
+          "percentage": { "type": "number", "format": "double" }
         }
       }
     },

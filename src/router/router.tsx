@@ -7,6 +7,9 @@ import { ProtectedRoute } from './ProtectedRoute';
 const Home = lazy(() => import('@/pages/Home'));
 const Register = lazy(() => import('@/pages/Register'));
 const Login = lazy(() => import('@/pages/Login'));
+const VerifyEmail = lazy(() => import('@/pages/VerifyEmail'));
+const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 const Account = lazy(() => import('@/pages/Account'));
 const Favorites = lazy(() => import('@/pages/Favorites'));
 const Cart = lazy(() => import('@/pages/Cart'));
@@ -20,6 +23,29 @@ const Product = lazy(() => import('@/pages/Product'));
 const Products = lazy(() => import('@/pages/Products'));
 const SellerProductsPublic = lazy(() => import('@/pages/SellerProductsPublic'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
+
+// Dev-only screen previews at /dev/auth, open on localhost only.
+// `import.meta.env.DEV` is false in production builds, so there the route and
+// its chunk are dropped entirely; the hostname check also hides it on a dev
+// server reachable from the network.
+const isLocalDev =
+  import.meta.env.DEV &&
+  ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+const DevAuthPreview = isLocalDev
+  ? lazy(() => import('@/pages/DevAuthPreview'))
+  : null;
+const devRoutes = DevAuthPreview
+  ? [
+      {
+        path: '/dev/auth',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <DevAuthPreview />
+          </Suspense>
+        ),
+      },
+    ]
+  : [];
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +73,30 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <Login />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/verify-email',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <VerifyEmail />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/forgot-password',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <ForgotPassword />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/reset-password',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <ResetPassword />
           </Suspense>
         ),
       },
@@ -186,6 +236,7 @@ export const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      ...devRoutes,
       {
         path: '*',
         element: (

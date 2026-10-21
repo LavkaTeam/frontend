@@ -1,10 +1,19 @@
-import { useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { CheckoutCompanyCard } from '@/components/Checkout/CheckoutCompanyCard';
 import { CheckoutDeliveryCard } from '@/components/Checkout/CheckoutDeliveryCard';
 import { CheckoutOrderSummary } from '@/components/Checkout/CheckoutOrderSummary';
 import { CheckoutPaymentCard } from '@/components/Checkout/CheckoutPaymentCard';
 import { CheckoutSkeleton } from '@/components/Checkout/CheckoutSkeleton';
+import {
+  CompanyVerificationModal,
+  type CompanyVerificationState,
+} from '@/components/Checkout/CompanyVerificationModal/CompanyVerificationModal';
+import {
+  getCompanyVerificationState,
+  getCompanyVerificationStateFromError,
+} from '@/components/Checkout/CompanyVerificationModal/companyVerificationState';
 import { Button } from '@/components/ui/Button';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { Loader } from '@/components/ui/Loader';
@@ -51,6 +60,13 @@ const Checkout = () => {
   const companyCardRef = useRef<HTMLDivElement | null>(null);
   const deliveryCardRef = useRef<HTMLDivElement | null>(null);
   const paymentCardRef = useRef<HTMLDivElement | null>(null);
+  const queryClient = useQueryClient();
+  const [companyVerification, setCompanyVerification] =
+    useState<CompanyVerificationState | null>(null);
+  const closeCompanyVerification = useCallback(
+    () => setCompanyVerification(null),
+    [],
+  );
 
   const {
     register,
@@ -199,7 +215,7 @@ const Checkout = () => {
 
   const onSubmit = async (data: CheckoutFormData) => {
     if (!companyReadyForCheckout) {
-      scrollToCard(companyCardRef.current);
+      setCompanyVerification(getCompanyVerificationState(user));
       return;
     }
 
@@ -251,6 +267,15 @@ const Checkout = () => {
       saveCheckoutSuccessOrders(orders);
       navigate('/payment/success?source=checkout');
     } catch (error) {
+      // The backend is the source of truth for verification: our cached
+      // profile may be stale, so refresh it as well.
+      const verificationState = getCompanyVerificationStateFromError(error);
+      if (verificationState) {
+        setCompanyVerification(verificationState);
+        queryClient.invalidateQueries({ queryKey: ['user'] });
+        return;
+      }
+
       const status =
         error && typeof error === 'object' && 'status' in error
           ? Number((error as { status?: unknown }).status)
@@ -269,7 +294,12 @@ const Checkout = () => {
 
     const isValid = await trigger();
 
-    if (!companyReadyForCheckout || !isValid) {
+    if (!companyReadyForCheckout) {
+      setCompanyVerification(getCompanyVerificationState(user));
+      return;
+    }
+
+    if (!isValid) {
       scrollToFirstInvalidCard();
       return;
     }
@@ -352,6 +382,11 @@ const Checkout = () => {
           />
         </form>
       </>
+
+      <CompanyVerificationModal
+        state={companyVerification}
+        onClose={closeCompanyVerification}
+      />
     </main>
   );
 };

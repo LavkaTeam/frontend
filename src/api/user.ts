@@ -1,30 +1,22 @@
+import type { AuthResponse } from '@/types/auth';
 import type { Address, Subscriptions, UserResponse } from '@/types/user';
 import { fetchData } from './fetchData';
+import { getAccessToken } from '@/shared/api/client';
 
 const getUser = (): Promise<UserResponse> => {
-  const token = localStorage.getItem('token');
-  if (!token) {
+  if (!getAccessToken()) {
     return Promise.reject('No token');
   }
 
-  return fetchData<UserResponse>('/user/me', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return fetchData<UserResponse>('/user/me');
 };
 
 const getUserId = async (): Promise<string> => {
-  const token = localStorage.getItem('token');
-  if (!token) {
+  if (!getAccessToken()) {
     return Promise.reject('No token');
   }
 
-  const response = await fetchData<string | { id: string }>('/user/me/id', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await fetchData<string | { id: string }>('/user/me/id');
 
   if (typeof response === 'string' || typeof response === 'number') {
     return String(response);
@@ -94,24 +86,24 @@ const updateUser = (
   _id: string,
   userData: UpdateUserData,
 ): Promise<UserResponse> => {
-  const token = localStorage.getItem('token');
-  if (!token) {
+  if (!getAccessToken()) {
     return Promise.reject('No token');
   }
 
   return fetchData<UserResponse>('/user/me', {
     method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
     body: JSON.stringify(normalizeUpdateUserData(userData)),
   });
 };
 
 export { getUser, getUserId, updateUser };
 
-export const changePassword = (data: ChangePasswordData): Promise<void> => {
-  return fetchData<void>('/user/me/password', {
+// Returns a new token pair: changing the password invalidates every token
+// issued before, including the current one.
+export const changePassword = (
+  data: ChangePasswordData,
+): Promise<AuthResponse> => {
+  return fetchData<AuthResponse>('/user/me/password', {
     method: 'PUT',
     body: JSON.stringify(data),
   });

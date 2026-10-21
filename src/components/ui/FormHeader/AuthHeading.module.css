@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 24px;
   gap: 8px;
+  text-align: center;
 }
 
 .formHeader h3 {
@@ -18,4 +18,10 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
+}
+
+.formHeader p strong {
+  color: var(--color-gray-800);
+  font-weight: 600;
+  overflow-wrap: anywhere;
 }

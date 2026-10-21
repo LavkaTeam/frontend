@@ -12,19 +12,31 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   id: string;
   error?: string;
+  // Marks the field as invalid without a message of its own, e.g. the email
+  // field when the message "Invalid email or password" sits under password.
+  invalid?: boolean;
 }
 
 const InputField = ({
   label,
   id,
   error,
+  invalid,
   type,
   onFocus,
   onChange,
   ...rest
 }: InputFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  // The last message stays rendered while it fades out, so the text does not
+  // vanish before the opacity transition ends.
+  const [lastError, setLastError] = useState('');
 
+  if (error && error !== lastError) {
+    setLastError(error);
+  }
+
+  const isInvalid = invalid ?? Boolean(error);
   const isPassword = type === 'password';
   const actualType = isPassword && showPassword ? 'text' : type;
 
@@ -46,7 +58,8 @@ const InputField = ({
           {...rest}
           onFocus={handleFocus}
           onChange={onChange}
-          error={!!error}
+          error={isInvalid}
+          aria-invalid={isInvalid}
         />
         {isPassword ? (
           <span
@@ -56,15 +69,18 @@ const InputField = ({
             {showPassword ? <ShowPassword /> : <ClosePassword />}
           </span>
         ) : (
-          error && (
+          isInvalid && (
             <span className={`${styles.icon} ${styles.errorIcon}`}>
               <ErrorIcon />
             </span>
           )
         )}
       </div>
-      <p className={`${styles.error} ${error ? styles.errorVisible : ''}`}>
-        {error || ' '}
+      <p
+        className={`${styles.error} ${error ? styles.errorVisible : ''}`}
+        aria-hidden={!error}
+      >
+        {lastError || ' '}
       </p>
     </div>
   );

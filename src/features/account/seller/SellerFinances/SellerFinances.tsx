@@ -3,6 +3,7 @@ import { BlockingOverlay } from '@/components/ui/BlockingOverlay';
 import { Button } from '@/components/ui/Button';
 import { useSellerFinancesPage } from './model/useSellerFinancesPage';
 import { extractErrorMessage } from '@/utils/error';
+import { SellerVerificationNotice } from '../shared/SellerVerificationNotice/SellerVerificationNotice';
 
 import { FinanceFilters } from './components/FinanceFilters';
 import { SellerFinancesSkeleton } from './components/SellerFinancesSkeleton';
@@ -43,7 +44,7 @@ const SellerFinances = () => {
     transactionDetailsQuery,
     payoutMutation,
     downloadFinanceReportMutation,
-    isForbidden,
+    isSellerNotVerified,
     hasBlockingError,
     availableBalance,
     visibleTransactions,
@@ -64,15 +65,11 @@ const SellerFinances = () => {
     handleReportDownload,
   } = useSellerFinancesPage();
 
-  if (isForbidden) {
+  if (isSellerNotVerified) {
     return (
-      <div className={styles.feedbackState}>
-        <h3>Financial operations are unavailable</h3>
-        <p>
-          Your seller account has not been verified yet. Complete verification
-          to access balances, payouts and transaction history.
-        </p>
-      </div>
+      <SellerVerificationNotice sectionName='balances, payouts and transaction history'>
+        <SellerFinancesSkeleton />
+      </SellerVerificationNotice>
     );
   }
 

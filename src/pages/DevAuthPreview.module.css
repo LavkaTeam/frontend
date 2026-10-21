@@ -1,0 +1,197 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px 0 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.badge {
+  padding: 2px 8px;
+  border: 1px solid #fecdca;
+  border-radius: 999px;
+  background: #fef3f2;
+  color: var(--color-brand-burgundy);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.title {
+  color: var(--color-gray-900);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--color-gray-700);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.select,
+.ghostButton {
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 8px;
+  background: var(--color-primary-white);
+  color: var(--color-gray-800);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.select:disabled {
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  color: var(--color-gray-700);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.checkbox input {
+  accent-color: var(--color-brand-burgundy);
+}
+
+.ghostButton {
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.ghostButton:hover {
+  border-color: var(--color-gray-400);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  padding: 20px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  background: var(--color-primary-white);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.groupTitle {
+  color: var(--color-gray-500);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  padding: 6px 12px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 999px;
+  background: var(--color-primary-white);
+  color: var(--color-gray-700);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.pill:hover {
+  border-color: var(--color-brand-burgundy);
+  color: var(--color-brand-burgundy);
+}
+
+.pillActive,
+.pillActive:hover {
+  border-color: var(--color-brand-burgundy);
+  background: var(--color-brand-burgundy);
+  color: var(--color-primary-white);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.meta strong {
+  color: var(--color-gray-900);
+  font-weight: 600;
+}
+
+.realLink {
+  color: var(--color-brand-burgundy);
+  font-weight: 600;
+}
+
+.realLink:hover {
+  color: var(--color-brand-dark-burgundy);
+}
+
+/* Loader overlays inside forms position against this box. */
+.stage {
+  position: relative;
+}
+
+/* Same box as AccountShell .contentArea, where seller sections render. */
+.accountArea {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 32px 0 80px;
+}

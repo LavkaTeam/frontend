@@ -8,11 +8,17 @@ import {
 } from '../config/profileForm.constants';
 import type {
   AddressDraft,
+  AddressFormErrors,
   LicenseStatusMeta,
   ProfileFieldKey,
   ProfileFormData,
   ProfileFormErrors,
 } from '../types/profileForm.types';
+import {
+  ADDRESS_FIELD_RULES,
+  getFieldFormatError,
+  PROFILE_FIELD_RULES,
+} from './fieldRules';
 
 export const buildProfileFormData = (user: UserResponse): ProfileFormData => ({
   firstName: user.firstName || user.name || '',
@@ -38,75 +44,70 @@ export const buildProfileFormData = (user: UserResponse): ProfileFormData => ({
 
 const isBlank = (value: string) => value.trim().length === 0;
 
+// Required fields still empty: the same list the backend checks before it
+// moves the account to PENDING and before it allows checkout.
+export const getMissingProfileFields = (
+  data: ProfileFormData,
+): ProfileFieldKey[] =>
+  REQUIRED_PROFILE_FIELDS.filter((field) => isBlank(data[field]));
+
+// Backend uses nested keys for the legal address.
+const BACKEND_FIELD_TO_FORM: Record<string, ProfileFieldKey> = {
+  'legalAddress.country': 'legalCountry',
+  'legalAddress.city': 'legalCity',
+  'legalAddress.street': 'legalStreet',
+  'legalAddress.zipCode': 'legalZipCode',
+};
+
+export const toProfileFieldKey = (backendField: string): ProfileFieldKey =>
+  BACKEND_FIELD_TO_FORM[backendField] || (backendField as ProfileFieldKey);
+
+const PROFILE_FIELD_KEYS = new Set(Object.keys(PROFILE_FIELD_LABELS));
+
+// Maps a 400 validation response of PUT /api/user/me to form errors.
+export const getProfileFieldErrors = (error: unknown): ProfileFormErrors => {
+  if (!error || typeof error !== 'object' || error instanceof Error) return {};
+
+  const errors: ProfileFormErrors = {};
+
+  Object.entries(error as Record<string, unknown>).forEach(([key, value]) => {
+    const field = toProfileFieldKey(key);
+    if (typeof value === 'string' && PROFILE_FIELD_KEYS.has(field)) {
+      errors[field] = value;
+    }
+  });
+
+  return errors;
+};
+
+interface ProfileValidationOptions {
+  // Also report empty required fields. Off when saving: the backend accepts
+  // a partly filled profile and keeps it NOT_VERIFIED until it is complete.
+  requireFilled?: boolean;
+}
+
 export const validateProfileField = (
   field: ProfileFieldKey,
   value: string,
+  { requireFilled = false }: ProfileValidationOptions = {},
 ): string | undefined => {
-  const trimmedValue = value.trim();
-
-  if (REQUIRED_PROFILE_FIELDS.includes(field) && isBlank(value)) {
-    return `${PROFILE_FIELD_LABELS[field]} is required.`;
+  if (isBlank(value)) {
+    return requireFilled && REQUIRED_PROFILE_FIELDS.includes(field)
+      ? `${PROFILE_FIELD_LABELS[field]} is required.`
+      : undefined;
   }
 
-  if (field === 'phoneNumber') {
-    const normalized = trimmedValue.replace(/[\s()-]/g, '');
-    if (!/^\+?[0-9]{8,15}$/.test(normalized)) {
-      return 'Enter a valid phone number.';
-    }
-  }
-
-  if (field === 'iban' && trimmedValue.length < 15) {
-    return 'IBAN must be at least 15 characters.';
-  }
-
-  if (field === 'bic' && !/^[A-Za-z0-9]{8,11}$/.test(trimmedValue)) {
-    return 'BIC must contain 8 to 11 letters or numbers.';
-  }
-
-  if (field === 'legalZipCode' && trimmedValue.length < 3) {
-    return 'Enter a valid zip code.';
-  }
-
-  if (
-    [
-      'firstName',
-      'lastName',
-      'companyName',
-      'bankName',
-      'legalCountry',
-      'legalCity',
-    ].includes(field) &&
-    trimmedValue.length < 2
-  ) {
-    return `${PROFILE_FIELD_LABELS[field]} must be at least 2 characters.`;
-  }
-
-  if (
-    [
-      'registrationNumber',
-      'taxId',
-      'vatNumber',
-      'liquorLicenseNumber',
-    ].includes(field) &&
-    trimmedValue.length < 4
-  ) {
-    return `${PROFILE_FIELD_LABELS[field]} must be at least 4 characters.`;
-  }
-
-  if (field === 'legalStreet' && trimmedValue.length < 5) {
-    return 'Legal address street must be at least 5 characters.';
-  }
-
-  return undefined;
+  return getFieldFormatError(PROFILE_FIELD_RULES, field, value);
 };
 
 export const validateProfileForm = (
   data: ProfileFormData,
+  options: ProfileValidationOptions = {},
 ): ProfileFormErrors => {
   const nextErrors: ProfileFormErrors = {};
 
   (Object.keys(data) as ProfileFieldKey[]).forEach((field) => {
-    const error = validateProfileField(field, data[field]);
+    const error = validateProfileField(field, data[field], options);
     if (error) {
       nextErrors[field] = error;
     }
@@ -215,3 +216,36 @@ export const buildProfileUpdatePayload = (
   },
   ...overrides,
 });
+
+// Format check of a shipping address before POST/PUT /api/user/me/addresses.
+export const validateAddressDraft = (draft: AddressDraft): AddressFormErrors => {
+  const errors: AddressFormErrors = {};
+
+  (Object.keys(ADDRESS_FIELD_RULES) as Array<keyof AddressDraft>).forEach(
+    (field) => {
+      const error = getFieldFormatError(
+        ADDRESS_FIELD_RULES,
+        field,
+        draft[field] || '',
+      );
+      if (error) errors[field] = error;
+    },
+  );
+
+  return errors;
+};
+
+// Maps a 400 validation response of the address endpoints to form errors.
+export const getAddressFieldErrors = (error: unknown): AddressFormErrors => {
+  if (!error || typeof error !== 'object' || error instanceof Error) return {};
+
+  const errors: AddressFormErrors = {};
+
+  Object.entries(error as Record<string, unknown>).forEach(([key, value]) => {
+    if (typeof value === 'string' && key in EMPTY_ADDRESS_DRAFT) {
+      errors[key as keyof AddressDraft] = value;
+    }
+  });
+
+  return errors;
+};

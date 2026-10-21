@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/store/hooks';
 import { clearCart } from '@/store/cartSlice';
 import { clearFavorites } from '@/store/favoritesSlice';
+import { clearAuthTokens } from '@/shared/api/client';
 
 export const useLogOutHandler = () => {
   const queryClient = useQueryClient();
@@ -10,6 +11,7 @@ export const useLogOutHandler = () => {
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => {
+    clearAuthTokens();
     localStorage.clear();
     dispatch(clearCart());
     dispatch(clearFavorites());

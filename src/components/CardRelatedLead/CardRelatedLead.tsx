@@ -3,12 +3,9 @@ import styles from './CardRelatedLead.module.css';
 
 const CardRelatedLead = () => {
   return (
-    <Link to="/accessories" className={styles.leadCard}>
+    <Link to='/accessories' className={styles.leadCard}>
       <div className={styles.imageWrapper}>
-        <img
-          src="/images/AccessoriesCard.jpg"
-          alt="Alcohol Accessories"
-        />
+        <img src='/images/AccessoriesCard.webp' alt='Alcohol Accessories' />
       </div>
       <div className={styles.content}>
         <h3 className={styles.title}>

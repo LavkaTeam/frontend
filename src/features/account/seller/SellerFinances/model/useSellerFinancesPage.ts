@@ -10,7 +10,7 @@ import {
 } from './useFinances';
 import { useToast } from '@/hooks/useToast';
 import { useUser } from '@/hooks/useUser';
-import { extractErrorMessage } from '@/utils/error';
+import { extractErrorMessage, isSellerNotVerifiedError } from '@/utils/error';
 
 import {
   isTransactionStatus,
@@ -23,14 +23,6 @@ import {
 } from '../utils/financeFormatters';
 
 const PAGE_SIZE = 10;
-
-const hasForbiddenStatus = (error: unknown) => {
-  if (!error || typeof error !== 'object') return false;
-
-  const errorRecord = error as Record<string, unknown>;
-
-  return errorRecord.status === 403 || errorRecord.statusCode === 403;
-};
 
 export const useSellerFinancesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -80,11 +72,11 @@ export const useSellerFinancesPage = () => {
   const payoutMutation = useRequestFinancePayout();
   const downloadFinanceReportMutation = useDownloadFinanceReport();
 
-  const isForbidden =
-    hasForbiddenStatus(summaryQuery.error) ||
-    hasForbiddenStatus(transactionsQuery.error);
+  const isSellerNotVerified =
+    isSellerNotVerifiedError(summaryQuery.error) ||
+    isSellerNotVerifiedError(transactionsQuery.error);
   const hasBlockingError =
-    !isForbidden &&
+    !isSellerNotVerified &&
     (summaryQuery.isError ||
       (transactionsQuery.isError && !hasInvalidDateRange));
   const availableBalance = getFinanceSummaryValue(
@@ -210,7 +202,7 @@ export const useSellerFinancesPage = () => {
     transactionDetailsQuery,
     payoutMutation,
     downloadFinanceReportMutation,
-    isForbidden,
+    isSellerNotVerified,
     hasBlockingError,
     availableBalance,
     visibleTransactions,

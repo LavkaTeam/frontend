@@ -244,7 +244,7 @@ const Products = () => {
 
       <div
         className={styles.hero}
-        style={{ backgroundImage: 'url("/catalog-hero-bg-v2.png")' }}
+        style={{ backgroundImage: 'url("/catalog-hero-bg.webp")' }}
       >
         <div className={styles.heroOverlay} />
         <div className={styles.heroContent}>

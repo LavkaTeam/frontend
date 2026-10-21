@@ -25,10 +25,19 @@
   transform: translateY(-50%);
 }
 
+/*
+ * The first line of the message takes no space (the negative margin cancels
+ * it out), so a typical error never shifts the form. Extra lines of a long
+ * backend message push the next field down instead of overlapping it.
+ * Hidden, it is clamped to one line, so it takes no space either.
+ */
 .error {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
+  align-self: stretch;
+  /* Always one line tall, even when empty, so the margin math holds. */
+  min-height: 18px;
+  max-height: 18px;
+  margin: 3px 0 -21px;
+  overflow: hidden;
   color: #cf5f58;
   font-family: Inter;
   font-size: 13px;
@@ -37,6 +46,7 @@
   opacity: 0;
   transform: translateY(-4px);
   transition:
+    max-height 0.2s ease,
     opacity 0.2s ease,
     transform 0.2s ease,
     color 0.2s ease;
@@ -44,6 +54,7 @@
 }
 
 .errorVisible {
+  max-height: 72px;
   opacity: 1;
   transform: translateY(0);
 }

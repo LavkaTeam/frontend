@@ -17,6 +17,7 @@ import type {
   PayoutRequestDto,
   TransactionDetailsDto,
 } from './finance.types';
+import { retryOnServerError } from '@/utils/error';
 
 const FINANCE_STALE_TIME = 30_000;
 
@@ -32,6 +33,7 @@ export const useFinanceSummary = () => {
   return useQuery({
     queryKey: financeQueryKeys.summary,
     queryFn: getFinanceSummary,
+    retry: retryOnServerError,
     staleTime: FINANCE_STALE_TIME,
   });
 };
@@ -43,6 +45,7 @@ export const useFinanceTransactions = (
   return useQuery({
     queryKey: financeQueryKeys.transactions(params),
     queryFn: () => getFinanceTransactions(params),
+    retry: retryOnServerError,
     staleTime: FINANCE_STALE_TIME,
     enabled: options?.enabled,
     placeholderData: keepPreviousData,

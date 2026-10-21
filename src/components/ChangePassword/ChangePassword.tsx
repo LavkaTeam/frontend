@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useValidatedForm } from '@/hooks/useValidatedForm';
+import { useQueryClient } from '@tanstack/react-query';
 import { changePassword } from '@/api/user';
+import { saveAuthTokens } from '@/shared/api/client';
+import { extractErrorMessage } from '@/utils/error';
+import { applyServerFieldErrors } from '@/utils/formErrors';
 import { Button } from '@/components/ui/Button';
 import { InputField } from '@/components/Form';
 import styles from './ChangePassword.module.css';
@@ -19,6 +23,7 @@ interface ChangePasswordProps {
 const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
+  const queryClient = useQueryClient();
 
   // Стан для тоста
   const [toast, setToast] = useState<{
@@ -29,11 +34,11 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<ChangePasswordFormSchema>({
+  } = useValidatedForm<ChangePasswordFormSchema>({
     resolver: zodResolver(changePasswordSchema),
-    mode: 'onChange',
   });
 
   useEffect(() => {
@@ -80,10 +85,15 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
 
   const onSubmit = async (data: ChangePasswordFormSchema) => {
     try {
-      await changePassword({
+      const response = await changePassword({
         oldPassword: data.currentPassword,
         newPassword: data.newPassword,
       });
+
+      // Old tokens are revoked by the backend; without the new pair the
+      // next request would log the user out.
+      saveAuthTokens(response);
+      await queryClient.invalidateQueries({ queryKey: ['user'] });
 
       setToast({
         message: 'Password changed successfully',
@@ -94,8 +104,13 @@ const ChangePassword = ({ isOpen, onClose }: ChangePasswordProps) => {
         requestClose();
       }, 900);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Failed to change password';
+      const hasFieldErrors = applyServerFieldErrors(error, setError, {
+        currentPassword: ['oldPassword', 'currentPassword'],
+        newPassword: ['newPassword'],
+      });
+      if (hasFieldErrors) return;
+
+      const message = extractErrorMessage(error, 'Failed to change password');
 
       setToast({
         message,

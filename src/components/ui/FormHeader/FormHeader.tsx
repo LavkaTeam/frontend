@@ -1,8 +1,10 @@
+import type { ReactNode } from 'react';
+
 import styles from './AuthHeading.module.css';
 
 interface FormHeaderProps {
   title: string;
-  subtitle: string;
+  subtitle: ReactNode;
 }
 
 const FormHeader = ({ title, subtitle }: FormHeaderProps) => {

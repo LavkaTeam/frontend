@@ -84,13 +84,51 @@
   margin-top: 2px;
 }
 
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Replays the onboarding tour; low-key on purpose, the tour itself runs
+   automatically for new accounts. */
+.tourButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-gray-400);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.tourButton:hover,
+.tourButton:focus-visible {
+  background: var(--color-gray-200);
+  color: var(--color-gray-700);
+}
+
+.tourButton:hover .statusTooltip,
+.tourButton:focus-visible .statusTooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 .contentArea {
   position: relative;
   display: flex;
   justify-content: center;
   flex-grow: 1;
   width: 100%;
-  min-height: 400px;
 }
 
 .statusIconWrapper {
