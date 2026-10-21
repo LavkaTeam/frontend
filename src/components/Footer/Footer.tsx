@@ -54,13 +54,13 @@ const Footer = () => {
             </ul>
             <ul className={styles.linkBlock}>
               <li>
-                <a className={styles.link} href='mailto:b2bbar@gmail.com'>
-                  Email: b2bbar@gmail.com
+                <a className={styles.link} href='mailto:support@b2bar.tech'>
+                  support@b2bar.tech
                 </a>
               </li>
               <li>
                 <a className={styles.link} href='tel:+380978664545'>
-                  tel:+380978664545
+                  +380978664545
                 </a>
               </li>
             </ul>
