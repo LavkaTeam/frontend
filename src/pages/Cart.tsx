@@ -5,6 +5,7 @@ import { SubHeading } from '@/components/ui/SubHeading';
 import { useAppSelector } from '@/store/hooks';
 import { Button } from '@/components/ui/Button';
 import { CartIcon } from '@/components/ui/icons/CartIcon';
+import { LoginIcon } from '@/components/ui/icons/LoginIcon';
 import { Space } from '@/components/ui/Space';
 import { EmptyCartIcon } from '@/components/ui/icons/EmptyCartIcon';
 import { TrashIcon } from '@/components/ui/icons/TrashIcon';
@@ -18,12 +19,31 @@ import {
   getCartTotals,
   toCartDisplayItems,
 } from '@/features/cart/model/cartView';
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated';
 
 import styles from './Cart.module.css';
 
+const LockIcon = () => (
+  <svg
+    className={styles.guestNoticeIcon}
+    width='20'
+    height='20'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth='2'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    aria-hidden='true'
+  >
+    <rect x='4' y='11' width='16' height='10' rx='2' />
+    <path d='M8 11V7a4 4 0 0 1 8 0v4' />
+  </svg>
+);
+
 const Cart = () => {
   const navigate = useNavigate();
-  const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const isAuthenticated = useIsAuthenticated();
 
   const localCartItems = useAppSelector((state) => state.cart);
   const { data: remoteCart, isLoading } = useGetCart(isAuthenticated);
@@ -61,7 +81,9 @@ const Cart = () => {
     if (isAuthenticated) {
       navigate('/checkout');
     } else {
-      navigate('/login', { state: { usr: { from: '/checkout' } } });
+      // React Router keeps `state` in history.state.usr; the login handler
+      // reads `from` from there and returns the user to checkout.
+      navigate('/login', { state: { from: '/checkout' } });
     }
   };
 
@@ -292,11 +314,30 @@ const Cart = () => {
                         </span>
                       </div>
                     </div>
-                    <div className={styles.checkoutButton}>
-                      <Button onClick={handleCheckout} icon={<CartIcon />}>
-                        Checkout
-                      </Button>
-                    </div>
+                    {isAuthenticated ? (
+                      <div className={styles.checkoutButton}>
+                        <Button onClick={handleCheckout} icon={<CartIcon />}>
+                          Checkout
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className={styles.guestCheckout}>
+                        <div className={styles.guestNotice}>
+                          <LockIcon />
+                          <div>
+                            <p className={styles.guestNoticeTitle}>
+                              Log in to place an order
+                            </p>
+                            <p className={styles.guestNoticeText}>
+                              Orders are available to registered companies.
+                            </p>
+                          </div>
+                        </div>
+                        <Button onClick={handleCheckout} icon={<LoginIcon />}>
+                          Log in to checkout
+                        </Button>
+                      </div>
+                    )}
                     <Link to='/products'>
                       <Button variant='secondary'>Continue Shopping</Button>
                     </Link>
