@@ -36,6 +36,8 @@ export type AddressDraft = {
   deliveryNotes: string;
 };
 
+export type AddressFormErrors = Partial<Record<keyof AddressDraft, string>>;
+
 export type LicenseStatusTone =
   | 'default'
   | 'verified'

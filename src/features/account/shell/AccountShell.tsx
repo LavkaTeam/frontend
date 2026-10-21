@@ -10,6 +10,7 @@ import {
   normalizeAccountTabKey,
 } from './model/accountTabs';
 import { TabsList } from './ui/tabs/TabsList';
+import { useAccountTour } from './tour/useAccountTour';
 import { NotVerifiedIcon } from '@/components/ui/icons/StatusIcons/NotVerifiedIcon';
 import { PendingIcon } from '@/components/ui/icons/StatusIcons/PendingIcon';
 import { VerifiedIcon } from '@/components/ui/icons/StatusIcons/VerifiedIcon';
@@ -31,6 +32,11 @@ const AccountShell = () => {
   }, [user]);
 
   const activeTabKey = requestedTab || availableTabs[0]?.tabKey || '';
+  const tourTabs = useMemo(
+    () => availableTabs.map((tab) => tab.tabKey),
+    [availableTabs],
+  );
+  const { startTour } = useAccountTour(user, tourTabs);
 
   useEffect(() => {
     if (
@@ -150,7 +156,7 @@ const AccountShell = () => {
     <div className={styles.accountLayout}>
       <div className={styles.sideBar}>
         <div className={styles.userInfoBlock}>
-          <div className={styles.userInfo}>
+          <div className={styles.userInfo} data-tour='account-identity'>
             <div className={styles.userImageWrapper}>
               <div
                 className={styles.userImage}
@@ -183,18 +189,49 @@ const AccountShell = () => {
             </div>
           </div>
 
-          <div
-            className={styles.statusIconWrapper}
-            onClick={
-              shouldOpenProfileValidation ? handleStatusClick : undefined
-            }
-          >
-            {statusInfo.icon}
+          <div className={styles.userActions}>
+            <div
+              className={styles.statusIconWrapper}
+              data-tour='verification-status'
+              onClick={
+                shouldOpenProfileValidation ? handleStatusClick : undefined
+              }
+            >
+              {statusInfo.icon}
 
-            <div className={styles.statusTooltip}>
-              {statusInfo.text}
-              <div className={styles.tooltipArrow}></div>
+              <div className={styles.statusTooltip}>
+                {statusInfo.text}
+                <div className={styles.tooltipArrow}></div>
+              </div>
             </div>
+
+            <button
+              type='button'
+              className={styles.tourButton}
+              data-tour='account-tour-button'
+              onClick={startTour}
+              aria-label='Take a tour of your account'
+            >
+              <svg
+                width='20'
+                height='20'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                aria-hidden='true'
+              >
+                <circle cx='12' cy='12' r='10' />
+                <path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' />
+                <path d='M12 17h.01' />
+              </svg>
+              <span className={styles.statusTooltip} role='tooltip'>
+                Take a tour
+                <span className={styles.tooltipArrow} />
+              </span>
+            </button>
           </div>
         </div>
 

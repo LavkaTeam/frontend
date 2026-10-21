@@ -19,6 +19,7 @@ export const TabsList = ({ tabs, activeTab, onTabChange }: TabsListProps) => {
       {tabs.map((tab) => (
         <div
           key={tab.tabKey}
+          data-tour={`tab-${tab.tabKey}`}
           onClick={() => onTabChange(tab.tabKey)}
           className={`${style.TabItem} ${
             activeTab === tab.tabKey ? style.TabItemActive : ''

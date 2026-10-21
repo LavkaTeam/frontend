@@ -4,12 +4,16 @@ import { InputField } from '@/components/Form';
 import { Button } from '@/components/ui/Button';
 
 import { ADDRESS_FIELD_CONFIGS } from '../../config/profileForm.constants';
-import type { AddressDraft } from '../../types/profileForm.types';
+import type {
+  AddressDraft,
+  AddressFormErrors,
+} from '../../types/profileForm.types';
 import sectionStyles from '../sections/ProfileFormSections.module.css';
 import styles from './AddressModal.module.css';
 
 interface AddressModalProps {
   draft: AddressDraft | null;
+  errors: AddressFormErrors;
   isOpen: boolean;
   isSaving: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -20,6 +24,7 @@ interface AddressModalProps {
 
 const AddressModal = ({
   draft,
+  errors,
   isOpen,
   isSaving,
   onChange,
@@ -126,6 +131,7 @@ const AddressModal = ({
                   value={draft[field.id] || ''}
                   onChange={onChange}
                   placeholder={field.placeholder}
+                  error={errors[field.id]}
                 />
               );
 

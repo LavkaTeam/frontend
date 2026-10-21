@@ -6,6 +6,7 @@ import { UploadFileIcon } from '@/components/ui/icons/UploadFileIcon';
 import type { UserResponse } from '@/types/user';
 
 import { AddressModal } from './components/AddressModal';
+import { VerificationGuide } from './components/VerificationGuide/VerificationGuide';
 import {
   CompanyDetailsSection,
   DeliveryAddressesSection,
@@ -27,7 +28,11 @@ export const AccountProfileForm = ({
   description,
 }: AccountProfileFormProps) => {
   const {
+    verificationStatus,
+    missingRequiredFields,
+    showMissingFields,
     addressDraft,
+    addressErrors,
     addressToDelete,
     formData,
     formErrors,
@@ -68,6 +73,12 @@ export const AccountProfileForm = ({
         <h2 className={layoutStyles.profileTitle}>{title}</h2>
         <p className={layoutStyles.profileDescription}>{description}</p>
       </div>
+
+      <VerificationGuide
+        status={verificationStatus}
+        missingFields={missingRequiredFields}
+        onShowMissingFields={showMissingFields}
+      />
 
       <div className={layoutStyles.profileLayout}>
         <PersonalDetailsSection
@@ -142,6 +153,7 @@ export const AccountProfileForm = ({
 
       <AddressModal
         draft={addressDraft}
+        errors={addressErrors}
         isOpen={isAddressModalOpen}
         isSaving={isSavingAddress}
         onChange={handleAddressFieldChange}
