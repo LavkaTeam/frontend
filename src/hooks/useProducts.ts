@@ -19,6 +19,7 @@ import type {
   ProductStatus,
   SellerProductSummary,
 } from '@/types/productCard';
+import { retryOnServerError } from '@/utils/error';
 
 const PRODUCT_STALE_TIME = 60_000;
 
@@ -31,6 +32,7 @@ export const useSellerProducts = (
     queryKey: ['seller-products', page, size, status],
     queryFn: () => getMyProducts(page, size, status),
     placeholderData: keepPreviousData,
+    retry: retryOnServerError,
     staleTime: PRODUCT_STALE_TIME,
   });
 

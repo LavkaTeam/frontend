@@ -10,10 +10,12 @@ import { FilterIcon } from '@/components/ui/icons/FilterIcon';
 import { useSellerProducts } from '@/hooks/useProducts';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import type { ProductStatus } from '@/types/productCard';
+import { isSellerNotVerifiedError } from '@/utils/error';
 
 import { SellerAddProduct } from './SellerAddProduct/SellerAddProduct';
 import { SellerProductsList } from './SellerProductsList/SellerProductsList';
 import { SellerProductsPageSkeleton } from './skeleton';
+import { SellerVerificationNotice } from '../shared/SellerVerificationNotice/SellerVerificationNotice';
 import styles from './SellerProducts.module.css';
 
 const PAGE_SIZE = 10;
@@ -50,7 +52,7 @@ const SellerProducts = () => {
   const isCreating = action === 'new';
   const isEditing = action === 'edit' && Boolean(productId);
 
-  const { products, totalPages, isLoading, isFetching, isError } =
+  const { products, totalPages, isLoading, isFetching, isError, error } =
     useSellerProducts(currentPage - 1, PAGE_SIZE, statusFilter);
 
   const updateSearchParams = (
@@ -136,6 +138,14 @@ const SellerProducts = () => {
 
   if (isLoading) {
     return <SellerProductsPageSkeleton />;
+  }
+
+  if (isSellerNotVerifiedError(error)) {
+    return (
+      <SellerVerificationNotice sectionName='your products'>
+        <SellerProductsPageSkeleton />
+      </SellerVerificationNotice>
+    );
   }
 
   if (isError) {

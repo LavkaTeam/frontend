@@ -1,0 +1,89 @@
+/*
+ * Clipped to the viewport height: the locked section can be much longer
+ * (e.g. the analytics skeleton), and there is nothing to scroll to behind
+ * the dialog.
+ */
+.gate {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: clamp(480px, calc(100vh - 220px), 760px);
+}
+
+/* The locked section: visible for context, but blurred and not interactive. */
+.backdrop {
+  /* Same height as the gate, so the fade ends at the visible bottom edge. */
+  overflow: hidden;
+  height: 100%;
+  filter: blur(3px);
+  opacity: 0.7;
+  pointer-events: none;
+  user-select: none;
+  mask-image: linear-gradient(to bottom, #000 60%, transparent);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: rgba(245, 245, 245, 0.45);
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 440px;
+  padding: 32px;
+  border-radius: 16px;
+  background: var(--color-primary-white);
+  box-shadow:
+    0 20px 24px -4px rgba(10, 13, 18, 0.08),
+    0 8px 8px -4px rgba(10, 13, 18, 0.03);
+  text-align: center;
+  animation: dialogIn 0.25s ease-out;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-gray-900);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.text {
+  margin: 0;
+  color: var(--color-gray-600);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .dialog {
+    padding: 24px;
+  }
+}

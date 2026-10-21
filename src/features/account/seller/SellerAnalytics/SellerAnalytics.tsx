@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useDashboard } from './model/useAnalytics';
-import { extractErrorMessage } from '@/utils/error';
+import { extractErrorMessage, isSellerNotVerifiedError } from '@/utils/error';
+import { SellerVerificationNotice } from '../shared/SellerVerificationNotice/SellerVerificationNotice';
 
 import {
   AnalyticsHighlightCard,
@@ -103,6 +104,14 @@ const SellerAnalytics = () => {
 
   if (dashboardQuery.isLoading && !dashboardQuery.data) {
     return <SellerAnalyticsSkeleton />;
+  }
+
+  if (isSellerNotVerifiedError(dashboardQuery.error)) {
+    return (
+      <SellerVerificationNotice sectionName='analytics'>
+        <SellerAnalyticsSkeleton />
+      </SellerVerificationNotice>
+    );
   }
 
   if (dashboardQuery.isError) {
