@@ -1,0 +1,23 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.forgotPassword {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+}
+
+.forgotPasswordLink {
+  color: var(--color-brand-burgundy);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.forgotPasswordLink:hover {
+  color: var(--color-brand-dark-burgundy);
+}

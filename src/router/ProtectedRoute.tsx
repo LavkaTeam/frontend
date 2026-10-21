@@ -1,5 +1,6 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { Loader } from '@/components/ui/Loader';
+import { AccessDenied } from '@/components/AccessDenied/AccessDenied';
 import { useUser } from '@/hooks/useUser';
 
 interface ProtectedRouteProps {
@@ -12,13 +13,21 @@ export const ProtectedRoute = ({
   allowedRoles = [],
 }: ProtectedRouteProps) => {
   const { data: user, isLoading } = useUser();
+  const location = useLocation();
 
   if (isLoading) return <Loader />;
-  if (!user) return <Navigate to='/login' replace />;
+  if (!user) {
+    return (
+      <Navigate
+        to='/login'
+        replace
+        state={{ from: `${location.pathname}${location.search}` }}
+      />
+    );
+  }
 
-  if (allowedRoles.length > 0) {
-    const hasAccess = allowedRoles.includes(user.role);
-    if (!hasAccess) return <Navigate to='/login' replace />;
+  if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+    return <AccessDenied />;
   }
 
   return <>{children}</>;

@@ -1,0 +1,60 @@
+/* Featured icon in the round tinted badge, as in the modal headers. */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.lg {
+  width: 56px;
+  height: 56px;
+}
+
+.md {
+  width: 44px;
+  height: 44px;
+}
+
+.md .spinner {
+  width: 20px;
+  height: 20px;
+}
+
+.email,
+.loading {
+  background: #fbeae9;
+  color: var(--color-brand-burgundy);
+}
+
+.success {
+  background: #dcfae6;
+  color: #079455;
+}
+
+.warning,
+.pending {
+  background: #fef0c7;
+  color: #dc6803;
+}
+
+.error {
+  background: #fee4e2;
+  color: var(--color-error-500);
+}
+
+.spinner {
+  width: 26px;
+  height: 26px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: statusIconSpin 0.8s linear infinite;
+}
+
+@keyframes statusIconSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

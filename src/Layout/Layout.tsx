@@ -4,12 +4,14 @@ import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { Toast } from '@/components/ui/Toast';
 import { useToast } from '@/hooks/useToast';
+import { useAuthSessionWatcher } from '@/hooks/useAuthSessionWatcher';
 
 import styles from './Layout.module.css';
 import { ScrollToTop } from '@/components/ScrollToTop';
 
 const Layout = () => {
   const { toasts, removeToast } = useToast();
+  useAuthSessionWatcher();
 
   return (
     <div className={styles.layout}>

@@ -1,30 +1,35 @@
 import { Link } from 'react-router-dom';
 import styles from './AuthRedirect.module.css';
 
+const REDIRECTS = {
+  signup: { text: 'Don’t have an account?', label: 'Sign up', to: '/register' },
+  login: { text: 'Already have an account?', label: 'Log in', to: '/login' },
+  rememberPassword: {
+    text: 'Remember your password?',
+    label: 'Log in',
+    to: '/login',
+  },
+  resetPassword: {
+    text: 'Link expired?',
+    label: 'Request a new one',
+    to: '/forgot-password',
+  },
+} as const;
+
 interface AuthRedirectProps {
-  type: 'signup' | 'login';
+  type: keyof typeof REDIRECTS;
 }
 
 const AuthRedirect = ({ type }: AuthRedirectProps) => {
+  const { text, label, to } = REDIRECTS[type];
+
   return (
-    <>
-      {type === 'signup' && (
-        <div className={styles.redirectContainer}>
-          <p className={styles.redirectText}>Don’t have an account?</p>
-          <Link className={styles.redirectLink} to={'/register'}>
-            Sign up
-          </Link>
-        </div>
-      )}
-      {type === 'login' && (
-        <div className={styles.redirectContainer}>
-          <p className={styles.redirectText}>Already have an account? </p>
-          <Link className={styles.redirectLink} to={'/login'}>
-            Log in
-          </Link>
-        </div>
-      )}
-    </>
+    <div className={styles.redirectContainer}>
+      <p className={styles.redirectText}>{text}</p>
+      <Link className={styles.redirectLink} to={to}>
+        {label}
+      </Link>
+    </div>
   );
 };
 

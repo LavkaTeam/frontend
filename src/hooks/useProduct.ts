@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getProductById } from '@/api/Products';
 import type { Product } from '@/types/productCard';
+import { extractErrorMessage } from '@/utils/error';
 
 export const useProduct = (id: string | undefined) => {
   const [product, setProduct] = useState<Product | null>(null);
@@ -17,13 +18,7 @@ export const useProduct = (id: string | undefined) => {
         setProduct(data);
       } catch (err) {
         console.error('Failed to fetch product:', err);
-        let errorMessage = 'Something went wrong';
-        if (err instanceof Error) {
-          errorMessage = err.message;
-        } else if (err && typeof err === 'object' && 'message' in err) {
-          errorMessage = String((err as { message: unknown }).message);
-        }
-        setError(errorMessage);
+        setError(extractErrorMessage(err, 'Failed to load the product.'));
       } finally {
         setIsLoading(false);
       }

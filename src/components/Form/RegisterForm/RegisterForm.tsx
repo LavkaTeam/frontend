@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useValidatedForm } from '@/hooks/useValidatedForm';
 
-import { FormContainer, InputField, AuthRedirect } from '@/components/Form';
+import {
+  FormContainer,
+  InputField,
+  AuthRedirect,
+} from '@/components/Form';
 import { Button } from '@ui/Button';
 import { Loader } from '@ui/Loader';
 import { FormHeader } from '@ui/FormHeader';
@@ -11,6 +16,7 @@ import {
   registerSchema,
   type RegisterFormSchema,
 } from '@/schemas/registerSchema';
+import { formatCooldown } from '@/utils/formatCooldown';
 
 import styles from './RegisterForm.module.css';
 
@@ -20,10 +26,17 @@ interface RegisterFormProps {
     setError: ReturnType<typeof useForm<RegisterFormSchema>>['setError'],
   ) => void;
   isLoading?: boolean;
+  // Seconds left after 429 TOO_MANY_REQUESTS; blocks the submit button.
+  cooldownSeconds?: number;
 }
 
-const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
+const RegisterForm = ({
+  onSubmit,
+  isLoading = false,
+  cooldownSeconds = 0,
+}: RegisterFormProps) => {
   const [isConsent, setIsConsent] = useState(false);
+  const [showConsentError, setShowConsentError] = useState(false);
 
   const {
     register,
@@ -32,9 +45,8 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
     setValue,
     setError,
     formState: { errors },
-  } = useForm<RegisterFormSchema>({
+  } = useValidatedForm<RegisterFormSchema>({
     resolver: zodResolver(registerSchema),
-    mode: 'onChange',
     defaultValues: {
       role: 'BUYER',
     },
@@ -50,20 +62,31 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
 
   const handleConsentChange = () => {
     setIsConsent((isConsent) => !isConsent);
+    setShowConsentError(false);
   };
+
+  const submitForm = handleSubmit((data) => {
+    if (!isConsent) {
+      setShowConsentError(true);
+      return;
+    }
+
+    onSubmit(data, setError);
+  });
 
   return (
     <FormContainer>
       <FormHeader title='Sign up' subtitle='Fill out the form to sign up' />
       <form
+        className={styles.form}
         noValidate
-        onSubmit={handleSubmit((data) => onSubmit(data, setError))}
+        onSubmit={submitForm}
         autoComplete='on'
       >
         <InputField
           id='name'
           label='Name'
-          placeholder='Оlivia'
+          placeholder='Olivia'
           autoComplete='given-name'
           error={errors.name?.message}
           {...register('name')}
@@ -118,6 +141,11 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
             checked={isConsent}
             onChange={handleConsentChange}
           />
+          {showConsentError && (
+            <p className={styles.fieldError} role='alert'>
+              Please accept the processing of your personal data to continue.
+            </p>
+          )}
         </div>
 
         <div className={styles.checkBoxContainer}>
@@ -133,15 +161,20 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
           />
 
           <input type='hidden' {...register('role')} />
-          {errors.role && <p>{errors.role.message}</p>}
+          {errors.role && (
+            <p className={styles.fieldError}>{errors.role.message}</p>
+          )}
         </div>
+
 
         {isLoading ? (
           <Loader />
         ) : (
           <>
-            <Button type='submit' disabled={!isConsent}>
-              Sign Up
+            <Button type='submit' disabled={cooldownSeconds > 0}>
+              {cooldownSeconds > 0
+                ? `Try again in ${formatCooldown(cooldownSeconds)}`
+                : 'Sign Up'}
             </Button>
             <AuthRedirect type='login' />
           </>

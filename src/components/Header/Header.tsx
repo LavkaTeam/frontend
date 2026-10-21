@@ -9,10 +9,11 @@ import { HeaderIcon } from '../HeaderIcon';
 import { HeaderSearch } from './HeaderSearch';
 import { useAppSelector } from '@/store/hooks';
 import { useGetCart } from '@/hooks/useCartQueries';
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated';
 import styles from './Header.module.css';
 
 const Header = () => {
-  const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const isAuthenticated = useIsAuthenticated();
 
   const cart = useAppSelector((state) => state.cart);
   const favorites = useAppSelector((state) => state.favorites);

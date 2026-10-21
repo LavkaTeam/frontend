@@ -26,7 +26,7 @@ const normalizeCheckoutUrl = (checkoutUrl: string) => {
 export const createDemoPaymentSession = (
   batchId: string,
 ): Promise<DemoPaymentSessionDto> =>
-  fetchData<string>(`/orders/batches/${batchId}/demo-session`, {
+  fetchData<string>(`/demo-payments/batches/${batchId}/demo-session`, {
     method: 'POST',
   }).then((checkoutUrl) => ({
     checkoutUrl: normalizeCheckoutUrl(checkoutUrl),

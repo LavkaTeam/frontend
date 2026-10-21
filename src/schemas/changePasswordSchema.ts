@@ -8,10 +8,11 @@ export const changePasswordSchema = z
 
     newPassword: z
       .string({ required_error: 'New password is required' })
+      .min(1, 'New password is required')
       .min(8, 'Password must be at least 8 characters')
       .regex(
         /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-        'Password must contain at least 1 uppercase letter and 1 number'
+        'Add at least 1 uppercase letter and 1 number'
       ),
 
     confirmPassword: z.string({

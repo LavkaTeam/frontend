@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUser, getUserId } from '@/api/user';
+import { useIsAuthenticated } from './useIsAuthenticated';
 
 const useAuthenticatedUserId = () => {
-  const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const isAuthenticated = useIsAuthenticated();
 
   return useQuery<string>({
     queryKey: ['authenticated-user-id'],

@@ -1,5 +1,19 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 28px;
+}
+
 .checkBoxContainer {
   display: flex;
   justify-content: space-between;
-  padding: 16px 0 40px;
+  padding: 0 0 20px;
+}
+
+.fieldError {
+  margin: 6px 0 0;
+  color: #d92d20;
+  font-size: 14px;
+  line-height: 20px;
 }
