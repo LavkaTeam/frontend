@@ -1,0 +1,50 @@
+/* Page-specific bits of the informational pages. */
+.jumpLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.jumpLink {
+  padding: 8px 16px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 999px;
+  background: var(--color-primary-white);
+  color: var(--color-gray-800);
+  font-size: 15px;
+  font-weight: 600;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.jumpLink:hover,
+.jumpLink:focus-visible {
+  border-color: var(--color-brand-burgundy);
+  color: var(--color-brand-burgundy);
+  outline: none;
+}
+
+/* ul.chips beats the list styles of the page prose. */
+ul.chips {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(175, 38, 31, 0.07);
+  color: var(--color-brand-dark-burgundy);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.lastUpdated {
+  color: var(--color-gray-500);
+  font-size: 14px;
+}

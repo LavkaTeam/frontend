@@ -129,7 +129,11 @@ const Home = () => {
           )}
         </PageSection>
 
-        <PageSection title='Discover'>
+        <PageSection
+          id='discover'
+          title='Discover'
+          className={styles.scrollAnchor}
+        >
           <CardSection cards={discoverCards} CardComponent={CardDiscover} />
         </PageSection>
 

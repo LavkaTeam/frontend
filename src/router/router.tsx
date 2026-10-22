@@ -24,6 +24,37 @@ const Products = lazy(() => import('@/pages/Products'));
 const SellerProductsPublic = lazy(() => import('@/pages/SellerProductsPublic'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
+// Informational pages linked from the footer, and the Discover articles.
+const About = lazy(() => import('@/pages/About'));
+const Faq = lazy(() => import('@/pages/Faq'));
+const BecomeSeller = lazy(() => import('@/pages/BecomeSeller'));
+const SellerRules = lazy(() => import('@/pages/SellerRules'));
+const Promotions = lazy(() => import('@/pages/Promotions'));
+const Support = lazy(() => import('@/pages/Support'));
+const Privacy = lazy(() => import('@/pages/Privacy'));
+const Article = lazy(() => import('@/pages/Article'));
+
+const staticPages = [
+  { path: '/about', Page: About },
+  { path: '/faq', Page: Faq },
+  { path: '/become-a-seller', Page: BecomeSeller },
+  { path: '/seller-rules', Page: SellerRules },
+  { path: '/promotions', Page: Promotions },
+  { path: '/support', Page: Support },
+  { path: '/privacy', Page: Privacy },
+  { path: '/discover/:slug', Page: Article },
+  { path: '/accessories', Page: Article },
+];
+
+const staticRoutes = staticPages.map(({ path, Page }) => ({
+  path,
+  element: (
+    <Suspense fallback={<Loader />}>
+      <Page />
+    </Suspense>
+  ),
+}));
+
 // Admin panel (role ADMIN only).
 const AdminLayout = lazy(() => import('@/features/admin/shell/AdminLayout'));
 const AdminDashboard = lazy(
@@ -33,7 +64,9 @@ const AdminUsers = lazy(() => import('@/features/admin/users/AdminUsers'));
 const AdminUserDetails = lazy(
   () => import('@/features/admin/users/AdminUserDetails'),
 );
-const AdminPayouts = lazy(() => import('@/features/admin/payouts/AdminPayouts'));
+const AdminPayouts = lazy(
+  () => import('@/features/admin/payouts/AdminPayouts'),
+);
 const AdminOrders = lazy(() => import('@/features/admin/orders/AdminOrders'));
 const AdminOrderDetails = lazy(
   () => import('@/features/admin/orders/AdminOrderDetails'),
@@ -266,6 +299,7 @@ export const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      ...staticRoutes,
       ...devRoutes,
       {
         path: '*',

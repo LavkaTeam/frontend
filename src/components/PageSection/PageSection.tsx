@@ -5,15 +5,18 @@ interface PageSectionProps {
   title?: string;
   children: React.ReactNode;
   className?: string;
+  // Anchor for links such as "/#discover".
+  id?: string;
 }
 
 export const PageSection = ({
   title,
   children,
   className,
+  id,
 }: PageSectionProps) => {
   return (
-    <section className={className}>
+    <section id={id} className={className}>
       {title && (
         <>
           <div className='container'>
