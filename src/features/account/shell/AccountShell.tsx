@@ -9,7 +9,7 @@ import {
   getAccountTabComponent,
   normalizeAccountTabKey,
 } from './model/accountTabs';
-import { TabsList } from './ui/tabs/TabsList';
+import { AccountLayout } from './ui/AccountLayout/AccountLayout';
 import { useAccountTour } from './tour/useAccountTour';
 import { NotVerifiedIcon } from '@/components/ui/icons/StatusIcons/NotVerifiedIcon';
 import { PendingIcon } from '@/components/ui/icons/StatusIcons/PendingIcon';
@@ -152,125 +152,90 @@ const AccountShell = () => {
 
   const statusInfo = getStatusInfo(userStatus);
 
-  return (
-    <div className={styles.accountLayout}>
-      <div className={styles.sideBar}>
-        <div className={styles.userInfoBlock}>
-          <div className={styles.userInfo} data-tour='account-identity'>
-            <div className={styles.userImageWrapper}>
-              <div
-                className={styles.userImage}
-                onClick={handleLogoClick}
-                role='button'
-                tabIndex={0}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    handleLogoClick();
-                  }
-                }}
-                aria-label='Open logo upload'
-              >
-                <img
-                  src={user.logoUrl || '/icons/testAvatar.png'}
-                  alt='avatar'
-                  className={styles.avatarImg}
-                />
-              </div>
-            </div>
+  const statusActions = (
+    <>
+      <div
+        className={styles.statusIconWrapper}
+        data-tour='verification-status'
+        onClick={shouldOpenProfileValidation ? handleStatusClick : undefined}
+      >
+        {statusInfo.icon}
 
-            <div className={styles.userText}>
-              <p className={styles.userCompany}>
-                {user.companyName || user.firstName || 'User'}
-              </p>
-              <p className={styles.userEmail}>
-                {`${user.firstName} ${user.lastName}`}
-              </p>
-            </div>
-          </div>
-
-          <div className={styles.userActions}>
-            <div
-              className={styles.statusIconWrapper}
-              data-tour='verification-status'
-              onClick={
-                shouldOpenProfileValidation ? handleStatusClick : undefined
-              }
-            >
-              {statusInfo.icon}
-
-              <div className={styles.statusTooltip}>
-                {statusInfo.text}
-                <div className={styles.tooltipArrow}></div>
-              </div>
-            </div>
-
-            <button
-              type='button'
-              className={styles.tourButton}
-              data-tour='account-tour-button'
-              onClick={startTour}
-              aria-label='Take a tour of your account'
-            >
-              <svg
-                width='20'
-                height='20'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                aria-hidden='true'
-              >
-                <circle cx='12' cy='12' r='10' />
-                <path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' />
-                <path d='M12 17h.01' />
-              </svg>
-              <span className={styles.statusTooltip} role='tooltip'>
-                Take a tour
-                <span className={styles.tooltipArrow} />
-              </span>
-            </button>
-          </div>
+        <div className={styles.statusTooltip}>
+          {statusInfo.text}
+          <div className={styles.tooltipArrow}></div>
         </div>
-
-        <TabsList
-          tabs={availableTabs}
-          activeTab={activeTabKey}
-          onTabChange={handleTabChange}
-        />
       </div>
 
-      <div className={styles.contentArea}>
-        <Suspense
-          fallback={
-            profileSkeletonTabs.has(activeTabKey) ? (
-              <AccountProfileFormSkeleton
-                title={
-                  user.role === 'SELLER'
-                    ? 'Hello, you are in your seller account'
-                    : 'Hello, you are in your customer account'
-                }
-                description={
-                  user.role === 'SELLER'
-                    ? 'Manage your products, orders, and sales details here'
-                    : 'Here you will find all information about your orders and be able to update your personal details'
-                }
-              />
-            ) : (
-              <Loader variant='section' />
-            )
-          }
+      <button
+        type='button'
+        className={styles.tourButton}
+        data-tour='account-tour-button'
+        onClick={startTour}
+        aria-label='Take a tour of your account'
+      >
+        <svg
+          width='20'
+          height='20'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          aria-hidden='true'
         >
-          {ActiveContentComponent ? (
-            <ActiveContentComponent />
+          <circle cx='12' cy='12' r='10' />
+          <path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' />
+          <path d='M12 17h.01' />
+        </svg>
+        <span className={styles.statusTooltip} role='tooltip'>
+          Take a tour
+          <span className={styles.tooltipArrow} />
+        </span>
+      </button>
+    </>
+  );
+
+  return (
+    <AccountLayout
+      avatarSrc={user.logoUrl || '/icons/testAvatar.png'}
+      avatarLabel='Open logo upload'
+      onAvatarClick={handleLogoClick}
+      title={user.companyName || user.firstName || 'User'}
+      subtitle={`${user.firstName} ${user.lastName}`}
+      actions={statusActions}
+      tabs={availableTabs}
+      activeTab={activeTabKey}
+      onTabChange={handleTabChange}
+    >
+      <Suspense
+        fallback={
+          profileSkeletonTabs.has(activeTabKey) ? (
+            <AccountProfileFormSkeleton
+              title={
+                user.role === 'SELLER'
+                  ? 'Hello, you are in your seller account'
+                  : 'Hello, you are in your customer account'
+              }
+              description={
+                user.role === 'SELLER'
+                  ? 'Manage your products, orders, and sales details here'
+                  : 'Here you will find all information about your orders and be able to update your personal details'
+              }
+            />
           ) : (
-            <div>Tab not found</div>
-          )}
-        </Suspense>
-      </div>
-    </div>
+            <Loader variant='section' />
+          )
+        }
+      >
+        {ActiveContentComponent ? (
+          <ActiveContentComponent />
+        ) : (
+          <div>Tab not found</div>
+        )}
+      </Suspense>
+    </AccountLayout>
   );
 };
 

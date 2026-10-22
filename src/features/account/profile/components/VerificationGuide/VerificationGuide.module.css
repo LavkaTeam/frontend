@@ -39,6 +39,26 @@
   line-height: 20px;
 }
 
+/* Admin's rejection reason. */
+.reason {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid #fecdca;
+  border-radius: 12px;
+  background: #fef3f2;
+  color: var(--color-gray-800);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.reasonTitle {
+  color: #b42318;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 /* Steps on the left, progress on the right. */
 .footer {
   display: flex;

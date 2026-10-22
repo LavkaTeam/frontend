@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import styles from './DateRangeInput.module.css';
+import styles from './DateInput.module.css';
 
-interface DateRangeInputProps {
+interface DateInputProps {
   label: string;
   value: string;
   min?: string;
@@ -65,14 +65,14 @@ const CalendarIcon = () => (
   </svg>
 );
 
-const DateRangeInput = ({
+const DateInput = ({
   label,
   value,
   min,
   max,
   placeholder = 'dd.mm.yyyy',
   onChange,
-}: DateRangeInputProps) => {
+}: DateInputProps) => {
   const nativeInputRef = useRef<HTMLInputElement>(null);
   const [displayValue, setDisplayValue] = useState(formatIsoToDisplay(value));
   const normalizedValue = useMemo(() => formatIsoToDisplay(value), [value]);
@@ -163,4 +163,4 @@ const DateRangeInput = ({
   );
 };
 
-export { DateRangeInput };
+export { DateInput };

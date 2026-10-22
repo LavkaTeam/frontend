@@ -1,0 +1,75 @@
+/* Same title and subtitle sizes as the seller cabinet pages. */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.back {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.back:hover {
+  color: var(--color-brand-burgundy);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-gray-900);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: -0.72px;
+}
+
+.description {
+  max-width: 720px;
+  color: var(--color-gray-600);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.actions > button {
+  width: auto;
+}
+
+@media (max-width: 900px) {
+  .title {
+    font-size: 30px;
+    line-height: 38px;
+  }
+
+  .description {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}

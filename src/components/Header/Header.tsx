@@ -9,19 +9,27 @@ import { HeaderIcon } from '../HeaderIcon';
 import { HeaderSearch } from './HeaderSearch';
 import { useAppSelector } from '@/store/hooks';
 import { useGetCart } from '@/hooks/useCartQueries';
-import { useIsAuthenticated } from '@/hooks/useIsAuthenticated';
+import {
+  useIsAdmin,
+  useIsAuthenticated,
+  useIsShopper,
+} from '@/hooks/useIsAuthenticated';
 import styles from './Header.module.css';
 
 const Header = () => {
   const isAuthenticated = useIsAuthenticated();
+  const isAdmin = useIsAdmin();
+  // The admin has no cart or favorites (the backend answers 403).
+  const isShopper = useIsShopper();
 
   const cart = useAppSelector((state) => state.cart);
   const favorites = useAppSelector((state) => state.favorites);
 
-  const { data: remoteCart } = useGetCart(isAuthenticated);
+  const { data: remoteCart } = useGetCart(isShopper);
   const { handleSubmit: handleLogOut } = useLogOutHandler();
 
-  const cartCount = isAuthenticated ? (remoteCart?.items?.length || 0) : cart.length;
+  const cartCount = isShopper ? (remoteCart?.items?.length || 0) : cart.length;
+  const accountLink = isAdmin ? '/admin' : isAuthenticated ? '/account' : '/login';
 
   return (
     <header className={styles.wrapper}>
@@ -34,25 +42,32 @@ const Header = () => {
 
             <div className={styles.userActions}>
               <div className={styles.actions}>
-                <Link to={`${isAuthenticated ? '/account' : '/login'}`}>
-                  <HeaderIcon icon={<AccountIcon />} iconText='Account' />
-                </Link>
-
-                <Link to={'/favorites'}>
+                <Link to={accountLink}>
                   <HeaderIcon
-                    icon={<OutlineHeart />}
-                    iconText='Wishlist'
-                    count={favorites.length}
+                    icon={<AccountIcon />}
+                    iconText={isAdmin ? 'Admin' : 'Account'}
                   />
                 </Link>
 
-                <Link to={'/cart'}>
-                  <HeaderIcon
-                    icon={<ShoppingCart currentColor='#252B37' />}
-                    iconText='Cart'
-                    count={cartCount}
-                  />
-                </Link>
+                {!isAdmin && (
+                  <>
+                    <Link to={'/favorites'}>
+                      <HeaderIcon
+                        icon={<OutlineHeart />}
+                        iconText='Wishlist'
+                        count={favorites.length}
+                      />
+                    </Link>
+
+                    <Link to={'/cart'}>
+                      <HeaderIcon
+                        icon={<ShoppingCart currentColor='#252B37' />}
+                        iconText='Cart'
+                        count={cartCount}
+                      />
+                    </Link>
+                  </>
+                )}
               </div>
               {isAuthenticated && (
                 <div className={styles.logoutButton} onClick={handleLogOut}>

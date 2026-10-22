@@ -1,4 +1,7 @@
-export type UserRole = 'BUYER' | 'SELLER';
+import type { UserRole } from './user';
+
+// Roles a user can pick when registering; the admin is created by the backend.
+export type RegistrationRole = 'BUYER' | 'SELLER';
 
 export interface AuthPayload {
   name: string;
@@ -7,7 +10,7 @@ export interface AuthPayload {
   password: string;
   companyName: string;
   telephoneNumber: string;
-  role: UserRole;
+  role: RegistrationRole;
 }
 
 export interface LoginPayload {
@@ -20,6 +23,7 @@ export interface AuthResponse {
   refreshToken: string;
   user: {
     id: string;
+    role: UserRole;
     firstName?: string;
     name?: string;
     lastName: string;

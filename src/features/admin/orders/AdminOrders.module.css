@@ -1,0 +1,44 @@
+.party {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.partyName,
+.orderNumber {
+  overflow: hidden;
+  color: var(--color-gray-900);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.muted {
+  overflow: hidden;
+  color: var(--color-gray-500);
+  font-size: 13px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pills {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.amount {
+  color: var(--color-gray-900);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}

@@ -19,7 +19,7 @@ import {
   getCartTotals,
   toCartDisplayItems,
 } from '@/features/cart/model/cartView';
-import { useIsAuthenticated } from '@/hooks/useIsAuthenticated';
+import { useIsShopper } from '@/hooks/useIsAuthenticated';
 
 import styles from './Cart.module.css';
 
@@ -43,7 +43,8 @@ const LockIcon = () => (
 
 const Cart = () => {
   const navigate = useNavigate();
-  const isAuthenticated = useIsAuthenticated();
+  // The admin has no cart or favorites: treated as a guest here.
+  const isAuthenticated = useIsShopper();
 
   const localCartItems = useAppSelector((state) => state.cart);
   const { data: remoteCart, isLoading } = useGetCart(isAuthenticated);

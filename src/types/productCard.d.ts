@@ -46,6 +46,9 @@ export interface CategoryTreeItem {
 
 export interface Product {
   id: string;
+  // Sent by the backend only to the admin and the owning seller.
+  adminBlocked?: boolean;
+  moderationReason?: string;
   mainImage: ProductImage;
   images: ProductImage[];
   name: string;
@@ -91,6 +94,9 @@ export interface SellerProductSummary {
   mainImage?: ProductImage;
   subcategory: string;
   country?: string;
+  // Blocked by the admin: hidden and cannot be activated by the seller.
+  adminBlocked?: boolean;
+  moderationReason?: string;
 }
 
 export interface ProductRequest {

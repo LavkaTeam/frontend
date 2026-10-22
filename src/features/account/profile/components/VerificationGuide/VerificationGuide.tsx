@@ -8,6 +8,8 @@ import styles from './VerificationGuide.module.css';
 
 interface VerificationGuideProps {
   status?: VerificationStatus;
+  // What the admin asked to fix; present only while REJECTED.
+  rejectionReason?: string;
   missingFields: ProfileFieldKey[];
   onShowMissingFields: () => void;
 }
@@ -61,6 +63,7 @@ const getContent = (
 // user has to do next.
 const VerificationGuide = ({
   status,
+  rejectionReason,
   missingFields,
   onShowMissingFields,
 }: VerificationGuideProps) => {
@@ -86,6 +89,13 @@ const VerificationGuide = ({
           <p className={styles.text}>{content.text}</p>
         </div>
       </div>
+
+      {status === 'REJECTED' && rejectionReason ? (
+        <div className={styles.reason}>
+          <span className={styles.reasonTitle}>Message from our team</span>
+          <p>{rejectionReason}</p>
+        </div>
+      ) : null}
 
       <div className={styles.footer}>
         <ol className={styles.steps}>

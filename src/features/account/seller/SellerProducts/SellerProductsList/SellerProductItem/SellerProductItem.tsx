@@ -15,8 +15,7 @@ const formatLabel = (value: string) =>
     .toLowerCase()
     .replace(/^\w/, (char) => char.toUpperCase());
 
-const formatStatusText = (status: string) =>
-  formatLabel(status);
+const formatStatusText = (status: string) => formatLabel(status);
 
 const getStatusClass = (status: string) => {
   switch (status.toUpperCase()) {
@@ -71,9 +70,26 @@ export const SellerProductItem = ({ product, onEdit }: Props) => {
       <td className={styles.cellWithBorder}>{product.quantity}</td>
       <td className={styles.cellWithBorder}>${product.price.toFixed(2)}</td>
       <td className={styles.cellWithBorder}>
-        <span className={`${styles.status} ${getStatusClass(product.status)}`}>
-          {formatStatusText(product.status)}
-        </span>
+        <div className={styles.statusCell}>
+          <span
+            className={`${styles.status} ${getStatusClass(product.status)}`}
+          >
+            {formatStatusText(product.status)}
+          </span>
+          {product.adminBlocked ? (
+            <span
+              className={styles.moderation}
+              title={product.moderationReason}
+            >
+              Blocked by administrator
+              {product.moderationReason ? (
+                <span className={styles.moderationReason}>
+                  {product.moderationReason}
+                </span>
+              ) : null}
+            </span>
+          ) : null}
+        </div>
       </td>
       <td>
         <button

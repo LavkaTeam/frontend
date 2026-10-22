@@ -1,3 +1,4 @@
+import { DateInput } from '@/components/ui/DateInput';
 import { DropdownField } from '@/components/ui/DropdownField';
 import type { TransactionStatus, TransactionType } from '../model/finance.types';
 
@@ -6,7 +7,6 @@ import {
   TRANSACTION_STATUS_OPTIONS,
   TRANSACTION_TYPE_FILTER_OPTIONS,
 } from '../config/financeDisplay';
-import { DateRangeInput } from './DateRangeInput';
 import styles from './FinanceFilters.module.css';
 
 type TypeFilterValue = 'ALL' | TransactionType;
@@ -66,14 +66,14 @@ const FinanceFilters = ({
         />
 
         <div className={`${styles.filterField} ${styles.dateRangeField}`}>
-          <DateRangeInput
+          <DateInput
             label='Date range'
             value={startDate}
             max={endDate || undefined}
             onChange={onStartDateChange}
           />
           <span className={styles.dateDivider}>to</span>
-          <DateRangeInput
+          <DateInput
             label=' '
             value={endDate}
             min={startDate || undefined}
