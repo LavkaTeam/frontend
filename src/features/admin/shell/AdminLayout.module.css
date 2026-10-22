@@ -1,0 +1,12 @@
+/* The section area, as wide as the seller cabinet pages. */
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1120px;
+  min-width: 0;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}

@@ -24,6 +24,25 @@ const Products = lazy(() => import('@/pages/Products'));
 const SellerProductsPublic = lazy(() => import('@/pages/SellerProductsPublic'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
+// Admin panel (role ADMIN only).
+const AdminLayout = lazy(() => import('@/features/admin/shell/AdminLayout'));
+const AdminDashboard = lazy(
+  () => import('@/features/admin/dashboard/AdminDashboard'),
+);
+const AdminUsers = lazy(() => import('@/features/admin/users/AdminUsers'));
+const AdminUserDetails = lazy(
+  () => import('@/features/admin/users/AdminUserDetails'),
+);
+const AdminPayouts = lazy(() => import('@/features/admin/payouts/AdminPayouts'));
+const AdminOrders = lazy(() => import('@/features/admin/orders/AdminOrders'));
+const AdminOrderDetails = lazy(
+  () => import('@/features/admin/orders/AdminOrderDetails'),
+);
+const AdminProducts = lazy(
+  () => import('@/features/admin/products/AdminProducts'),
+);
+const AdminAudit = lazy(() => import('@/features/admin/audit/AdminAudit'));
+
 // Dev-only screen previews at /dev/auth, open on localhost only.
 // `import.meta.env.DEV` is false in production builds, so there the route and
 // its chunk are dropped entirely; the hostname check also hides it on a dev
@@ -110,16 +129,27 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      // {
-      //   path: '/admin',
-      //   element: (
-      //     <ProtectedRoute allowedRoles={['admin']}>
-      //       <Suspense fallback={<Loader />}>
-      //         Адмін-панель
-      //       </Suspense>
-      //     </ProtectedRoute>
-      //   ),
-      // },
+      {
+        path: '/admin',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <Suspense fallback={<Loader />}>
+              <AdminLayout />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+        // AdminLayout wraps each section in its own Suspense.
+        children: [
+          { index: true, element: <AdminDashboard /> },
+          { path: 'users', element: <AdminUsers /> },
+          { path: 'users/:userId', element: <AdminUserDetails /> },
+          { path: 'payouts', element: <AdminPayouts /> },
+          { path: 'orders', element: <AdminOrders /> },
+          { path: 'orders/:orderId', element: <AdminOrderDetails /> },
+          { path: 'products', element: <AdminProducts /> },
+          { path: 'audit', element: <AdminAudit /> },
+        ],
+      },
       {
         path: '/cart',
         element: (

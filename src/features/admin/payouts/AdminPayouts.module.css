@@ -1,0 +1,43 @@
+.seller {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sellerName {
+  overflow: hidden;
+  color: var(--color-gray-900);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.muted {
+  overflow: hidden;
+  color: var(--color-gray-600);
+  font-size: 13px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.amount {
+  color: var(--color-gray-900);
+  font-size: 16px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Same affordance as "Details" in the seller orders table. */
+.detailsLink {
+  color: var(--color-gray-900);
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s ease;
+}
+
+tr:hover .detailsLink {
+  text-decoration-color: currentColor;
+}
