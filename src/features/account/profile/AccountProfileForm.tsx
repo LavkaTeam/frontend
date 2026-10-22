@@ -76,6 +76,7 @@ export const AccountProfileForm = ({
 
       <VerificationGuide
         status={verificationStatus}
+        rejectionReason={user.verificationRejectionReason}
         missingFields={missingRequiredFields}
         onShowMissingFields={showMissingFields}
       />

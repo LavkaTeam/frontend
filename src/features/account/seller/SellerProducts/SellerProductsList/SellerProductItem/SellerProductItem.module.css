@@ -147,3 +147,31 @@
 .editBtn:hover svg {
   stroke: var(--color-gray-900);
 }
+
+.statusCell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* Admin block: the seller cannot publish the product until it is lifted. */
+.moderation {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 220px;
+  color: #b42318;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.moderationReason {
+  /* One line in the fixed-height row; the full text is in the tooltip. */
+  overflow: hidden;
+  color: var(--color-gray-600);
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
