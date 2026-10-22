@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
@@ -48,6 +48,7 @@ const DropdownField = ({
   onSelect,
 }: DropdownFieldProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const buttonId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(containerRef, () => setIsOpen(false));
@@ -56,18 +57,25 @@ const DropdownField = ({
 
   return (
     <div className={`${styles.field} ${className}`.trim()}>
-      {label ? <label className={styles.label}>{label}</label> : null}
+      {label ? (
+        <label htmlFor={buttonId} className={styles.label}>
+          {label}
+        </label>
+      ) : null}
       <div
         className={`${styles.dropdownField} ${isOpen ? styles.dropdownFieldOpen : ''}`}
         ref={containerRef}
       >
         <button
+          id={buttonId}
           type='button'
           className={`${styles.dropdownButton} ${error ? styles.dropdownButtonError : ''} ${
             isOpen ? styles.dropdownButtonOpen : ''
           }`}
           onClick={() => !disabled && setIsOpen((previous) => !previous)}
           disabled={disabled}
+          aria-haspopup='listbox'
+          aria-expanded={isOpen}
         >
           <span
             className={`${styles.dropdownValue} ${selectedOption ? '' : styles.dropdownPlaceholder}`}
@@ -78,11 +86,13 @@ const DropdownField = ({
         </button>
 
         {isOpen ? (
-          <div className={styles.dropdownMenu}>
+          <div className={styles.dropdownMenu} role='listbox'>
             {options.map((option) => (
               <button
                 key={option.value}
                 type='button'
+                role='option'
+                aria-selected={option.value === value}
                 className={`${styles.dropdownOption} ${
                   option.value === value ? styles.dropdownOptionActive : ''
                 }`}

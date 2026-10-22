@@ -36,10 +36,13 @@
     0 0 0 4px rgba(175, 38, 31, 0.12);
 }
 
-input:disabled {
-  background-color: var(--color-gray-500);
+/* Scoped to .input: a bare `input:disabled` here leaked to every input of
+   the app and painted locked fields dark grey (e.g. while a form submits). */
+.input:disabled {
+  border-color: var(--color-gray-200);
+  background-color: var(--color-gray-50);
+  box-shadow: none;
   color: var(--color-gray-500);
-  border: 1px solid var(--color-gray-300);
   cursor: not-allowed;
 }
 
