@@ -4,6 +4,10 @@
 }
 
 .TabItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   padding: 16px 24px;
   height: 100%;
   width: 305px;
@@ -24,4 +28,16 @@
 
 .TabItemActive:hover {
   background-color: var(--color-primary-white);
+}
+
+.TabBadge {
+  min-width: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--color-brand-burgundy);
+  color: var(--color-primary-white);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: center;
 }

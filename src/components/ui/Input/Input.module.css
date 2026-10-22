@@ -1,7 +1,7 @@
 .input {
   width: 100%;
   font-size: 16px;
-  font-family: Inter;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
   line-height: 22px;
   display: flex;
   font-weight: 400;

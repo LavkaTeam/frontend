@@ -1,4 +1,5 @@
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
+import { MetricCard } from '@/components/ui/StatCards';
 
 import type { AnalyticsMetricViewModel } from '../../model/analytics.utils';
 
@@ -40,43 +41,47 @@ interface AnalyticsMetricCardProps {
 }
 
 const AnalyticsMetricCard = ({ metric }: AnalyticsMetricCardProps) => (
-  <article
-    className={`${styles.metricCard} ${styles[`metricCard${metric.accent[0].toUpperCase()}${metric.accent.slice(1)}`]}`}
-  >
-    <p className={styles.metricLabel}>{metric.label}</p>
-    <p
-      className={`${styles.metricValue} ${styles[`metricValue${metric.accent[0].toUpperCase()}${metric.accent.slice(1)}`]}`}
-    >
+  <MetricCard
+    label={metric.label}
+    // 'neutral' in the analytics model is the brand burgundy.
+    accent={metric.accent === 'neutral' ? 'burgundy' : metric.accent}
+    value={
       <AnimatedNumber
         value={metric.numericValue}
         formatter={metric.formatValue}
-        precision={metric.id === 'totalRevenue' || metric.id === 'netProfit' ? 'tenth' : 'integer'}
+        precision={
+          metric.id === 'totalRevenue' || metric.id === 'netProfit'
+            ? 'tenth'
+            : 'integer'
+        }
       />
-    </p>
-    <div className={styles.metricTrendRow}>
-      <p className={styles.metricTrendText}>
+    }
+    footer={
+      <>
+        <p className={styles.metricTrendText}>
+          <span
+            className={`${styles.metricTrendValue} ${
+              metric.trendDirection === 'down'
+                ? styles.metricTrendValueDown
+                : styles.metricTrendValueUp
+            }`}
+          >
+            {metric.trendValue}
+          </span>{' '}
+          {metric.trendLabel}
+        </p>
         <span
-          className={`${styles.metricTrendValue} ${
+          className={`${styles.metricTrendIcon} ${
             metric.trendDirection === 'down'
-              ? styles.metricTrendValueDown
-              : styles.metricTrendValueUp
+              ? styles.metricTrendIconDown
+              : styles.metricTrendIconUp
           }`}
         >
-          {metric.trendValue}
-        </span>{' '}
-        {metric.trendLabel}
-      </p>
-      <span
-        className={`${styles.metricTrendIcon} ${
-          metric.trendDirection === 'down'
-            ? styles.metricTrendIconDown
-            : styles.metricTrendIconUp
-        }`}
-      >
-        <TrendArrow direction={metric.trendDirection} />
-      </span>
-    </div>
-  </article>
+          <TrendArrow direction={metric.trendDirection} />
+        </span>
+      </>
+    }
+  />
 );
 
 export { AnalyticsMetricCard };

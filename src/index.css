@@ -19,7 +19,8 @@ ul {
 }
 
 body {
-  font-family: Inter;
+  /* System sans-serif while Inter loads (font-display: swap), not Times. */
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;

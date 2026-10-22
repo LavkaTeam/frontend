@@ -1,0 +1,142 @@
+/* Lifted from SellerAnalytics.module.css so analytics and the admin
+   dashboard share one look. */
+.metricCard {
+  min-height: 186px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 23px 17px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+}
+
+.metricLabel {
+  color: var(--color-gray);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.metricValue {
+  align-self: center;
+  font-size: 60px;
+  font-weight: 500;
+  line-height: 72px;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.skeletonValue {
+  align-self: center;
+}
+
+.metricFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.statCard {
+  min-height: 128px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 10px;
+  background: var(--color-primary-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 16px -4px rgba(10, 13, 18, 0.08),
+    0 4px 6px -2px rgba(10, 13, 18, 0.03);
+  text-align: center;
+}
+
+.statValue {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 48px;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  color: var(--color-gray);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.burgundy.metricCard {
+  border-color: var(--color-brand-burgundy);
+}
+
+.green.metricCard {
+  border-color: rgba(93, 146, 60, 0.72);
+}
+
+.orange.metricCard {
+  border-color: rgba(200, 114, 27, 0.72);
+}
+
+.burgundy.statCard {
+  border-color: rgba(175, 38, 31, 0.72);
+}
+
+.green.statCard {
+  border-color: rgba(93, 146, 60, 0.72);
+}
+
+.orange.statCard {
+  border-color: rgba(200, 114, 27, 0.72);
+}
+
+.burgundyText {
+  color: var(--color-brand-burgundy);
+}
+
+.greenText {
+  color: var(--color-green);
+}
+
+.orangeText {
+  color: var(--color-brand-orange);
+}
+
+@media (max-width: 900px) {
+  .metricValue {
+    font-size: 44px;
+    line-height: 56px;
+  }
+}
+
+@media (max-width: 640px) {
+  .metricCard,
+  .statCard {
+    border-radius: 14px;
+  }
+
+  .metricCard {
+    padding: 16px;
+  }
+
+  .metricValue {
+    font-size: 38px;
+    line-height: 48px;
+  }
+
+  .statCard {
+    min-height: 118px;
+  }
+
+  .statValue {
+    font-size: 34px;
+    line-height: 40px;
+  }
+}
