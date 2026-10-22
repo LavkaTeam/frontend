@@ -1,4 +1,10 @@
-import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import {
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react';
 
 import styles from './Accordion.module.css';
 
@@ -30,7 +36,10 @@ const Accordion = ({ items, allowMultiple = true }: AccordionProps) => {
       return allowMultiple ? [...current, id] : [id];
     });
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
     const lastIndex = items.length - 1;
     const nextIndex = {
       ArrowDown: index === lastIndex ? 0 : index + 1,

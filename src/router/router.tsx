@@ -25,9 +25,23 @@ const SellerProductsPublic = lazy(() => import('@/pages/SellerProductsPublic'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 // Informational pages linked from the footer, and the Discover articles.
+const About = lazy(() => import('@/pages/About'));
+const Faq = lazy(() => import('@/pages/Faq'));
+const BecomeSeller = lazy(() => import('@/pages/BecomeSeller'));
+const SellerRules = lazy(() => import('@/pages/SellerRules'));
+const Promotions = lazy(() => import('@/pages/Promotions'));
+const Support = lazy(() => import('@/pages/Support'));
+const Privacy = lazy(() => import('@/pages/Privacy'));
 const Article = lazy(() => import('@/pages/Article'));
 
 const staticPages = [
+  { path: '/about', Page: About },
+  { path: '/faq', Page: Faq },
+  { path: '/become-a-seller', Page: BecomeSeller },
+  { path: '/seller-rules', Page: SellerRules },
+  { path: '/promotions', Page: Promotions },
+  { path: '/support', Page: Support },
+  { path: '/privacy', Page: Privacy },
   { path: '/discover/:slug', Page: Article },
   { path: '/accessories', Page: Article },
 ];

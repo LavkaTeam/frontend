@@ -6,3 +6,4 @@ export {
   StaticPage,
   StaticSection,
 } from './StaticPage';
+export { StatusList, type StatusListItem } from './StatusList';

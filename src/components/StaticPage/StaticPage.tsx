@@ -84,12 +84,24 @@ interface InfoCardProps {
   marker?: ReactNode;
   to?: string;
   linkLabel?: string;
+  // Cover image on top of the card (decorative).
+  image?: string;
 }
 
 // Small white card for grids of facts, steps and links.
-const InfoCard = ({ title, children, marker, to, linkLabel }: InfoCardProps) => {
+const InfoCard = ({
+  title,
+  children,
+  marker,
+  to,
+  linkLabel,
+  image,
+}: InfoCardProps) => {
   const content = (
     <>
+      {image ? (
+        <img src={image} alt='' className={styles.cardImage} loading='lazy' />
+      ) : null}
       {marker !== undefined ? (
         <span className={styles.marker} aria-hidden='true'>
           {marker}
