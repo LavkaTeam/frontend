@@ -54,7 +54,13 @@ const CardSection = <T extends WithId>({
       <div className={noPaddings ? '' : 'container'}>
         {title ? <HeadingH3>{title}</HeadingH3> : null}
 
-        <div className={styles.sliderWrapper}>
+        <div
+          className={styles.sliderWrapper}
+          // While the next page loads, the stale cards must not react to
+          // hovers, clicks or keyboard focus.
+          inert={overlayActive}
+          aria-busy={overlayActive}
+        >
           {hasCards ? (
             withSlider ? (
               <>
@@ -143,7 +149,9 @@ const CardSection = <T extends WithId>({
           )}
 
           {overlayActive ? (
-            <div className={styles.contentOverlay} aria-hidden='true' />
+            <div className={styles.contentOverlay} aria-hidden='true'>
+              <span className={styles.overlaySpinner} />
+            </div>
           ) : null}
         </div>
 
