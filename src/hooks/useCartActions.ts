@@ -17,7 +17,7 @@ import {
 import { useToast } from './useToast';
 import type { Product } from '@/types/productCard';
 import { extractErrorMessage } from '@/utils/error';
-import { useIsAuthenticated } from './useIsAuthenticated';
+import { useIsShopper } from './useIsAuthenticated';
 
 const cartQueryKey = ['cart'] as const;
 const cartQuantityDebounceMs = 500;
@@ -56,7 +56,8 @@ const clearPendingQuantityTimer = (productId: string) => {
 export const useCartActions = () => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
-  const isAuthenticated = useIsAuthenticated();
+  // The admin has no cart or favorites: treated as a guest here.
+  const isAuthenticated = useIsShopper();
   useSyncExternalStore(subscribeToSyncState, getSyncSnapshot);
 
   const localCartItems = useAppSelector((state) => state.cart);

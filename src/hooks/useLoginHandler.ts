@@ -49,6 +49,13 @@ export const useLoginHandler = ({ request }: UseLoginHandlerOptions = {}) => {
     credentialsRef.current = null;
     saveAuthTokens(response);
     queryClient.invalidateQueries({ queryKey: ['user'] });
+
+    // The admin has no cart or favorites to merge and works in /admin.
+    if (response.user?.role === 'ADMIN') {
+      navigate('/admin');
+      return;
+    }
+
     await syncLocalUserData(queryClient);
 
     const locationState = window.history.state as { usr?: { from?: string } };

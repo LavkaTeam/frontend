@@ -9,11 +9,17 @@ export interface ApiRequestOptions extends RequestInit {
 
 export const ACCESS_TOKEN_STORAGE_KEY = 'token';
 export const REFRESH_TOKEN_STORAGE_KEY = 'refreshToken';
+// Role of the signed-in user, saved with the tokens so the UI knows it
+// synchronously (e.g. not to request the cart for the admin).
+export const AUTH_ROLE_STORAGE_KEY = 'authRole';
 
 type TokenPair = {
   token: string;
   refreshToken: string;
 };
+
+// Login and refresh responses also carry the user.
+type AuthTokens = TokenPair & { user?: { role?: string } };
 
 export type DownloadedFile = {
   blob: Blob;
@@ -36,15 +42,19 @@ let refreshRequest: Promise<TokenPair | null> | null = null;
 export const getAccessToken = () =>
   localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
-export const saveAuthTokens = ({ token, refreshToken }: TokenPair) => {
+export const getAuthRole = () => localStorage.getItem(AUTH_ROLE_STORAGE_KEY);
+
+export const saveAuthTokens = ({ token, refreshToken, user }: AuthTokens) => {
   localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
   localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
+  if (user?.role) localStorage.setItem(AUTH_ROLE_STORAGE_KEY, user.role);
   window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
 };
 
 export const clearAuthTokens = () => {
   localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
   localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY);
+  localStorage.removeItem(AUTH_ROLE_STORAGE_KEY);
   window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
 };
 
@@ -160,13 +170,13 @@ const requestTokenRefresh = async (
   // Other failures are transient, so the tokens are kept for a later retry.
   if (!response.ok) return null;
 
-  const tokens = (await response.json()) as Partial<TokenPair>;
+  const tokens = (await response.json()) as Partial<AuthTokens>;
   if (!tokens.token || !tokens.refreshToken) {
     expireSession();
     return null;
   }
 
-  saveAuthTokens(tokens as TokenPair);
+  saveAuthTokens(tokens as AuthTokens);
   return tokens as TokenPair;
 };
 

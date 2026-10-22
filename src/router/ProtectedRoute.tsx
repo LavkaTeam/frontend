@@ -27,6 +27,9 @@ export const ProtectedRoute = ({
   }
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+    // The admin has no buyer/seller cabinet; send them to their own.
+    if (user.role === 'ADMIN') return <Navigate to='/admin' replace />;
+
     return <AccessDenied />;
   }
 
