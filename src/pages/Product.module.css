@@ -576,17 +576,26 @@
   flex-direction: column;
 }
 
+/* Fixed box: logos come in any size and ratio (square, tall, wide), and
+   an unbounded height let square uploads take over the seller block. */
 .sellerLogoWrap {
-  width: fit-content;
-  max-width: 176px;
+  display: flex;
   flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  background: var(--color-primary-white);
 }
 
 .sellerLogo {
   display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 

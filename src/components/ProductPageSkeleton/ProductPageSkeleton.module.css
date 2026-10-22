@@ -4,8 +4,38 @@
   gap: 48px;
 }
 
+.breadcrumbsSkeleton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 21px;
+  margin-top: 32px;
+}
+
+.crumb {
+  height: 14px;
+}
+
+.crumbSm {
+  width: 56px;
+}
+
+.crumbMd {
+  width: 96px;
+}
+
+.crumbLg {
+  width: 180px;
+}
+
+.crumbSeparator {
+  color: var(--color-gray-300);
+  font-size: 14px;
+  line-height: 1;
+}
+
 .productPageSkeleton {
-  margin-top: 5px;
+  margin-top: 24px;
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -74,6 +104,7 @@
 .sellerLine,
 .sellerLineLong,
 .relatedHeader,
+.crumb,
 .divider {
   background: var(--color-gray-200);
   border-radius: 4px;

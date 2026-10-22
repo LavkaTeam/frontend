@@ -340,6 +340,10 @@ export const useSellerProductEditor = ({
     handleWholesaleTierChange,
     images,
     isEditMode,
+    // Set by the admin (GET /products/{id} returns it to the owner only).
+    moderation: product?.adminBlocked
+      ? { reason: product.moderationReason }
+      : null,
     isError: isProductError || isCategoriesError,
     isLoading: isProductLoading || isCategoriesLoading || !isInitialized,
     isSubmitting,

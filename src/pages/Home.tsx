@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { discoverCards } from '@/data/discoverData';
 import { useSearchProducts } from '@/hooks/useSearchProducts';
@@ -14,7 +13,7 @@ import { Pagination } from '@/components/Pagination';
 import { PageSection } from '@/components/PageSection/PageSection';
 import { Divider } from '@/components/ui/Divider';
 import { Space } from '@/components/ui/Space';
-import { Button } from '@/components/ui/Button';
+import { ButtonLink } from '@/components/ui/Button';
 import {
   CardRelatedLead,
   CardRelatedLeadSkeleton,
@@ -65,7 +64,6 @@ const Home = () => {
     isLoading: isTopSelectLoading,
     isFetching: isTopSelectFetching,
     totalPages,
-    isLastPage: isTopSelectLastPage,
   } = useSearchProducts(
     {
       mainCategory: 'TOP_SELECT',
@@ -160,16 +158,6 @@ const Home = () => {
                   CardComponent={CardProduct}
                   noBottomMargin
                   overlayActive={isTopSelectPageLoading}
-                  footer={
-                    isTopSelectLastPage && totalPages > 0 ? (
-                      <Link
-                        to='/products'
-                        className={styles.topSelectButtonLink}
-                      >
-                        <Button variant='secondary'>View all products</Button>
-                      </Link>
-                    ) : null
-                  }
                 />
               </div>
 
@@ -181,6 +169,19 @@ const Home = () => {
                     onPageChange={handlePageChange}
                     disabled={isTopSelectPageLoading}
                   />
+                </div>
+              )}
+
+              {totalPages > 0 && (
+                <div className={styles.viewAll}>
+                  <ButtonLink
+                    to='/products'
+                    variant='secondary'
+                    className={styles.viewAllButton}
+                  >
+                    View all products
+                    <span aria-hidden='true'>→</span>
+                  </ButtonLink>
                 </div>
               )}
 

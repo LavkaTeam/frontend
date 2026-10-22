@@ -70,6 +70,53 @@
   font-weight: 500;
 }
 
+.moderationBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  border: 1px solid #fecdca;
+  border-radius: 16px;
+  background: #fef3f2;
+}
+
+.moderationIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-brand-burgundy);
+  color: var(--color-primary-white);
+  font-weight: 700;
+}
+
+.moderationTitle {
+  color: #b42318;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.moderationReason {
+  margin-top: 4px;
+  color: var(--color-gray-900);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+}
+
+.moderationText {
+  margin-top: 4px;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
 .feedbackState {
   padding: 56px 24px;
   border: 1px dashed var(--color-gray-300);
