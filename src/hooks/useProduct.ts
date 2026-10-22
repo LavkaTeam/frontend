@@ -14,6 +14,8 @@ export const useProduct = (id: string | undefined) => {
     const loadData = async () => {
       try {
         setIsLoading(true);
+        // A failed earlier product must not keep the next one on NotFound.
+        setError(null);
         const data = await getProductById(id);
         setProduct(data);
       } catch (err) {
