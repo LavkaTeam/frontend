@@ -108,6 +108,31 @@
   text-align: right;
 }
 
+.blockedNotice {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid #fecdca;
+  border-radius: 12px;
+  background: #fef3f2;
+}
+
+.blockedNoticeLabel {
+  color: #b42318;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blockedNoticeText {
+  color: var(--color-gray-800);
+  font-size: 14px;
+  line-height: 20px;
+}
+
 .inStockInfo {
   display: flex;
   align-items: center;

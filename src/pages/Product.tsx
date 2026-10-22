@@ -6,6 +6,7 @@ import { addToHistory } from '@/store/viewingHistorySlice';
 import { useCartActions } from '@/hooks/useCartActions';
 import { useFavoriteActions } from '@/hooks/useFavoriteProducts';
 import { useAuthenticatedUserId } from '@/hooks/useAuthenticatedUserId';
+import { useIsAdmin } from '@/hooks/useIsAuthenticated';
 import { useUser } from '@/hooks/useUser';
 import { useProduct } from '@/hooks/useProduct';
 import { useSearchProducts } from '@/hooks/useSearchProducts';
@@ -102,6 +103,8 @@ const Product = () => {
   const { toggleFavorite } = useFavoriteActions();
   const { data: authenticatedUserId } = useAuthenticatedUserId();
   const { data: currentUser } = useUser();
+  // The admin only inspects the product: no cart, favorites or suggestions.
+  const isAdmin = useIsAdmin();
   const quantityInCart = productId ? getCartItemQuantity(productId) : 0;
   const isFavorite = useAppSelector((state) =>
     productId ? state.favorites.includes(productId) : false,
@@ -114,14 +117,14 @@ const Product = () => {
         size: 8,
         sort: ['salesCount,desc'],
       },
-      { skipFilters: true },
+      { skipFilters: true, skipProducts: isAdmin },
     );
 
   useEffect(() => {
-    if (productId && product) {
+    if (productId && product && !isAdmin) {
       dispatch(addToHistory(productId));
     }
-  }, [productId, product, dispatch]);
+  }, [productId, product, isAdmin, dispatch]);
 
   useEffect(() => {
     if (!isDrawerOpen) return;
@@ -411,6 +414,26 @@ const Product = () => {
               </span>
             </div>
           )}
+          {isAdmin && (
+            <div className={styles.ownProductNotice}>
+              <span className={styles.ownProductNoticeLabel}>Admin view</span>
+              <span className={styles.ownProductNoticeText}>
+                Block or unblock this item in the admin panel.
+              </span>
+            </div>
+          )}
+          {product.adminBlocked && (
+            <div className={styles.blockedNotice} role='status'>
+              <span className={styles.blockedNoticeLabel}>
+                Blocked by administrator
+              </span>
+              {product.moderationReason ? (
+                <span className={styles.blockedNoticeText}>
+                  {product.moderationReason}
+                </span>
+              ) : null}
+            </div>
+          )}
           <HeadingH3>{product.name}</HeadingH3>
           <Space height='18px' />
 
@@ -538,101 +561,117 @@ const Product = () => {
             </>
           )}
 
-          <div className={styles.actions}>
-            <div className={styles.actionButton}>
-              {minOrderQty > 1 && (
-                <span className={styles.minimumOrderLabel}>
-                  Min. order: {minOrderQty} pcs
-                </span>
-              )}
-              {isOwnProduct ? (
-                <Button variant='secondary' onClick={() => navigate('/account')}>
-                  Manage product
-                </Button>
-              ) : quantityInCart === 0 ? (
+          {isAdmin ? (
+            <div className={styles.actions}>
+              <div className={styles.actionButton}>
                 <Button
-                  onClick={() => addItem(product, Math.max(1, minOrderQty))}
-                  icon={<ShoppingCart />}
-                  disabled={!isInStock}
-                  isLoading={isAddingItem(product.id)}
+                  variant='secondary'
+                  onClick={() => navigate('/admin/products')}
                 >
-                  Add to cart
+                  Back to products
                 </Button>
-              ) : (
-                <div className={styles.addedStateWrapper}>
-                  <div className={styles.counterRow}>
-                    <span className={styles.unitPrice}>
-                      ${currentUnitPrice.toFixed(2)}
-                    </span>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.actions}>
+              <div className={styles.actionButton}>
+                {minOrderQty > 1 && (
+                  <span className={styles.minimumOrderLabel}>
+                    Min. order: {minOrderQty} pcs
+                  </span>
+                )}
+                {isOwnProduct ? (
+                  <Button
+                    variant='secondary'
+                    onClick={() => navigate('/account')}
+                  >
+                    Manage product
+                  </Button>
+                ) : quantityInCart === 0 ? (
+                  <Button
+                    onClick={() => addItem(product, Math.max(1, minOrderQty))}
+                    icon={<ShoppingCart />}
+                    disabled={!isInStock}
+                    isLoading={isAddingItem(product.id)}
+                  >
+                    Add to cart
+                  </Button>
+                ) : (
+                  <div className={styles.addedStateWrapper}>
+                    <div className={styles.counterRow}>
+                      <span className={styles.unitPrice}>
+                        ${currentUnitPrice.toFixed(2)}
+                      </span>
 
-                    <div className={styles.quantityWrapper}>
-                      <div className={styles.quantityBlock}>
-                        <button
-                          onClick={() => {
-                            if (quantityInCart > minOrderQty) {
-                              updateQuantity(product.id, quantityInCart - 1);
+                      <div className={styles.quantityWrapper}>
+                        <div className={styles.quantityBlock}>
+                          <button
+                            onClick={() => {
+                              if (quantityInCart > minOrderQty) {
+                                updateQuantity(product.id, quantityInCart - 1);
+                              }
+                            }}
+                            className={styles.quantityBtn}
+                            disabled={
+                              isRemovingItem(product.id) ||
+                              quantityInCart <= minOrderQty
                             }
-                          }}
-                          className={styles.quantityBtn}
-                          disabled={
-                            isRemovingItem(product.id) ||
-                            quantityInCart <= minOrderQty
-                          }
-                        >
-                          -
-                        </button>
+                          >
+                            -
+                          </button>
 
-                        <input
-                          type='number'
-                          className={styles.quantityInput}
-                          value={quantityInCart}
-                          onChange={handleQuantityChange}
-                          min={minOrderQty}
-                          max={product.quantity}
-                          disabled={isRemovingItem(product.id)}
-                        />
+                          <input
+                            type='number'
+                            className={styles.quantityInput}
+                            value={quantityInCart}
+                            onChange={handleQuantityChange}
+                            min={minOrderQty}
+                            max={product.quantity}
+                            disabled={isRemovingItem(product.id)}
+                          />
 
-                        <button
-                          onClick={() => {
-                            if (
-                              quantityInCart > 0 &&
-                              quantityInCart < product.quantity
-                            ) {
-                              updateQuantity(product.id, quantityInCart + 1);
+                          <button
+                            onClick={() => {
+                              if (
+                                quantityInCart > 0 &&
+                                quantityInCart < product.quantity
+                              ) {
+                                updateQuantity(product.id, quantityInCart + 1);
+                              }
+                            }}
+                            className={styles.quantityBtn}
+                            disabled={
+                              isMaxQuantityReached || isRemovingItem(product.id)
                             }
-                          }}
-                          className={styles.quantityBtn}
-                          disabled={
-                            isMaxQuantityReached || isRemovingItem(product.id)
-                          }
-                        >
-                          +
-                        </button>
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        {isMaxQuantityReached && (
+                          <span className={styles.stockMessage}>
+                            Max available: {product.quantity}
+                          </span>
+                        )}
                       </div>
 
-                      {isMaxQuantityReached && (
-                        <span className={styles.stockMessage}>
-                          Max available: {product.quantity}
-                        </span>
-                      )}
+                      <span className={styles.totalPrice}>
+                        ${(currentUnitPrice * quantityInCart).toFixed(2)}
+                      </span>
                     </div>
-
-                    <span className={styles.totalPrice}>
-                      ${(currentUnitPrice * quantityInCart).toFixed(2)}
-                    </span>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            <div
-              className={styles.favoritesBlock}
-              onClick={() => void toggleFavorite(product.id)}
-            >
-              {isFavorite ? <SolidHeart /> : <OutlineHeart />}
-              <span className={styles.favorites}>Favorites</span>
+              <div
+                className={styles.favoritesBlock}
+                onClick={() => void toggleFavorite(product.id)}
+              >
+                {isFavorite ? <SolidHeart /> : <OutlineHeart />}
+                <span className={styles.favorites}>Favorites</span>
+              </div>
             </div>
-          </div>
+          )}
 
           <Space height='32px' />
           <div>
@@ -722,30 +761,37 @@ const Product = () => {
         </div>
       </div>
 
-      <Space height='80px' />
+      {isAdmin ? (
+        // Same bottom gap as the related section gives shoppers.
+        <Space height='80px' />
+      ) : (
+        <>
+          <Space height='80px' />
 
-      <div className={styles.relatedProductsSection}>
-        <div>
-          <HeadingH3>Related products</HeadingH3>
-          <Space height='32px' />
-          <div className={styles.relatedSectionWrapper}>
-            {isRelatedLoading ? (
-              <div className={styles.relatedSkeletonGrid}>
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <CardProductSkeleton key={index} />
-                ))}
+          <div className={styles.relatedProductsSection}>
+            <div>
+              <HeadingH3>Related products</HeadingH3>
+              <Space height='32px' />
+              <div className={styles.relatedSectionWrapper}>
+                {isRelatedLoading ? (
+                  <div className={styles.relatedSkeletonGrid}>
+                    {Array.from({ length: 4 }).map((_, index) => (
+                      <CardProductSkeleton key={index} />
+                    ))}
+                  </div>
+                ) : (
+                  <CardSection
+                    cards={filteredRelatedProducts}
+                    CardComponent={CardProduct}
+                    withSlider={filteredRelatedProducts.length > 4}
+                    noPaddings
+                  />
+                )}
               </div>
-            ) : (
-              <CardSection
-                cards={filteredRelatedProducts}
-                CardComponent={CardProduct}
-                withSlider={filteredRelatedProducts.length > 4}
-                noPaddings
-              />
-            )}
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </main>
   );
 };
