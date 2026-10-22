@@ -1,7 +1,10 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { OrderDocuments } from '@/components/OrderDocuments';
+import {
+  GENERATABLE_DOCUMENT_TYPES,
+  OrderDocuments,
+} from '@/components/OrderDocuments';
 import { useCreateDemoPaymentSession } from '@/hooks/usePayments';
 import { useOrderDetails, useOrderDocuments } from '@/hooks/useOrders';
 import { useToast } from '@/hooks/useToast';
@@ -27,12 +30,15 @@ interface BuyerOrderProps {
   orderId: string;
   onBack: () => void;
   viewerRole?: UserRole;
+  // Role-specific buttons of the header, e.g. the admin's "Cancel order".
+  headerActions?: ReactNode;
 }
 
 const BuyerOrder = ({
   orderId,
   onBack,
   viewerRole = 'BUYER',
+  headerActions,
 }: BuyerOrderProps) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -68,7 +74,8 @@ const BuyerOrder = ({
   const summaryRows = useMemo(() => {
     if (!order) return [];
 
-    if (viewerRole === 'SELLER' && order.platformFee) {
+    // The platform fee is shown to the seller and the admin, not the buyer.
+    if (viewerRole !== 'BUYER' && order.platformFee) {
       const ratePercent = Number.isFinite(order.platformFee.rate)
         ? `${(order.platformFee.rate * 100).toFixed(order.platformFee.rate % 1 === 0 ? 0 : 2)}%`
         : null;
@@ -153,6 +160,7 @@ const BuyerOrder = ({
     order.items.length === 1 ? 'Good' : 'Goods'
   }`;
   const isSellerViewer = viewerRole === 'SELLER';
+  const isAdminViewer = viewerRole === 'ADMIN';
 
   const handleContinuePayment = async () => {
     if (!order.paymentBatchId) return;
@@ -205,7 +213,11 @@ const BuyerOrder = ({
         order={order}
         viewerRole={viewerRole}
         actionSlot={
-          isSellerViewer ? <SellerOrderHeaderActions order={order} /> : null
+          isSellerViewer ? (
+            <SellerOrderHeaderActions order={order} />
+          ) : (
+            headerActions
+          )
         }
       />
 
@@ -243,17 +255,21 @@ const BuyerOrder = ({
           orderId={order.id}
           documents={documentsQuery.data}
           isLoading={documentsQuery.isLoading}
-          canGenerate={isSellerViewer}
-          canForceRegenerate={isSellerViewer}
+          canGenerate={isSellerViewer || isAdminViewer}
+          // The backend lets only the admin regenerate a finished document.
+          canForceRegenerate={isAdminViewer}
+          toolbarTitle={isAdminViewer ? 'Order documents' : undefined}
           canGenerateTypes={
-            isSellerViewer
-              ? [
-                  'PROFORMA_INVOICE',
-                  'INVOICE',
-                  'DELIVERY_NOTE',
-                  'SELLER_SETTLEMENT_STATEMENT',
-                ]
-              : []
+            isAdminViewer
+              ? GENERATABLE_DOCUMENT_TYPES
+              : isSellerViewer
+                ? [
+                    'PROFORMA_INVOICE',
+                    'INVOICE',
+                    'DELIVERY_NOTE',
+                    'SELLER_SETTLEMENT_STATEMENT',
+                  ]
+                : []
           }
           onRefetch={documentsQuery.refetch}
         />

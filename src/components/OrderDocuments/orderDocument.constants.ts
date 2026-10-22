@@ -15,6 +15,7 @@ export const statusLabels = {
 } as const;
 
 export const GENERATABLE_DOCUMENT_TYPES: OrderDocumentType[] = [
+  'PURCHASE_ORDER',
   'PROFORMA_INVOICE',
   'INVOICE',
   'DELIVERY_NOTE',

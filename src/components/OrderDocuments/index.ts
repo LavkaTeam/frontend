@@ -1,2 +1,6 @@
 export { OrderDocuments } from './OrderDocuments';
-export { documentLabels, statusLabels } from './orderDocument.constants';
+export {
+  documentLabels,
+  GENERATABLE_DOCUMENT_TYPES,
+  statusLabels,
+} from './orderDocument.constants';

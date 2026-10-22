@@ -2,13 +2,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
-import { useDownloadOrderDocument, useGenerateOrderDocument } from '@/hooks/useOrders';
+import {
+  useDownloadOrderDocument,
+  useGenerateOrderDocument,
+} from '@/hooks/useOrders';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { useToast } from '@/hooks/useToast';
-import type {
-  OrderDocumentDto,
-  OrderDocumentType,
-} from '@/types/order';
+import type { OrderDocumentDto, OrderDocumentType } from '@/types/order';
 import { extractErrorMessage } from '@/utils/error';
 
 import {
@@ -23,7 +23,9 @@ type OrderDocumentsProps = {
   documents?: OrderDocumentDto[];
   isLoading?: boolean;
   canGenerate?: boolean;
+  // Admin only: the backend rejects `force` from anyone else.
   canForceRegenerate?: boolean;
+  toolbarTitle?: string;
   canGenerateTypes?: OrderDocumentType[];
   onRefetch?: () => void | Promise<unknown>;
 };
@@ -52,6 +54,7 @@ const OrderDocuments = ({
   isLoading,
   canGenerate = false,
   canForceRegenerate = false,
+  toolbarTitle = 'Seller documents',
   canGenerateTypes = [],
   onRefetch,
 }: OrderDocumentsProps) => {
@@ -131,7 +134,10 @@ const OrderDocuments = ({
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      showToast(extractErrorMessage(error, 'Failed to download document.'), 'error');
+      showToast(
+        extractErrorMessage(error, 'Failed to download document.'),
+        'error',
+      );
     }
   };
 
@@ -168,6 +174,19 @@ const OrderDocuments = ({
     }
   };
 
+  // Replaces a finished document, so it is confirmed first.
+  const handleRegenerate = async (documentType: OrderDocumentType) => {
+    if (
+      !window.confirm(
+        `Regenerate the ${documentLabels[documentType]}? The current file is replaced.`,
+      )
+    ) {
+      return;
+    }
+
+    await handleGenerate(documentType, true);
+  };
+
   if (isLoading) {
     return (
       <div className={styles.loadingState}>
@@ -181,7 +200,7 @@ const OrderDocuments = ({
       {canGenerate && availableGeneratableTypes.length > 0 ? (
         <div className={styles.toolbar}>
           <div className={styles.toolbarCopy}>
-            <h4 className={styles.toolbarTitle}>Seller documents</h4>
+            <h4 className={styles.toolbarTitle}>{toolbarTitle}</h4>
             <p className={styles.toolbarDescription}>
               Generate and manage order paperwork.
             </p>
@@ -221,16 +240,19 @@ const OrderDocuments = ({
                       type='button'
                       className={styles.generateOption}
                       onClick={() => {
-                        if (isAlreadyGenerated || isPendingGeneration) {
-                          return;
-                        }
+                        if (isPendingGeneration) return;
+                        if (isAlreadyGenerated && !canForceRegenerate) return;
 
                         closeGenerateMenu();
+                        if (isAlreadyGenerated) {
+                          void handleRegenerate(type);
+                          return;
+                        }
                         void handleGenerate(type);
                       }}
                       disabled={
                         generateMutation.isPending ||
-                        isAlreadyGenerated ||
+                        (isAlreadyGenerated && !canForceRegenerate) ||
                         isPendingGeneration
                       }
                     >
@@ -241,7 +263,7 @@ const OrderDocuments = ({
                         <span
                           className={`${styles.generateStateBadge} ${styles.generateStateDone}`}
                         >
-                          Generated
+                          {canForceRegenerate ? 'Regenerate' : 'Generated'}
                         </span>
                       ) : null}
                       {isPendingGeneration ? (
@@ -275,7 +297,7 @@ const OrderDocuments = ({
               canForceRegenerate,
               canGenerateTypes,
             });
-            const shouldForce = canForceRegenerate && document.status === 'FAILED';
+            const shouldForce = canForceRegenerate;
 
             return (
               <article key={document.id} className={styles.documentCard}>
@@ -302,7 +324,9 @@ const OrderDocuments = ({
                       </p>
                     ) : null}
                     {document.errorMessage ? (
-                      <p className={styles.errorMessage}>{document.errorMessage}</p>
+                      <p className={styles.errorMessage}>
+                        {document.errorMessage}
+                      </p>
                     ) : null}
                   </div>
                 </div>
@@ -325,6 +349,19 @@ const OrderDocuments = ({
                       disabled
                     >
                       Generating...
+                    </button>
+                  ) : null}
+
+                  {document.status === 'GENERATED' &&
+                  canForceRegenerate &&
+                  canGenerateDocument ? (
+                    <button
+                      type='button'
+                      className={styles.secondaryAction}
+                      onClick={() => handleRegenerate(document.type)}
+                      disabled={generateMutation.isPending}
+                    >
+                      Regenerate
                     </button>
                   ) : null}
 

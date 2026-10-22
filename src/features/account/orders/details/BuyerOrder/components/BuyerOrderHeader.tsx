@@ -51,16 +51,21 @@ const BuyerOrderHeader = ({
     </div>
 
     <div className={styles.headerInfoGrid}>
-      <div className={styles.headerInfoItem}>
-        <span className={styles.inlineLabel}>
-          {viewerRole === 'SELLER' ? 'Buyer' : 'Supplier'}
-        </span>
-        <strong>
-          {viewerRole === 'SELLER'
-            ? order.buyerCompany || order.buyerName || 'Buyer'
-            : order.sellerCompany || order.sellerName || 'Supplier'}
-        </strong>
-      </div>
+      {/* The admin sees both sides of the order. */}
+      {viewerRole !== 'BUYER' ? (
+        <div className={styles.headerInfoItem}>
+          <span className={styles.inlineLabel}>Buyer</span>
+          <strong>{order.buyerCompany || order.buyerName || 'Buyer'}</strong>
+        </div>
+      ) : null}
+      {viewerRole !== 'SELLER' ? (
+        <div className={styles.headerInfoItem}>
+          <span className={styles.inlineLabel}>Supplier</span>
+          <strong>
+            {order.sellerCompany || order.sellerName || 'Supplier'}
+          </strong>
+        </div>
+      ) : null}
       <div className={styles.headerInfoItem}>
         <span className={styles.inlineLabel}>Payment</span>
         <strong>{formatPaymentMethod(order.paymentMethod)}</strong>
