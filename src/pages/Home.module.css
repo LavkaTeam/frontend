@@ -19,31 +19,31 @@
 .viewAll {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
-/* .viewAll raises specificity over the shared button styles. */
-.viewAll .viewAllButton {
-  width: auto;
-  min-width: 280px;
-  gap: 10px;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+/* Quiet text link: no background or border. */
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--color-gray-600);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  transition: color 0.2s ease;
 }
 
-.viewAll .viewAllButton:hover {
-  border-color: var(--color-brand-burgundy);
-  background-color: var(--color-brand-burgundy);
-  color: var(--color-primary-white);
+.viewAllLink:hover,
+.viewAllLink:focus-visible {
+  color: var(--color-gray-900);
 }
 
-@media (max-width: 480px) {
-  .viewAll .viewAllButton {
-    width: 100%;
-    min-width: 0;
-  }
+.viewAllLink:focus-visible {
+  outline: 2px solid rgba(175, 38, 31, 0.4);
+  outline-offset: 2px;
 }
 
 .skeletonGrid {

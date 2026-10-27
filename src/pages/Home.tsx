@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { discoverCards } from '@/data/discoverData';
 import { useSearchProducts } from '@/hooks/useSearchProducts';
@@ -13,7 +14,6 @@ import { Pagination } from '@/components/Pagination';
 import { PageSection } from '@/components/PageSection/PageSection';
 import { Divider } from '@/components/ui/Divider';
 import { Space } from '@/components/ui/Space';
-import { ButtonLink } from '@/components/ui/Button';
 import {
   CardRelatedLead,
   CardRelatedLeadSkeleton,
@@ -64,6 +64,7 @@ const Home = () => {
     isLoading: isTopSelectLoading,
     isFetching: isTopSelectFetching,
     totalPages,
+    isLastPage: isTopSelectLastPage,
   } = useSearchProducts(
     {
       mainCategory: 'TOP_SELECT',
@@ -172,16 +173,13 @@ const Home = () => {
                 </div>
               )}
 
-              {totalPages > 0 && (
+              {/* The home grid ends here; the full list is in the catalog. */}
+              {isTopSelectLastPage && totalPages > 0 && (
                 <div className={styles.viewAll}>
-                  <ButtonLink
-                    to='/products'
-                    variant='secondary'
-                    className={styles.viewAllButton}
-                  >
+                  <Link to='/products' className={styles.viewAllLink}>
                     View all products
                     <span aria-hidden='true'>→</span>
-                  </ButtonLink>
+                  </Link>
                 </div>
               )}
 

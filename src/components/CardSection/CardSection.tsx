@@ -10,6 +10,7 @@ import 'swiper/css/pagination';
 import { ArrowButton } from '../ui/icons/ArrowButton';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { NoProductsFound } from '../NoProductsFound';
+import { Loader } from '@/components/ui/Loader';
 
 import styles from './CardSection.module.css';
 
@@ -149,9 +150,7 @@ const CardSection = <T extends WithId>({
           )}
 
           {overlayActive ? (
-            <div className={styles.contentOverlay} aria-hidden='true'>
-              <span className={styles.overlaySpinner} />
-            </div>
+            <Loader variant='section' className={styles.contentOverlay} />
           ) : null}
         </div>
 

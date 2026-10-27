@@ -16,53 +16,15 @@
   position: relative;
 }
 
-.contentOverlay {
-  position: absolute;
-  inset: 0;
+/* The app loader over the stale cards while the next page loads. The logo
+   sits near the top of the grid, where the page has just scrolled to. */
+.sliderWrapper .contentOverlay {
   z-index: 12;
-  display: flex;
   align-items: flex-start;
-  justify-content: center;
-  padding-top: 160px;
-  border-radius: 16px;
-  background: rgba(245, 245, 245, 0.55);
+  padding-top: 220px;
+  background-color: rgba(245, 245, 245, 0.82);
   backdrop-filter: blur(3px);
   cursor: progress;
-  animation: overlayIn 0.2s ease-out;
-}
-
-.overlaySpinner {
-  position: sticky;
-  top: 50vh;
-  width: 36px;
-  height: 36px;
-  border: 3px solid rgba(175, 38, 31, 0.18);
-  border-top-color: var(--color-brand-burgundy);
-  border-radius: 50%;
-  animation: overlaySpin 0.8s linear infinite;
-}
-
-@keyframes overlayIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes overlaySpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .contentOverlay,
-  .overlaySpinner {
-    animation: none;
-  }
 }
 
 .sectionFooter {
