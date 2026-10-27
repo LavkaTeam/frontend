@@ -156,6 +156,11 @@
 }
 
 /* Admin block: the seller cannot publish the product until it is lifted. */
+.statusRejected {
+  background-color: var(--color-brand-burgundy);
+  cursor: help;
+}
+
 .statusBlocked {
   background-color: var(--color-brand-dark-burgundy);
   cursor: help;
