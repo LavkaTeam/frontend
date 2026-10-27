@@ -18,6 +18,9 @@ export type ProductCategory =
   | 'SOFT_DRINKS'
   | 'BARWARE_ACCESSORIES';
 
+// Set only for the owner and the admin.
+export type ModerationStatus = 'REJECTED' | 'BLOCKED';
+
 export type ProductMainCategory =
   | 'BESTSELLERS'
   | 'RELATED_PRODUCTS'
@@ -50,7 +53,9 @@ export interface Product {
   sellerId?: string;
   // Sent by the backend only to the admin and the owning seller.
   adminBlocked?: boolean;
+  // Why the product was blocked or rejected, with which of the two it is.
   moderationReason?: string;
+  moderationStatus?: ModerationStatus | null;
   mainImage: ProductImage;
   images: ProductImage[];
   name: string;
@@ -99,6 +104,7 @@ export interface SellerProductSummary {
   // Blocked by the admin: hidden and cannot be activated by the seller.
   adminBlocked?: boolean;
   moderationReason?: string;
+  moderationStatus?: ModerationStatus | null;
 }
 
 export interface ProductRequest {

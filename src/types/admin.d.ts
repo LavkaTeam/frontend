@@ -1,7 +1,11 @@
 // Admin API (/api/admin/**). Source of truth:
 // LAVKA_BACKEND/backend/docs/8-admin.md and docs/swagger.json.
 import type { OrderPaymentMethod } from './order';
-import type { ProductImage, ProductStatus } from './productCard';
+import type {
+  ModerationStatus,
+  ProductImage,
+  ProductStatus,
+} from './productCard';
 import type { Address, VerificationStatus } from './user';
 
 export interface AdminPage<T> {
@@ -36,6 +40,7 @@ export interface AdminStats {
     pendingVerifications: number;
     pendingPayouts: number;
     blockedProducts: number;
+    productsToReview: number;
   };
   orders: {
     total: number;
@@ -220,6 +225,7 @@ export interface AdminProduct {
   status: ProductStatus;
   adminBlocked: boolean;
   moderationReason?: string;
+  moderationStatus?: ModerationStatus | null;
   quantity: number;
   mainImage?: ProductImage;
   subcategory?: string;
@@ -247,6 +253,11 @@ export interface AdminProductModerationResponse extends AdminEmailResult {
   item: AdminProductListItem;
 }
 
+export interface AdminRejectProductRequest {
+  // 10-500 characters; emailed to the seller.
+  reason: string;
+}
+
 export interface AdminBlockProductRequest {
   // 10-500 characters; emailed to the seller.
   reason: string;
@@ -265,6 +276,8 @@ export type AdminAuditAction =
   | 'FEES_PAID'
   | 'PRODUCT_BLOCKED'
   | 'PRODUCT_UNBLOCKED'
+  | 'PRODUCT_APPROVED'
+  | 'PRODUCT_REJECTED'
   | 'ORDER_STATUS_CHANGED'
   | 'DOCUMENT_GENERATED'
   | 'ORDER_REFUNDED';

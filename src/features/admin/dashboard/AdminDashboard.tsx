@@ -203,7 +203,7 @@ const AdminDashboard = () => {
             />
             <QueueCard
               label='Products to review'
-              count={stats.products.byStatus.UNDER_REVIEW ?? 0}
+              count={stats.queues.productsToReview}
               accent='green'
               to='/admin/products?status=UNDER_REVIEW'
               actionLabel='Review products'
