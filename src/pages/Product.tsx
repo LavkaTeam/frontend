@@ -26,7 +26,10 @@ import { RatingStars } from '@/components/ui/RatingStars';
 import { Badge } from '@/components/ui/Badge';
 import { ProductPageSkeleton } from '@/components/ProductPageSkeleton/ProductPageSkeleton';
 import { resolvePricing } from '@/utils/pricing';
-import { isOwnProduct as isOwnProductForUser } from '@/utils/ownership';
+import {
+  getManageProductPath,
+  isOwnProduct as isOwnProductForUser,
+} from '@/utils/ownership';
 import {
   buildProductSpecifications,
   buildWholesaleRanges,
@@ -418,7 +421,7 @@ const Product = () => {
             <div className={styles.ownProductNotice}>
               <span className={styles.ownProductNoticeLabel}>Your product</span>
               <span className={styles.ownProductNoticeText}>
-                Manage this item from your seller account.
+                Edit it, change its stock or prices in your seller account.
               </span>
             </div>
           )}
@@ -591,7 +594,7 @@ const Product = () => {
                 {isOwnProduct ? (
                   <Button
                     variant='secondary'
-                    onClick={() => navigate('/account')}
+                    onClick={() => navigate(getManageProductPath(product.id))}
                   >
                     Manage product
                   </Button>
