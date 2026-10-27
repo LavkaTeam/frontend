@@ -2,6 +2,7 @@ import type { SellerProductSummary } from '@/types/productCard';
 
 import { EditProductIcon } from '@/components/ui/icons/EditProductIcon';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { getModerationNotice } from '@/utils/productModeration';
 
 import styles from './SellerProductItem.module.css';
 
@@ -34,6 +35,7 @@ const getStatusClass = (status: string) => {
 };
 
 export const SellerProductItem = ({ product, onEdit }: Props) => {
+  const notice = getModerationNotice(product);
   const shouldShowVolume =
     product.category !== 'BARWARE_ACCESSORIES' &&
     typeof product.volume === 'number' &&
@@ -72,25 +74,31 @@ export const SellerProductItem = ({ product, onEdit }: Props) => {
       <td className={styles.cellWithBorder}>${product.price.toFixed(2)}</td>
       <td className={styles.cellWithBorder}>
         <div className={styles.statusCell}>
-          {product.adminBlocked ? (
-            // A blocked product is always hidden, so one badge says it all.
-            // The reason is in the tooltip and on the edit page, so the row
-            // keeps its height.
+          {notice && notice.kind !== 'UNDER_REVIEW' ? (
+            // Only the status here; the reason is in the tooltip and on the
+            // edit page, so the row keeps its height. A blocked or rejected
+            // product is always hidden, so one badge says it all.
             <Tooltip
               content={
                 <>
-                  <strong>Blocked by a moderator</strong>
-                  {product.moderationReason ? (
+                  <strong>{notice.title}</strong>
+                  {notice.reason ? (
                     <>
                       <br />
-                      {product.moderationReason}
+                      {notice.reason}
                     </>
                   ) : null}
                 </>
               }
             >
-              <span className={`${styles.status} ${styles.statusBlocked}`}>
-                Blocked
+              <span
+                className={`${styles.status} ${
+                  notice.kind === 'BLOCKED'
+                    ? styles.statusBlocked
+                    : styles.statusRejected
+                }`}
+              >
+                {notice.kind === 'BLOCKED' ? 'Blocked' : 'Rejected'}
               </span>
             </Tooltip>
           ) : (

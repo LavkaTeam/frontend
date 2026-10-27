@@ -81,6 +81,19 @@
   background: #fef3f2;
 }
 
+.moderationBannerPending {
+  border-color: #fedf89;
+  background: #fffaeb;
+}
+
+.moderationBannerPending .moderationTitle {
+  color: #b54708;
+}
+
+.moderationBannerPending .moderationIcon {
+  background: #d38a19;
+}
+
 .moderationIcon {
   display: inline-flex;
   flex-shrink: 0;

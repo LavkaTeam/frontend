@@ -119,6 +119,15 @@
   background: #fef3f2;
 }
 
+.pendingNotice {
+  border-color: #fedf89;
+  background: #fffaeb;
+}
+
+.pendingNotice .blockedNoticeLabel {
+  color: #b54708;
+}
+
 .blockedNoticeLabel {
   color: #b42318;
   font-size: 12px;
