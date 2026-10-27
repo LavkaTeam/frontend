@@ -17,6 +17,9 @@ interface AdminTab extends TabItem {
 const isReviewQueue = (pathname: string, search: URLSearchParams) =>
   pathname === '/admin/users' && search.get('status') === 'PENDING';
 
+const isProductQueue = (pathname: string, search: URLSearchParams) =>
+  pathname === '/admin/products' && search.get('status') === 'UNDER_REVIEW';
+
 // The admin panel is a cabinet like the buyer and seller ones: same frame,
 // its own sections.
 const AdminLayout = () => {
@@ -61,10 +64,18 @@ const AdminLayout = () => {
       isActive: (path) => path.startsWith('/admin/orders'),
     },
     {
+      tabKey: 'productReview',
+      displayName: 'Product review',
+      badge: queues?.productsToReview,
+      to: '/admin/products?status=UNDER_REVIEW',
+      isActive: isProductQueue,
+    },
+    {
       tabKey: 'products',
       displayName: 'Products',
       to: '/admin/products',
-      isActive: (path) => path.startsWith('/admin/products'),
+      isActive: (path, params) =>
+        path.startsWith('/admin/products') && !isProductQueue(path, params),
     },
     {
       tabKey: 'audit',

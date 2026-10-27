@@ -8,6 +8,7 @@ import {
 import {
   approveAdminPayout,
   banAdminUser,
+  approveAdminProduct,
   blockAdminProduct,
   decideAdminVerification,
   getAdminAudit,
@@ -21,6 +22,7 @@ import {
   rejectAdminPayout,
   restoreAdminUser,
   refundAdminOrder,
+  rejectAdminProduct,
   unblockAdminProduct,
 } from '@/api/admin';
 import type {
@@ -194,6 +196,30 @@ export const useAdminRefundOrder = (orderId: string) => {
         }),
       ]);
     },
+  });
+};
+
+export const useAdminApproveProduct = () => {
+  const invalidate = useInvalidateAdmin();
+
+  return useMutation({
+    mutationFn: (productId: string) => approveAdminProduct(productId),
+    onSuccess: invalidate,
+  });
+};
+
+export const useAdminRejectProduct = () => {
+  const invalidate = useInvalidateAdmin();
+
+  return useMutation({
+    mutationFn: ({
+      productId,
+      reason,
+    }: {
+      productId: string;
+      reason: string;
+    }) => rejectAdminProduct(productId, { reason }),
+    onSuccess: invalidate,
   });
 };
 

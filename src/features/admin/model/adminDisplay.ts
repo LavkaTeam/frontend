@@ -70,6 +70,8 @@ export const AUDIT_ACTION: Record<AdminAuditAction, StatusMeta> = {
   FEES_PAID: { label: 'Fees paid', tone: 'orange' },
   PRODUCT_BLOCKED: { label: 'Product blocked', tone: 'burgundy' },
   PRODUCT_UNBLOCKED: { label: 'Product unblocked', tone: 'green' },
+  PRODUCT_APPROVED: { label: 'Product approved', tone: 'green' },
+  PRODUCT_REJECTED: { label: 'Product rejected', tone: 'burgundy' },
   ORDER_STATUS_CHANGED: { label: 'Order status changed', tone: 'orange' },
   DOCUMENT_GENERATED: { label: 'Document generated', tone: 'gray' },
   ORDER_REFUNDED: { label: 'Order refunded', tone: 'burgundy' },
