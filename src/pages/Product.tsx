@@ -244,10 +244,10 @@ const Product = () => {
     new Set([basePrice, ...pricePoints].map((price) => price.toFixed(2))).size >
       1;
 
-  // keepPreviousData may still hold the previous product's category for a
-  // moment after navigating, hence the category filter.
+  // The search already filters by category (its results carry no
+  // `category` field to check against), so only the product itself is
+  // removed here.
   const filteredRelatedProducts = relatedProducts
-    .filter((item) => item.category === product.category)
     .filter((item) => item.id !== product.id)
     .slice(0, RELATED_PRODUCTS_COUNT);
   const showRelatedProducts =
