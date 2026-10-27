@@ -26,7 +26,10 @@ import { RatingStars } from '@/components/ui/RatingStars';
 import { Badge } from '@/components/ui/Badge';
 import { ProductPageSkeleton } from '@/components/ProductPageSkeleton/ProductPageSkeleton';
 import { resolvePricing } from '@/utils/pricing';
-import { isOwnProduct as isOwnProductForUser } from '@/utils/ownership';
+import {
+  getManageProductPath,
+  isOwnProduct as isOwnProductForUser,
+} from '@/utils/ownership';
 import {
   buildProductSpecifications,
   buildWholesaleRanges,
@@ -37,6 +40,7 @@ import NotFound from './NotFound';
 
 import styles from './Product.module.css';
 
+const RELATED_PRODUCTS_COUNT = 8;
 const DRAWER_OPEN_DURATION_MS = 400;
 const DRAWER_SCROLL_DURATION_MS = DRAWER_OPEN_DURATION_MS;
 const DRAWER_HIGHLIGHT_DELAY_MS = 250;
@@ -114,10 +118,13 @@ const Product = () => {
     useSearchProducts(
       {
         category: product?.category,
-        size: 8,
+        // One extra: the current product is in its own category's results.
+        size: RELATED_PRODUCTS_COUNT + 1,
         sort: ['salesCount,desc'],
       },
-      { skipFilters: true, skipProducts: isAdmin },
+      // Without the category the query would load unrelated bestsellers
+      // while the product itself is still loading.
+      { skipFilters: true, skipProducts: isAdmin || !product?.category },
     );
 
   useEffect(() => {
@@ -240,10 +247,14 @@ const Product = () => {
     new Set([basePrice, ...pricePoints].map((price) => price.toFixed(2))).size >
       1;
 
+  // The search already filters by category (its results carry no
+  // `category` field to check against), so only the product itself is
+  // removed here.
   const filteredRelatedProducts = relatedProducts
-    .filter((item) => item.category === product.category)
     .filter((item) => item.id !== product.id)
-    .slice(0, 8);
+    .slice(0, RELATED_PRODUCTS_COUNT);
+  const showRelatedProducts =
+    !isAdmin && (isRelatedLoading || filteredRelatedProducts.length > 0);
 
   const visibleSpecs = [
     { title: 'Brand', value: product.producer || 'N/A' },
@@ -410,7 +421,7 @@ const Product = () => {
             <div className={styles.ownProductNotice}>
               <span className={styles.ownProductNoticeLabel}>Your product</span>
               <span className={styles.ownProductNoticeText}>
-                Manage this item from your seller account.
+                Edit it, change its stock or prices in your seller account.
               </span>
             </div>
           )}
@@ -583,7 +594,7 @@ const Product = () => {
                 {isOwnProduct ? (
                   <Button
                     variant='secondary'
-                    onClick={() => navigate('/account')}
+                    onClick={() => navigate(getManageProductPath(product.id))}
                   >
                     Manage product
                   </Button>
@@ -761,8 +772,10 @@ const Product = () => {
         </div>
       </div>
 
-      {isAdmin ? (
-        // Same bottom gap as the related section gives shoppers.
+      {!showRelatedProducts ? (
+        // Same bottom gap as the related section gives. Hidden for the admin
+        // and when the category has nothing else: an empty "No products
+        // found" block reads like an error here.
         <Space height='80px' />
       ) : (
         <>

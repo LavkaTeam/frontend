@@ -48,9 +48,23 @@ const isSameSeller = (
 };
 
 const isOwnProduct = (
-  product: Pick<Product, 'seller'> | null | undefined,
+  product: Pick<Product, 'seller' | 'sellerId'> | null | undefined,
   user: UserResponse | null | undefined,
   authenticatedUserId?: string,
-) => isSameSeller(product?.seller, user, authenticatedUserId);
+) => {
+  if (!product || !user) return false;
 
-export { isSameSeller, isOwnProduct };
+  // Catalog and search results have `sellerId` instead of `seller`.
+  const userId = normalizeValue(String(authenticatedUserId || user.id || ''));
+  if (product.sellerId && userId && normalizeValue(product.sellerId) === userId) {
+    return true;
+  }
+
+  return isSameSeller(product.seller, user, authenticatedUserId);
+};
+
+// Opens the product right in the seller's editor.
+const getManageProductPath = (productId: string) =>
+  `/account?tab=products&action=edit&productId=${encodeURIComponent(productId)}`;
+
+export { getManageProductPath, isSameSeller, isOwnProduct };

@@ -22,13 +22,14 @@
   width: calc(100% + 32px);
   margin: -16px -16px 0;
   padding: 10px 16px;
+  /* Same light brand tint as the notice on the product page. */
+  border-bottom: 1px solid rgba(175, 38, 31, 0.18);
   background: linear-gradient(
     90deg,
-    #7f2231 0%,
-    var(--color-brand-burgundy) 100%
+    rgba(175, 38, 31, 0.1) 0%,
+    rgba(200, 114, 27, 0.08) 100%
   );
-  background: var(--color-brand-dark-burgundy);
-  color: var(--color-primary-white);
+  color: var(--color-brand-burgundy);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -74,6 +75,11 @@
   right: 16px;
   z-index: 10;
   cursor: pointer;
+}
+
+/* Below the "Your product" strip, like the badges. */
+.favoriteIconWithBanner {
+  top: 54px;
 }
 
 .cardImageWrapper {

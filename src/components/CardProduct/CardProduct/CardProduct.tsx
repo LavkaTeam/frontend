@@ -12,7 +12,10 @@ import { useUser } from '@/hooks/useUser';
 import { RatingStars } from '@/components/ui/RatingStars';
 import { Badge } from '@/components/ui/Badge';
 import { resolvePricing } from '@/utils/pricing';
-import { isOwnProduct as isOwnProductForUser } from '@/utils/ownership';
+import {
+  getManageProductPath,
+  isOwnProduct as isOwnProductForUser,
+} from '@/utils/ownership';
 import styles from './CardProduct.module.css';
 
 // --- 1. Pure Utility Functions (SOLID / DRY) ---
@@ -169,7 +172,12 @@ const CardProduct = ({ card }: CardProductProps) => {
         {discountedPrice !== null && <Badge type='sale' />}
       </div>
 
-      <div className={styles.favoriteIcon} onClick={handleFavoriteClick}>
+      <div
+        className={`${styles.favoriteIcon} ${
+          isOwnProduct ? styles.favoriteIconWithBanner : ''
+        }`}
+        onClick={handleFavoriteClick}
+      >
         {isFavorite ? <SolidHeart /> : <OutlineHeart />}
       </div>
 
@@ -269,7 +277,10 @@ const CardProduct = ({ card }: CardProductProps) => {
         )}
         {isOwnProduct ? (
           <div className={styles.actionStateWrapper}>
-            <Button variant='secondary' onClick={() => navigate('/account')}>
+            <Button
+              variant='secondary'
+              onClick={() => navigate(getManageProductPath(card.id))}
+            >
               Manage product
             </Button>
           </div>
