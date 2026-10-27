@@ -19,6 +19,7 @@ import type {
   AdminRefundOrderRequest,
   AdminRefundOrderResponse,
   AdminRejectPayoutRequest,
+  AdminRejectProductRequest,
   AdminStats,
   AdminUserDetails,
   AdminUserListItem,
@@ -127,6 +128,17 @@ export const getAdminProducts = (params: AdminProductListParams) =>
 // finances. It neither cancels the order nor returns stock.
 export const refundAdminOrder = (id: string, data: AdminRefundOrderRequest) =>
   post<AdminRefundOrderResponse>(`/admin/orders/${id}/refund`, data);
+
+// Review queue: UNDER_REVIEW -> ACTIVE (stock must cover the minimum order
+// quantity) or -> HIDDEN with a reason. 409 when the seller edited the product
+// after it was opened, so an edit is never approved unseen.
+export const approveAdminProduct = (id: string) =>
+  post<AdminProductModerationResponse>(`/admin/products/${id}/approve`);
+
+export const rejectAdminProduct = (
+  id: string,
+  data: AdminRejectProductRequest,
+) => post<AdminProductModerationResponse>(`/admin/products/${id}/reject`, data);
 
 export const blockAdminProduct = (id: string, data: AdminBlockProductRequest) =>
   post<AdminProductModerationResponse>(`/admin/products/${id}/block`, data);

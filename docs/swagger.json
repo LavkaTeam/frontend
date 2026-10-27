@@ -1252,6 +1252,47 @@
                 }
             }
         },
+        "/api/admin/products/{id}/reject": {
+            "post": {
+                "tags": [
+                    "Admin API - Products"
+                ],
+                "summary": "Reject a product that is waiting for review: it becomes HIDDEN and the seller is emailed the reason",
+                "operationId": "reject",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RejectProductRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductModerationResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/admin/products/{id}/block": {
             "post": {
                 "tags": [
@@ -1279,6 +1320,37 @@
                     },
                     "required": true
                 },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductModerationResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/products/{id}/approve": {
+            "post": {
+                "tags": [
+                    "Admin API - Products"
+                ],
+                "summary": "Approve a product that is waiting for review: it becomes ACTIVE (stock must cover the minimum order quantity)",
+                "operationId": "approve",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -3341,6 +3413,8 @@
                                 "FEES_PAID",
                                 "PRODUCT_BLOCKED",
                                 "PRODUCT_UNBLOCKED",
+                                "PRODUCT_APPROVED",
+                                "PRODUCT_REJECTED",
                                 "ORDER_STATUS_CHANGED",
                                 "DOCUMENT_GENERATED",
                                 "ORDER_REFUNDED"
@@ -3622,9 +3696,17 @@
                         "type": "boolean",
                         "description": "\u0427\u0438 \u0437\u0430\u0431\u043b\u043e\u043a\u043e\u0432\u0430\u043d\u0438\u0439 \u0442\u043e\u0432\u0430\u0440 \u043c\u043e\u0434\u0435\u0440\u0430\u0442\u043e\u0440\u043e\u043c. \u041f\u043e\u0432\u0435\u0440\u0442\u0430\u0454\u0442\u044c\u0441\u044f \u043b\u0438\u0448\u0435 \u0430\u0434\u043c\u0456\u043d\u0443 \u0442\u0430 \u0432\u043b\u0430\u0441\u043d\u0438\u043a\u0443-\u043f\u0440\u043e\u0434\u0430\u0432\u0446\u044e"
                     },
+                    "moderationStatus": {
+                        "type": "string",
+                        "description": "REJECTED (\u0432\u0456\u0434\u0445\u0438\u043b\u0435\u043d\u043e, \u0432\u0438\u043f\u0440\u0430\u0432\u0442\u0435 \u0439 \u0437\u0431\u0435\u0440\u0435\u0436\u0456\u0442\u044c \u0437\u043d\u043e\u0432\u0443), BLOCKED (\u0437\u0430\u0431\u043b\u043e\u043a\u043e\u0432\u0430\u043d\u043e \u0430\u0434\u043c\u0456\u043d\u043e\u043c) \u0430\u0431\u043e \u0432\u0456\u0434\u0441\u0443\u0442\u043d\u0454. \u041f\u043e\u0432\u0435\u0440\u0442\u0430\u0454\u0442\u044c\u0441\u044f \u043b\u0438\u0448\u0435 \u0430\u0434\u043c\u0456\u043d\u0443 \u0442\u0430 \u0432\u043b\u0430\u0441\u043d\u0438\u043a\u0443-\u043f\u0440\u043e\u0434\u0430\u0432\u0446\u044e",
+                        "enum": [
+                            "REJECTED",
+                            "BLOCKED"
+                        ]
+                    },
                     "moderationReason": {
                         "type": "string",
-                        "description": "\u041f\u0440\u0438\u0447\u0438\u043d\u0430 \u0431\u043b\u043e\u043a\u0443\u0432\u0430\u043d\u043d\u044f. \u041f\u043e\u0432\u0435\u0440\u0442\u0430\u0454\u0442\u044c\u0441\u044f \u043b\u0438\u0448\u0435 \u0430\u0434\u043c\u0456\u043d\u0443 \u0442\u0430 \u0432\u043b\u0430\u0441\u043d\u0438\u043a\u0443-\u043f\u0440\u043e\u0434\u0430\u0432\u0446\u044e"
+                        "description": "\u041f\u0440\u0438\u0447\u0438\u043d\u0430 \u0431\u043b\u043e\u043a\u0443\u0432\u0430\u043d\u043d\u044f \u0447\u0438 \u0432\u0456\u0434\u0445\u0438\u043b\u0435\u043d\u043d\u044f. \u041f\u043e\u0432\u0435\u0440\u0442\u0430\u0454\u0442\u044c\u0441\u044f \u043b\u0438\u0448\u0435 \u0430\u0434\u043c\u0456\u043d\u0443 \u0442\u0430 \u0432\u043b\u0430\u0441\u043d\u0438\u043a\u0443-\u043f\u0440\u043e\u0434\u0430\u0432\u0446\u044e"
                     },
                     "inStock": {
                         "type": "boolean",
@@ -4929,6 +5011,13 @@
                     "moderationReason": {
                         "type": "string"
                     },
+                    "moderationStatus": {
+                        "type": "string",
+                        "enum": [
+                            "REJECTED",
+                            "BLOCKED"
+                        ]
+                    },
                     "quantity": {
                         "type": "integer",
                         "format": "int32"
@@ -4943,6 +5032,19 @@
                         "type": "string"
                     }
                 }
+            },
+            "RejectProductRequest": {
+                "type": "object",
+                "properties": {
+                    "reason": {
+                        "type": "string",
+                        "maxLength": 500,
+                        "minLength": 0
+                    }
+                },
+                "required": [
+                    "reason"
+                ]
             },
             "BlockProductRequest": {
                 "type": "object",
@@ -5289,13 +5391,13 @@
             "PageProductListItemDto": {
                 "type": "object",
                 "properties": {
-                    "totalElements": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "totalPages": {
                         "type": "integer",
                         "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
                     },
                     "size": {
                         "type": "integer",
@@ -5451,13 +5553,13 @@
             "PageSellerProductSummaryDto": {
                 "type": "object",
                 "properties": {
-                    "totalElements": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "totalPages": {
                         "type": "integer",
                         "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
                     },
                     "size": {
                         "type": "integer",
@@ -5645,13 +5747,13 @@
             "PageOrderSummaryDto": {
                 "type": "object",
                 "properties": {
-                    "totalElements": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "totalPages": {
                         "type": "integer",
                         "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
                     },
                     "size": {
                         "type": "integer",
@@ -5691,13 +5793,13 @@
             "Page": {
                 "type": "object",
                 "properties": {
-                    "totalElements": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "totalPages": {
                         "type": "integer",
                         "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
                     },
                     "size": {
                         "type": "integer",
@@ -5735,13 +5837,13 @@
             "PageImageResponseDto": {
                 "type": "object",
                 "properties": {
-                    "totalElements": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "totalPages": {
                         "type": "integer",
                         "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
                     },
                     "size": {
                         "type": "integer",
@@ -5802,13 +5904,13 @@
             "PageTransactionResponseDTO": {
                 "type": "object",
                 "properties": {
-                    "totalElements": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "totalPages": {
                         "type": "integer",
                         "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
                     },
                     "size": {
                         "type": "integer",
@@ -6374,6 +6476,10 @@
                     "blockedProducts": {
                         "type": "integer",
                         "format": "int64"
+                    },
+                    "productsToReview": {
+                        "type": "integer",
+                        "format": "int64"
                     }
                 }
             },
@@ -6511,6 +6617,8 @@
                             "FEES_PAID",
                             "PRODUCT_BLOCKED",
                             "PRODUCT_UNBLOCKED",
+                            "PRODUCT_APPROVED",
+                            "PRODUCT_REJECTED",
                             "ORDER_STATUS_CHANGED",
                             "DOCUMENT_GENERATED",
                             "ORDER_REFUNDED"

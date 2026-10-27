@@ -4,6 +4,7 @@ import { uploadImage } from '@/api/images';
 import { useProductCategories, useCreateProduct, useSellerProduct, useUpdateProduct } from '@/hooks/useProducts';
 import { DEFAULT_ADJUSTMENTS, type EditorConfig } from '@/hooks/useImageEditor';
 import { useToast } from '@/hooks/useToast';
+import { getModerationNotice } from '@/utils/productModeration';
 import {
   buildProductPayload,
   createEmptyProductForm,
@@ -318,7 +319,13 @@ export const useSellerProductEditor = ({
       const uploadedImages = await uploadPreparedImages();
       await activeMutation.mutateAsync(buildProductPayload(formData, uploadedImages));
       if (shouldUseDraft) await clearDraftFromDB(draftKey);
-      showToast(isEditMode ? 'Product updated successfully.' : 'Product created successfully.', 'success');
+      // Every create and edit goes to a moderator before it is listed.
+      showToast(
+        isEditMode
+          ? 'Changes saved and sent for review. The product is hidden from the catalog until a moderator approves it.'
+          : 'Product created and sent for review. It appears in the catalog once a moderator approves it.',
+        'success',
+      );
       onSuccess?.();
     } catch (error) {
       setImages((previous) => previous.map((image) =>
@@ -340,10 +347,8 @@ export const useSellerProductEditor = ({
     handleWholesaleTierChange,
     images,
     isEditMode,
-    // Set by the admin (GET /products/{id} returns it to the owner only).
-    moderation: product?.adminBlocked
-      ? { reason: product.moderationReason }
-      : null,
+    // What the moderator decided (GET /products/{id} returns it to the owner).
+    moderation: getModerationNotice(product),
     isError: isProductError || isCategoriesError,
     isLoading: isProductLoading || isCategoriesLoading || !isInitialized,
     isSubmitting,

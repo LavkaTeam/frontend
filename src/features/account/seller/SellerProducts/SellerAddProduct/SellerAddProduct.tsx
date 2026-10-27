@@ -3,7 +3,10 @@ import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 import { ProductImageGallery } from './ProductImageGallery/ProductImageGallery';
 import { ProductForm } from './ProductForm/ProductForm';
-import { useSellerProductEditor, type SellerProductEditorMode } from './model/useSellerProductEditor';
+import {
+  useSellerProductEditor,
+  type SellerProductEditorMode,
+} from './model/useSellerProductEditor';
 import { SellerAddProductSkeleton } from './skeleton';
 import styles from './SellerAddProduct.module.css';
 
@@ -69,24 +72,25 @@ export const SellerAddProduct = ({
       </div>
 
       {editor.moderation ? (
-        <div className={styles.moderationBanner} role='status'>
+        <div
+          className={`${styles.moderationBanner} ${
+            editor.moderation.kind === 'UNDER_REVIEW'
+              ? styles.moderationBannerPending
+              : ''
+          }`}
+          role='status'
+        >
           <span className={styles.moderationIcon} aria-hidden='true'>
-            !
+            {editor.moderation.kind === 'UNDER_REVIEW' ? '…' : '!'}
           </span>
           <div>
-            <p className={styles.moderationTitle}>
-              This product is blocked by a moderator
-            </p>
+            <p className={styles.moderationTitle}>{editor.moderation.title}</p>
             {editor.moderation.reason ? (
               <p className={styles.moderationReason}>
                 Reason: {editor.moderation.reason}
               </p>
             ) : null}
-            <p className={styles.moderationText}>
-              It is hidden from the catalog and cannot be activated until the
-              block is lifted. You can still fix the details; to dispute the
-              decision, write to support@b2bar.tech.
-            </p>
+            <p className={styles.moderationText}>{editor.moderation.text}</p>
           </div>
         </div>
       ) : null}
