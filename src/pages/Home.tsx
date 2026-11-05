@@ -160,6 +160,15 @@ const Home = () => {
                   noBottomMargin
                   overlayActive={isTopSelectPageLoading}
                 />
+                {/* Under the grid, above the pagination; last page only. */}
+                {isTopSelectLastPage && totalPages > 0 && (
+                  <div className={styles.viewAll}>
+                    <Link to='/products' className={styles.viewAllLink}>
+                      View all products
+                      <span aria-hidden='true'>→</span>
+                    </Link>
+                  </div>
+                )}
               </div>
 
               {totalPages > 0 && (
@@ -170,16 +179,6 @@ const Home = () => {
                     onPageChange={handlePageChange}
                     disabled={isTopSelectPageLoading}
                   />
-                </div>
-              )}
-
-              {/* The home grid ends here; the full list is in the catalog. */}
-              {isTopSelectLastPage && totalPages > 0 && (
-                <div className={styles.viewAll}>
-                  <Link to='/products' className={styles.viewAllLink}>
-                    View all products
-                    <span aria-hidden='true'>→</span>
-                  </Link>
                 </div>
               )}
 
