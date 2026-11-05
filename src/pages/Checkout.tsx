@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { CheckoutCompanyCard } from '@/components/Checkout/CheckoutCompanyCard';
@@ -67,6 +67,9 @@ const Checkout = () => {
     () => setCompanyVerification(null),
     [],
   );
+  // Opened by a direct link (or a stale cart page) while the company cannot
+  // order yet: explain it right away instead of after filling in the form.
+  const verificationShownRef = useRef(false);
 
   const {
     register,
@@ -115,6 +118,13 @@ const Checkout = () => {
     `${recipientFirstName || ''} ${recipientLastName || ''}`.trim();
   const isFormReady = checkoutSchema.safeParse(liveFormValues).success;
   const canPlaceOrder = companyReadyForCheckout && isFormReady;
+
+  useEffect(() => {
+    if (!user || companyReadyForCheckout || verificationShownRef.current) return;
+
+    verificationShownRef.current = true;
+    setCompanyVerification(getCompanyVerificationState(user));
+  }, [companyReadyForCheckout, user]);
   const companyStatusMeta = getVerificationMeta(user?.verificationStatus);
   const companyStatus = {
     ...companyStatusMeta,

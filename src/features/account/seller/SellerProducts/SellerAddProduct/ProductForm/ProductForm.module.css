@@ -18,6 +18,12 @@
   margin-bottom: 20px;
 }
 
+/* Each card is its own stacking context, so an open dropdown would sit under
+   the next card. The card with an open dropdown goes on top. */
+.sectionCard:has([aria-expanded='true']) {
+  z-index: 2;
+}
+
 .sectionTitle {
   margin: 0 0 6px;
   color: var(--color-gray-900);

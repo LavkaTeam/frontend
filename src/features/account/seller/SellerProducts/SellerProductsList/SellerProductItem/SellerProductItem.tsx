@@ -1,6 +1,7 @@
 import type { SellerProductSummary } from '@/types/productCard';
 
 import { EditProductIcon } from '@/components/ui/icons/EditProductIcon';
+import { Tooltip } from '@/components/ui/Tooltip';
 
 import styles from './SellerProductItem.module.css';
 
@@ -71,24 +72,34 @@ export const SellerProductItem = ({ product, onEdit }: Props) => {
       <td className={styles.cellWithBorder}>${product.price.toFixed(2)}</td>
       <td className={styles.cellWithBorder}>
         <div className={styles.statusCell}>
-          <span
-            className={`${styles.status} ${getStatusClass(product.status)}`}
-          >
-            {formatStatusText(product.status)}
-          </span>
           {product.adminBlocked ? (
-            <span
-              className={styles.moderation}
-              title={product.moderationReason}
+            // A blocked product is always hidden, so one badge says it all.
+            // The reason is in the tooltip and on the edit page, so the row
+            // keeps its height.
+            <Tooltip
+              content={
+                <>
+                  <strong>Blocked by a moderator</strong>
+                  {product.moderationReason ? (
+                    <>
+                      <br />
+                      {product.moderationReason}
+                    </>
+                  ) : null}
+                </>
+              }
             >
-              Blocked by administrator
-              {product.moderationReason ? (
-                <span className={styles.moderationReason}>
-                  {product.moderationReason}
-                </span>
-              ) : null}
+              <span className={`${styles.status} ${styles.statusBlocked}`}>
+                Blocked
+              </span>
+            </Tooltip>
+          ) : (
+            <span
+              className={`${styles.status} ${getStatusClass(product.status)}`}
+            >
+              {formatStatusText(product.status)}
             </span>
-          ) : null}
+          )}
         </div>
       </td>
       <td>

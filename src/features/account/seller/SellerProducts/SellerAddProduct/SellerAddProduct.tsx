@@ -68,6 +68,29 @@ export const SellerAddProduct = ({
         </div>
       </div>
 
+      {editor.moderation ? (
+        <div className={styles.moderationBanner} role='status'>
+          <span className={styles.moderationIcon} aria-hidden='true'>
+            !
+          </span>
+          <div>
+            <p className={styles.moderationTitle}>
+              This product is blocked by a moderator
+            </p>
+            {editor.moderation.reason ? (
+              <p className={styles.moderationReason}>
+                Reason: {editor.moderation.reason}
+              </p>
+            ) : null}
+            <p className={styles.moderationText}>
+              It is hidden from the catalog and cannot be activated until the
+              block is lifted. You can still fix the details; to dispute the
+              decision, write to support@b2bar.tech.
+            </p>
+          </div>
+        </div>
+      ) : null}
+
       <div className={styles.contentGrid}>
         <div className={styles.leftCol}>
           <ProductImageGallery

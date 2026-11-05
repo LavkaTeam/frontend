@@ -16,13 +16,15 @@
   position: relative;
 }
 
-.contentOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.42);
-  backdrop-filter: blur(3px);
+/* The app loader over the stale cards while the next page loads. The logo
+   sits near the top of the grid, where the page has just scrolled to. */
+.sliderWrapper .contentOverlay {
   z-index: 12;
-  pointer-events: none;
+  align-items: flex-start;
+  padding-top: 220px;
+  background-color: rgba(245, 245, 245, 0.82);
+  backdrop-filter: blur(3px);
+  cursor: progress;
 }
 
 .sectionFooter {

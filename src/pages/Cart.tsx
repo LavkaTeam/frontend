@@ -19,7 +19,9 @@ import {
   getCartTotals,
   toCartDisplayItems,
 } from '@/features/cart/model/cartView';
+import { getCheckoutBlock } from '@/features/cart/model/checkoutBlock';
 import { useIsShopper } from '@/hooks/useIsAuthenticated';
+import { useUser } from '@/hooks/useUser';
 
 import styles from './Cart.module.css';
 
@@ -45,6 +47,8 @@ const Cart = () => {
   const navigate = useNavigate();
   // The admin has no cart or favorites: treated as a guest here.
   const isAuthenticated = useIsShopper();
+  const { data: user } = useUser();
+  const checkoutBlock = isAuthenticated ? getCheckoutBlock(user) : null;
 
   const localCartItems = useAppSelector((state) => state.cart);
   const { data: remoteCart, isLoading } = useGetCart(isAuthenticated);
@@ -315,7 +319,29 @@ const Cart = () => {
                         </span>
                       </div>
                     </div>
-                    {isAuthenticated ? (
+                    {checkoutBlock ? (
+                      <div className={styles.guestCheckout}>
+                        <div className={styles.guestNotice} role='status'>
+                          <LockIcon />
+                          <div>
+                            <p className={styles.guestNoticeTitle}>
+                              {checkoutBlock.title}
+                            </p>
+                            <p className={styles.guestNoticeText}>
+                              {checkoutBlock.text}
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          variant={
+                            checkoutBlock.primary ? undefined : 'secondary'
+                          }
+                          onClick={() => navigate(checkoutBlock.to)}
+                        >
+                          {checkoutBlock.action}
+                        </Button>
+                      </div>
+                    ) : isAuthenticated ? (
                       <div className={styles.checkoutButton}>
                         <Button onClick={handleCheckout} icon={<CartIcon />}>
                           Checkout

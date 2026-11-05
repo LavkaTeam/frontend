@@ -10,6 +10,7 @@ import 'swiper/css/pagination';
 import { ArrowButton } from '../ui/icons/ArrowButton';
 import { HeadingH3 } from '@/components/ui/HeadingH3';
 import { NoProductsFound } from '../NoProductsFound';
+import { Loader } from '@/components/ui/Loader';
 
 import styles from './CardSection.module.css';
 
@@ -54,7 +55,13 @@ const CardSection = <T extends WithId>({
       <div className={noPaddings ? '' : 'container'}>
         {title ? <HeadingH3>{title}</HeadingH3> : null}
 
-        <div className={styles.sliderWrapper}>
+        <div
+          className={styles.sliderWrapper}
+          // While the next page loads, the stale cards must not react to
+          // hovers, clicks or keyboard focus.
+          inert={overlayActive}
+          aria-busy={overlayActive}
+        >
           {hasCards ? (
             withSlider ? (
               <>
@@ -143,7 +150,7 @@ const CardSection = <T extends WithId>({
           )}
 
           {overlayActive ? (
-            <div className={styles.contentOverlay} aria-hidden='true' />
+            <Loader variant='section' className={styles.contentOverlay} />
           ) : null}
         </div>
 

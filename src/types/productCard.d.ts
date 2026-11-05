@@ -46,6 +46,8 @@ export interface CategoryTreeItem {
 
 export interface Product {
   id: string;
+  // Search results carry only the id of the seller, not `seller`.
+  sellerId?: string;
   // Sent by the backend only to the admin and the owning seller.
   adminBlocked?: boolean;
   moderationReason?: string;
