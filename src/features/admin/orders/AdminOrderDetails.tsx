@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { BuyerOrder } from '@/features/account/orders';
+import { Button } from '@/components/ui/Button';
 import { useOrderDetails } from '@/hooks/useOrders';
 
 import { AdminOrderActions } from './AdminOrderActions';
@@ -17,7 +18,21 @@ const AdminOrderDetails = () => {
     <BuyerOrder
       orderId={orderId}
       viewerRole='ADMIN'
-      headerActions={order ? <AdminOrderActions order={order} /> : null}
+      headerActions={
+        order ? (
+          <>
+            {/* What the admin did with this order (status, documents, refund). */}
+            <Button
+              type='button'
+              variant='secondary'
+              onClick={() => navigate(`/admin/audit?targetId=${order.id}`)}
+            >
+              History
+            </Button>
+            <AdminOrderActions order={order} />
+          </>
+        ) : null
+      }
       // Back to the filtered list when opened from it, else to all orders.
       onBack={() =>
         (window.history.state as { idx?: number } | null)?.idx
