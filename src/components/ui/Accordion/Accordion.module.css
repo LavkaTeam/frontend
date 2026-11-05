@@ -1,0 +1,133 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.heading {
+  margin: 0;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 4px;
+  border: none;
+  background: none;
+  color: var(--color-gray-900);
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 26px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.trigger:hover {
+  color: var(--color-brand-burgundy);
+}
+
+.trigger:focus-visible {
+  border-radius: 8px;
+  outline: 2px solid rgba(175, 38, 31, 0.45);
+  outline-offset: 2px;
+}
+
+/* Plus that turns into a minus. */
+.icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(175, 38, 31, 0.08);
+  transition: background-color 0.2s ease;
+}
+
+.icon::before,
+.icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-brand-burgundy);
+  transform: translate(-50%, -50%);
+  transition: transform 0.25s ease;
+}
+
+.icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.itemOpen .icon {
+  background: var(--color-brand-burgundy);
+}
+
+.itemOpen .icon::before,
+.itemOpen .icon::after {
+  background: var(--color-primary-white);
+}
+
+.itemOpen .icon::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.panel:not([hidden]) {
+  animation: reveal 0.25s ease;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 760px;
+  padding: 0 4px 20px;
+  color: var(--color-gray-700);
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.content ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 22px;
+  list-style: disc;
+}
+
+.content a {
+  color: var(--color-brand-burgundy);
+  font-weight: 600;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel:not([hidden]) {
+    animation: none;
+  }
+}

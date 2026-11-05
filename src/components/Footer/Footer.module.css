@@ -15,6 +15,22 @@
   display: flex;
   justify-content: space-between;
   align-items: start;
+  gap: 48px;
+}
+
+.columns {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  gap: 32px 48px;
+  max-width: 1060px;
+}
+
+.linkBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .link {
@@ -62,4 +78,49 @@
 
 .privacy:hover {
   color: var(--color-brand-burgundy);
+}
+
+@media (max-width: 1100px) {
+  .topSection {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 0 32px;
+    gap: 40px;
+  }
+
+  .bottomSection {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 20px;
+  }
+
+  .IconsList {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .privacy {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .columns {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .link {
+    overflow-wrap: anywhere;
+  }
 }
