@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
+  useAdminApproveProduct,
   useAdminBlockProduct,
   useAdminProducts,
+  useAdminRejectProduct,
   useAdminUnblockProduct,
 } from '@/hooks/useAdmin';
 import type { AdminProductListItem } from '@/types/admin';
@@ -39,17 +41,26 @@ import styles from './AdminProducts.module.css';
 
 const FILTER_KEYS = ['status', 'blocked', 'q', 'sellerId'] as const;
 
+type ProductDialogKind = 'block' | 'unblock' | 'approve' | 'reject';
 type ProductDialog = {
-  kind: 'block' | 'unblock';
+  kind: ProductDialogKind;
   item: AdminProductListItem;
 } | null;
 
 // The reason is not printed in the table: it shows on hover or focus.
-const BlockedBadge = ({ reason }: { reason?: string }) => {
-  const badge = <StatusBadge tone='burgundy'>Blocked</StatusBadge>;
+const ReasonBadge = ({ label, reason }: { label: string; reason?: string }) => {
+  const badge = <StatusBadge tone='burgundy'>{label}</StatusBadge>;
 
   return reason ? (
-    <Tooltip content={<>Blocked by a moderator: {reason}</>}>{badge}</Tooltip>
+    <Tooltip
+      content={
+        <>
+          {label}: {reason}
+        </>
+      }
+    >
+      {badge}
+    </Tooltip>
   ) : (
     badge
   );
@@ -66,6 +77,8 @@ const AdminProducts = () => {
     hasFilters,
   } = useListSearchParams(FILTER_KEYS);
   const notify = useAdminFeedback();
+  const approve = useAdminApproveProduct();
+  const reject = useAdminRejectProduct();
   const block = useAdminBlockProduct();
   const unblock = useAdminUnblockProduct();
   const [dialog, setDialog] = useState<ProductDialog>(null);
@@ -81,10 +94,7 @@ const AdminProducts = () => {
   });
   const data = productsQuery.data;
 
-  const openDialog = (
-    kind: 'block' | 'unblock',
-    item: AdminProductListItem,
-  ) => {
+  const openDialog = (kind: ProductDialogKind, item: AdminProductListItem) => {
     setActionError('');
     setDialog({ kind, item });
   };
@@ -153,13 +163,25 @@ const AdminProducts = () => {
       width: '20%',
       render: ({ product }) => {
         const meta = PRODUCT_STATUS[product.status];
+        const isRejected = product.moderationStatus === 'REJECTED';
 
         return (
           <div className={styles.stack}>
             <div className={styles.pills}>
-              <StatusBadge tone={meta.tone}>{meta.label}</StatusBadge>
+              {isRejected ? (
+                // A rejected product is hidden; "Rejected" says more.
+                <ReasonBadge
+                  label='Rejected'
+                  reason={product.moderationReason}
+                />
+              ) : (
+                <StatusBadge tone={meta.tone}>{meta.label}</StatusBadge>
+              )}
               {product.adminBlocked ? (
-                <BlockedBadge reason={product.moderationReason} />
+                <ReasonBadge
+                  label='Blocked'
+                  reason={product.moderationReason}
+                />
               ) : null}
             </div>
           </div>
@@ -170,33 +192,85 @@ const AdminProducts = () => {
       key: 'actions',
       header: 'Actions',
       width: '14%',
-      render: (item) =>
-        item.product.adminBlocked ? (
+      render: (item) => {
+        const { product } = item;
+        const inQueue =
+          product.status === 'UNDER_REVIEW' && !product.adminBlocked;
+
+        return (
           <div className={styles.actions}>
-            <Button
-              type='button'
-              variant='secondary'
-              onClick={() => openDialog('unblock', item)}
-            >
-              Unblock
-            </Button>
+            {inQueue ? (
+              <>
+                <Button
+                  type='button'
+                  onClick={() => openDialog('approve', item)}
+                >
+                  Approve
+                </Button>
+                <Button
+                  type='button'
+                  variant='secondary'
+                  onClick={() => openDialog('reject', item)}
+                >
+                  Reject
+                </Button>
+              </>
+            ) : product.adminBlocked ? (
+              <Button
+                type='button'
+                variant='secondary'
+                onClick={() => openDialog('unblock', item)}
+              >
+                Unblock
+              </Button>
+            ) : (
+              <Button
+                type='button'
+                variant='secondary'
+                onClick={() => openDialog('block', item)}
+              >
+                Block
+              </Button>
+            )}
           </div>
-        ) : (
-          <div className={styles.actions}>
-            <Button
-              type='button'
-              variant='secondary'
-              onClick={() => openDialog('block', item)}
-            >
-              Block
-            </Button>
-          </div>
-        ),
+        );
+      },
     },
   ];
 
   const current = dialog?.item;
   const productName = current?.product.name ?? '';
+
+  const handleApprove = () => {
+    if (!current) return;
+    approve.mutate(current.product.id, {
+      onSuccess: ({ emailSent }) => {
+        closeDialog();
+        notify(
+          `“${productName}” is approved and listed in the catalog.`,
+          emailSent,
+        );
+      },
+      onError: (error) => setActionError(getAdminActionError(error)),
+    });
+  };
+
+  const handleReject = (reason: string) => {
+    if (!current) return;
+    reject.mutate(
+      { productId: current.product.id, reason },
+      {
+        onSuccess: ({ emailSent }) => {
+          closeDialog();
+          notify(
+            `“${productName}” is rejected. The seller can edit it and send it again.`,
+            emailSent,
+          );
+        },
+        onError: (error) => setActionError(getAdminActionError(error)),
+      },
+    );
+  };
 
   const handleBlock = (reason: string) => {
     if (!current) return;
@@ -233,7 +307,7 @@ const AdminProducts = () => {
     <>
       <AdminPageHeader
         title='Products'
-        description='Moderate the catalog. A blocked product is hidden and the seller cannot publish it again until you unblock it.'
+        description='Review new and edited products, and moderate the catalog. A blocked product is hidden and the seller cannot publish it again until you unblock it.'
       />
 
       <FilterBar hasFilters={hasFilters} onClear={clearFilters}>
@@ -294,6 +368,35 @@ const AdminProducts = () => {
         totalPages={data?.totalPages ?? 0}
         totalElements={data?.totalElements ?? 0}
         onPageChange={setPage}
+      />
+
+      <AdminDialog
+        isOpen={dialog?.kind === 'approve'}
+        icon='success'
+        title={`Approve “${productName}”?`}
+        description='The product becomes active and appears in the catalog. The seller is notified by email.'
+        confirmLabel='Approve'
+        isBusy={approve.isPending}
+        error={actionError}
+        onConfirm={handleApprove}
+        onClose={closeDialog}
+      />
+
+      <ReasonDialog
+        isOpen={dialog?.kind === 'reject'}
+        icon='error'
+        tone='danger'
+        title={`Reject “${productName}”?`}
+        description='The product stays hidden. The seller sees the reason, edits the product and sends it for review again.'
+        label='Reason for the seller'
+        placeholder='e.g. The description does not match the product on the photos.'
+        minLength={10}
+        maxLength={500}
+        confirmLabel='Reject product'
+        isBusy={reject.isPending}
+        error={actionError}
+        onConfirm={handleReject}
+        onClose={closeDialog}
       />
 
       <ReasonDialog

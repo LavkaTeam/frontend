@@ -7,6 +7,7 @@ import { useCartActions } from '@/hooks/useCartActions';
 import { useFavoriteActions } from '@/hooks/useFavoriteProducts';
 import { useAuthenticatedUserId } from '@/hooks/useAuthenticatedUserId';
 import { useIsAdmin } from '@/hooks/useIsAuthenticated';
+import { getModerationNotice } from '@/utils/productModeration';
 import { useUser } from '@/hooks/useUser';
 import { useProduct } from '@/hooks/useProduct';
 import { useSearchProducts } from '@/hooks/useSearchProducts';
@@ -291,6 +292,15 @@ const Product = () => {
     authenticatedUserId,
   );
 
+  // Moderation fields come only to the owner and the admin, so the blocked and
+  // rejected notices cannot reach anyone else; a waiting product is explained
+  // to its owner only.
+  const rawNotice = getModerationNotice(product);
+  const moderationNotice =
+    rawNotice && (rawNotice.kind !== 'UNDER_REVIEW' || isOwnProduct)
+      ? rawNotice
+      : null;
+
   return (
     <main className='container'>
       <div
@@ -433,14 +443,26 @@ const Product = () => {
               </span>
             </div>
           )}
-          {product.adminBlocked && (
-            <div className={styles.blockedNotice} role='status'>
+          {moderationNotice && (
+            <div
+              className={`${styles.blockedNotice} ${
+                moderationNotice.kind === 'UNDER_REVIEW'
+                  ? styles.pendingNotice
+                  : ''
+              }`}
+              role='status'
+            >
               <span className={styles.blockedNoticeLabel}>
-                Blocked by administrator
+                {moderationNotice.title}
               </span>
-              {product.moderationReason ? (
+              {moderationNotice.reason ? (
                 <span className={styles.blockedNoticeText}>
-                  {product.moderationReason}
+                  {moderationNotice.reason}
+                </span>
+              ) : null}
+              {isOwnProduct ? (
+                <span className={styles.blockedNoticeText}>
+                  {moderationNotice.text}
                 </span>
               ) : null}
             </div>
