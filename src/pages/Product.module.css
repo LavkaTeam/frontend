@@ -84,13 +84,9 @@
   gap: 16px;
   margin-bottom: 20px;
   padding: 14px 16px;
-  border: 1px solid rgba(175, 38, 31, 0.18);
+  border: 1px solid #e3b0aa;
   border-radius: 12px;
-  background: linear-gradient(
-    90deg,
-    rgba(175, 38, 31, 0.08) 0%,
-    rgba(200, 114, 27, 0.06) 100%
-  );
+  background: linear-gradient(90deg, #f3d2ce 0%, #f8dfc6 100%);
 }
 
 .ownProductNoticeLabel {
@@ -102,7 +98,7 @@
 }
 
 .ownProductNoticeText {
-  color: var(--color-gray-700);
+  color: var(--color-gray-900);
   font-size: 14px;
   font-weight: 500;
   text-align: right;

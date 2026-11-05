@@ -122,8 +122,11 @@ const CardProduct = ({ card }: CardProductProps) => {
   const { showMaxTooltip, triggerMaxTooltip } = useMaxQuantityTooltip();
 
   // Handlers
-  const handleAddToCart = () =>
+  const handleAddToCart = () => {
+    // The backend refuses a seller's own products; never even try.
+    if (isOwnProduct) return;
     addItem(card, Math.max(1, card.minimumOrderQuantity || 1));
+  };
   const handleFavoriteClick = () => void toggleFavorite(card.id);
 
   const handleIncreaseQuantity = (e: React.MouseEvent) => {
