@@ -1,3 +1,6 @@
+import { Suspense, lazy } from 'react';
+
+import { isDemoMode } from '@/features/demo/config';
 import {
   AccountUnavailable,
   EmailVerificationRequired,
@@ -6,12 +9,29 @@ import {
 import type { LoginRequest } from '@/hooks/useAuth';
 import { useLoginHandler } from '@/hooks/useLoginHandler';
 
+// The demo has no password form: it offers the two demo roles instead.
+const DemoLoginPage = isDemoMode
+  ? lazy(() => import('@/features/demo/pages/DemoLoginPage'))
+  : null;
+
 interface LoginProps {
   // Replaces the API call; used by the dev preview only.
   request?: LoginRequest;
 }
 
 const Login = ({ request }: LoginProps) => {
+  if (DemoLoginPage) {
+    return (
+      <Suspense fallback={null}>
+        <DemoLoginPage />
+      </Suspense>
+    );
+  }
+
+  return <PasswordLogin request={request} />;
+};
+
+const PasswordLogin = ({ request }: LoginProps) => {
   const {
     handleSubmit,
     isLoading,
