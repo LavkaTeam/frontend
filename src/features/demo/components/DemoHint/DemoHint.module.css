@@ -1,0 +1,22 @@
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(175, 38, 31, 0.1);
+  color: var(--color-brand-burgundy);
+  font-size: 12px;
+  font-weight: 700;
+}

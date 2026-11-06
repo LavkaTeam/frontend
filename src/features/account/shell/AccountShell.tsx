@@ -15,6 +15,8 @@ import { NotVerifiedIcon } from '@/components/ui/icons/StatusIcons/NotVerifiedIc
 import { PendingIcon } from '@/components/ui/icons/StatusIcons/PendingIcon';
 import { VerifiedIcon } from '@/components/ui/icons/StatusIcons/VerifiedIcon';
 
+import { isDemoMode } from '@/features/demo/config';
+
 import styles from './AccountShell.module.css';
 
 const profileSkeletonTabs = new Set(['profile']);
@@ -28,7 +30,10 @@ const AccountShell = () => {
 
   const availableTabs = useMemo(() => {
     if (!user) return [];
-    return ROLE_TABS[user.role] || [];
+    const tabs = ROLE_TABS[user.role] || [];
+
+    // Messages is a "coming soon" stub; the demo does not show it.
+    return isDemoMode ? tabs.filter((tab) => tab.tabKey !== 'messages') : tabs;
   }, [user]);
 
   const activeTabKey = requestedTab || availableTabs[0]?.tabKey || '';

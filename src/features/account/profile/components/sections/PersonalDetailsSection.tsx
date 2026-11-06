@@ -1,4 +1,7 @@
+import { Suspense, lazy } from 'react';
+
 import { InputField } from '@/components/Form';
+import { isDemoMode } from '@/features/demo/config';
 import { EditPasswordIcon } from '@/components/ui/icons/EditPasswordIcon';
 
 import { PERSONAL_FIELD_CONFIGS } from '../../config/profileForm.constants';
@@ -15,6 +18,11 @@ interface PersonalDetailsSectionProps {
   onFieldBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onOpenPasswordModal: () => void;
 }
+
+// Demo deployment only; in production the import is dropped from the bundle.
+const DemoPasswordHint = isDemoMode
+  ? lazy(() => import('@/features/demo/components/DemoHint/DemoPasswordHint'))
+  : null;
 
 const PersonalDetailsSection = ({
   formData,
@@ -59,14 +67,21 @@ const PersonalDetailsSection = ({
             </div>
 
             <div className={styles.fileActions}>
-              <button
-                type='button'
-                className={styles.textAction}
-                onClick={onOpenPasswordModal}
-              >
-                <span>Edit password</span>
-                <EditPasswordIcon />
-              </button>
+              {DemoPasswordHint ? (
+                // The demo backend refuses password changes (403 DEMO_READ_ONLY).
+                <Suspense fallback={null}>
+                  <DemoPasswordHint />
+                </Suspense>
+              ) : (
+                <button
+                  type='button'
+                  className={styles.textAction}
+                  onClick={onOpenPasswordModal}
+                >
+                  <span>Edit password</span>
+                  <EditPasswordIcon />
+                </button>
+              )}
             </div>
           </div>
         </div>
