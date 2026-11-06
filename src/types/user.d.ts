@@ -50,6 +50,9 @@ export interface UserResponse {
   status?: VerificationStatus;
   // Set only while REJECTED: what the admin asked to fix.
   verificationRejectionReason?: string;
+  // Demo deployment only: the user lives in a sandbox that expires.
+  demo?: boolean;
+  demoExpiresAt?: string | null;
 
   // Legacy aliases kept for compatibility with parts of the current UI.
   name?: string;
