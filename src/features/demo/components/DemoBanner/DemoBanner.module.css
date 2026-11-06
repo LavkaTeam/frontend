@@ -1,0 +1,98 @@
+/* Dark wood with an orange label: clearly "not the real site" without the
+   red of errors and of the brand. White on #27211c passes AA. */
+.banner {
+  position: relative;
+  z-index: 1100;
+  background: var(--color-brand-wood-bark);
+  color: var(--color-primary-white);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1440px;
+  min-height: 40px;
+  margin: 0 auto;
+  padding: 6px 24px;
+}
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.label {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--color-brand-orange);
+  color: #1b1511;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.separator {
+  opacity: 0.6;
+}
+
+.session {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 16px;
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+}
+
+.timeLow {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(200, 114, 27, 0.25);
+  color: #ffd9a8;
+  font-weight: 600;
+}
+
+.tryLink {
+  flex-shrink: 0;
+  color: var(--color-primary-white);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.tryLink:hover {
+  color: #ffd9a8;
+}
+
+.narrow {
+  display: none;
+}
+
+/* One line on narrow screens: "DEMO · 23h 12m · Menu". */
+@media (max-width: 768px) {
+  .inner {
+    gap: 8px;
+    padding: 6px 16px;
+  }
+
+  .wide {
+    display: none;
+  }
+
+  .narrow {
+    display: inline;
+  }
+
+  .session {
+    gap: 12px;
+  }
+}

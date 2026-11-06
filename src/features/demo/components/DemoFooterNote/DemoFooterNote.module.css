@@ -1,0 +1,11 @@
+.note {
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.link {
+  color: var(--color-brand-burgundy);
+  font-weight: 600;
+}

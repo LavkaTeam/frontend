@@ -1,0 +1,58 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--modal-z-index);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--modal-overlay-background);
+  backdrop-filter: blur(var(--modal-overlay-blur));
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 480px;
+  padding: 28px;
+  border-radius: 16px;
+  background: var(--color-primary-white);
+  box-shadow:
+    0 20px 24px -4px rgba(10, 13, 18, 0.12),
+    0 8px 8px -4px rgba(10, 13, 18, 0.05);
+}
+
+.title {
+  color: var(--color-gray-900);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.text {
+  color: var(--color-gray-600);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.status {
+  min-height: 20px;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.error {
+  color: #b42318;
+  font-size: 14px;
+  line-height: 20px;
+}
