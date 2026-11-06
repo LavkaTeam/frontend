@@ -133,6 +133,16 @@ const getRawErrorMessage = (error: unknown) => {
   return collectMessages(error)[0] || '';
 };
 
+// Lets a feature word its own error codes (the demo does). Unset in
+// production, where nothing changes.
+type ErrorMessageResolver = (error: unknown) => string | undefined;
+
+let errorMessageResolver: ErrorMessageResolver | null = null;
+
+const setErrorMessageResolver = (resolver: ErrorMessageResolver | null) => {
+  errorMessageResolver = resolver;
+};
+
 const extractErrorMessage = (
   error: unknown,
   fallback = 'Something went wrong. Please try again.',
@@ -140,6 +150,9 @@ const extractErrorMessage = (
   if (isNetworkError(error)) {
     return NETWORK_ERROR_MESSAGE;
   }
+
+  const resolved = errorMessageResolver?.(error);
+  if (resolved) return resolved;
 
   const code = getErrorCode(error);
   if (code === 'INTERNAL_ERROR') {
@@ -182,4 +195,5 @@ export {
   getErrorStatus,
   isSellerNotVerifiedError,
   retryOnServerError,
+  setErrorMessageResolver,
 };

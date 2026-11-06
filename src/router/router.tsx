@@ -1,8 +1,9 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { Layout } from '@/Layout';
 import { Loader } from '@/components/ui/Loader';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, type ReactElement } from 'react';
 import { ProtectedRoute } from './ProtectedRoute';
+import { isDemoMode } from '@/features/demo/config';
 
 const Home = lazy(() => import('@/pages/Home'));
 const Register = lazy(() => import('@/pages/Register'));
@@ -66,6 +67,28 @@ const devRoutes = DevAuthPreview
     ]
   : [];
 
+// Demo deployment only (the import is dropped from the production bundle).
+const DemoLanding = isDemoMode
+  ? lazy(() => import('@/features/demo/pages/DemoLanding'))
+  : null;
+const demoRoutes = DemoLanding
+  ? [
+      {
+        path: '/demo',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <DemoLanding />
+          </Suspense>
+        ),
+      },
+    ]
+  : [];
+
+// The demo has no registration, email verification or password recovery: the
+// visitor is sent to the demo entrance instead.
+const withoutDemoAuth = (element: ReactElement) =>
+  isDemoMode ? <Navigate to='/demo' replace /> : element;
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -81,10 +104,10 @@ export const router = createBrowserRouter([
       },
       {
         path: '/register',
-        element: (
+        element: withoutDemoAuth(
           <Suspense fallback={<Loader />}>
             <Register />
-          </Suspense>
+          </Suspense>,
         ),
       },
       {
@@ -97,26 +120,26 @@ export const router = createBrowserRouter([
       },
       {
         path: '/verify-email',
-        element: (
+        element: withoutDemoAuth(
           <Suspense fallback={<Loader />}>
             <VerifyEmail />
-          </Suspense>
+          </Suspense>,
         ),
       },
       {
         path: '/forgot-password',
-        element: (
+        element: withoutDemoAuth(
           <Suspense fallback={<Loader />}>
             <ForgotPassword />
-          </Suspense>
+          </Suspense>,
         ),
       },
       {
         path: '/reset-password',
-        element: (
+        element: withoutDemoAuth(
           <Suspense fallback={<Loader />}>
             <ResetPassword />
-          </Suspense>
+          </Suspense>,
         ),
       },
       {
@@ -266,6 +289,7 @@ export const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      ...demoRoutes,
       ...devRoutes,
       {
         path: '*',

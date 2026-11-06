@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/store/hooks';
 import { clearCart } from '@/store/cartSlice';
 import { clearFavorites } from '@/store/favoritesSlice';
+import { isDemoMode } from '@/features/demo/config';
 import { AUTH_LOGOUT_EVENT } from '@/shared/api/client';
 import { useToast } from './useToast';
 
@@ -19,6 +20,14 @@ const useAuthSessionWatcher = () => {
       dispatch(clearCart());
       dispatch(clearFavorites());
       queryClient.clear();
+
+      // The demo has no login: an invalid token leads back to its entrance
+      // (the end of a sandbox is announced by the demo itself, not here).
+      if (isDemoMode) {
+        if (window.location.pathname !== '/demo')
+          navigate('/demo', { replace: true });
+        return;
+      }
 
       if (window.location.pathname === '/login') return;
 

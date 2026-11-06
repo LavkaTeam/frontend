@@ -1,7 +1,20 @@
+import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../Logo';
 
+import { isDemoMode } from '@/features/demo/config';
+
 import styles from './Footer.module.css';
+
+// Demo deployment only; in production the import is dropped from the bundle.
+const DemoFooterNote = isDemoMode
+  ? lazy(
+      () => import('@/features/demo/components/DemoFooterNote/DemoFooterNote'),
+    )
+  : null;
+
+// Production only, optional: where the demo lives.
+const demoUrl = isDemoMode ? undefined : import.meta.env.VITE_DEMO_URL;
 
 const Footer = () => {
   const date = new Date().getFullYear();
@@ -63,8 +76,20 @@ const Footer = () => {
                   +380978664545
                 </a>
               </li>
+              {demoUrl ? (
+                <li>
+                  <a className={styles.link} href={demoUrl}>
+                    Try the demo
+                  </a>
+                </li>
+              ) : null}
             </ul>
           </div>
+          {DemoFooterNote ? (
+            <Suspense fallback={null}>
+              <DemoFooterNote />
+            </Suspense>
+          ) : null}
           <div className={styles.bottomSection}>
             <address className={styles.IconsList}>
               <ul className={styles.Icons}>

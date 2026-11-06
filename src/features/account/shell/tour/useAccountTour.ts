@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { driver, type Driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 
+import { isDemoMode } from '@/features/demo/config';
 import type { UserResponse } from '@/types/user';
 import type { AccountTabKey } from '../model/accountTabs';
 import { getAccountTourSteps } from './accountTourSteps';
@@ -65,8 +66,11 @@ const useAccountTour = (
     tour.drive();
   }, [tabs, user]);
 
+  // Demo companies are VERIFIED from the start, so the tour is started for the
+  // demo user instead; a new sandbox is a new user id, so it runs once each.
   const isNewAccount =
-    (user?.verificationStatus ?? user?.status) === 'NOT_VERIFIED';
+    (user?.verificationStatus ?? user?.status) === 'NOT_VERIFIED' ||
+    (isDemoMode && Boolean(user?.demo));
 
   useEffect(() => {
     if (!user || !isNewAccount || tabs.length === 0 || hasSeenTour(user.id)) {

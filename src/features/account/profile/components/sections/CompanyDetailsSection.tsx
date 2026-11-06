@@ -1,4 +1,7 @@
+import { Suspense, lazy } from 'react';
+
 import { InputField } from '@/components/Form';
+import { isDemoMode } from '@/features/demo/config';
 import { Button } from '@/components/ui/Button';
 import { UploadFileIcon } from '@/components/ui/icons/UploadFileIcon';
 
@@ -36,6 +39,13 @@ const getLicenseStatusClassName = (tone: LicenseStatusMeta['tone']) => {
       return '';
   }
 };
+
+// Demo deployment only; in production the import is dropped from the bundle.
+const DemoUploadHint = isDemoMode
+  ? lazy(
+      () => import('@/features/demo/components/DemoHint/DemoUploadHint'),
+    )
+  : null;
 
 const CompanyDetailsSection = ({
   formData,
@@ -123,6 +133,12 @@ const CompanyDetailsSection = ({
                 </button>
               </div>
             </div>
+
+            {DemoUploadHint ? (
+              <Suspense fallback={null}>
+                <DemoUploadHint />
+              </Suspense>
+            ) : null}
 
             <p
               className={`${styles.helperError} ${formErrors.liquorLicenseDocumentUrl ? styles.helperErrorVisible : ''}`}

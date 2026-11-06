@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { discoverCards } from '@/data/discoverData';
@@ -19,7 +19,14 @@ import {
   CardRelatedLeadSkeleton,
 } from '@/components/CardRelatedLead';
 
+import { isDemoMode } from '@/features/demo/config';
+
 import styles from './Home.module.css';
+
+// Demo deployment only; in production the import is dropped from the bundle.
+const DemoHomeCta = isDemoMode
+  ? lazy(() => import('@/features/demo/components/DemoHomeCta/DemoHomeCta'))
+  : null;
 
 const shuffleArray = <T,>(array: T[]): T[] => {
   const shuffled = [...array];
@@ -115,6 +122,12 @@ const Home = () => {
       <HeaderMenu />
       <main>
         <HeroSection />
+
+        {DemoHomeCta ? (
+          <Suspense fallback={null}>
+            <DemoHomeCta />
+          </Suspense>
+        ) : null}
 
         <PageSection title='Bestsellers'>
           {isBestsellersLoading ? (

@@ -5,6 +5,9 @@ type ApiResponseType = 'json' | 'text' | 'blob';
 
 export interface ApiRequestOptions extends RequestInit {
   responseType?: ApiResponseType;
+  // Sends the request without the saved access token, e.g. to start a new
+  // session while an old, possibly dead token is still stored.
+  skipAuth?: boolean;
 }
 
 export const ACCESS_TOKEN_STORAGE_KEY = 'token';
@@ -38,6 +41,55 @@ export const AUTH_CHANGE_EVENT = 'auth:change';
 export const AUTH_LOGOUT_EVENT = 'auth:logout';
 
 let refreshRequest: Promise<TokenPair | null> | null = null;
+
+// Lets a feature judge a 401 before the client tries to refresh the token or
+// ends the session (the demo uses it: its tokens die on purpose when a sandbox
+// is reset or left). 'handled' means the feature dealt with it: no refresh, no
+// logout. Without an interceptor nothing changes.
+export interface UnauthorizedContext {
+  endpoint: string;
+  // `code` of the error body, when there is one.
+  code?: string;
+  // Access token the failed request was sent with; null for a refresh call.
+  sentToken: string | null;
+  isRefresh: boolean;
+}
+
+export type UnauthorizedDecision = 'default' | 'handled';
+
+type UnauthorizedInterceptor = (
+  context: UnauthorizedContext,
+) => UnauthorizedDecision;
+
+let unauthorizedInterceptor: UnauthorizedInterceptor | null = null;
+
+export const setUnauthorizedInterceptor = (
+  interceptor: UnauthorizedInterceptor | null,
+) => {
+  unauthorizedInterceptor = interceptor;
+};
+
+const readErrorCode = async (response: Response) => {
+  try {
+    const body = (await response.clone().json()) as { code?: unknown };
+
+    return typeof body.code === 'string' ? body.code : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const judgeUnauthorized = async (
+  response: Response,
+  context: Omit<UnauthorizedContext, 'code'>,
+): Promise<UnauthorizedDecision> => {
+  if (!unauthorizedInterceptor) return 'default';
+
+  return unauthorizedInterceptor({
+    ...context,
+    code: await readErrorCode(response),
+  });
+};
 
 export const getAccessToken = () =>
   localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
@@ -91,9 +143,13 @@ const parseApiError = async (response: Response): Promise<never> => {
   throw createApiError(await response.text(), response.status);
 };
 
-const buildHeaders = (headers?: HeadersInit, body?: BodyInit | null) => {
+const buildHeaders = (
+  headers?: HeadersInit,
+  body?: BodyInit | null,
+  skipAuth = false,
+) => {
   const nextHeaders = new Headers(headers);
-  const token = getAccessToken();
+  const token = skipAuth ? null : getAccessToken();
 
   if (token && !nextHeaders.has('Authorization')) {
     nextHeaders.set('Authorization', `Bearer ${token}`);
@@ -112,13 +168,13 @@ const buildHeaders = (headers?: HeadersInit, body?: BodyInit | null) => {
 };
 
 const sendRequest = (endpoint: string, options: ApiRequestOptions = {}) => {
-  const { responseType, headers, body, ...requestOptions } = options;
+  const { responseType, skipAuth, headers, body, ...requestOptions } = options;
   void responseType;
 
   return fetch(`${apiUrl}${endpoint}`, {
     ...requestOptions,
     body,
-    headers: buildHeaders(headers, body),
+    headers: buildHeaders(headers, body, skipAuth),
   });
 };
 
@@ -155,6 +211,13 @@ const requestTokenRefresh = async (
 
   // 401 (INVALID_TOKEN, ACCOUNT_DISABLED) means the session is over.
   if (response.status === 401) {
+    const decision = await judgeUnauthorized(response, {
+      endpoint: '/auth/refresh',
+      sentToken: null,
+      isRefresh: true,
+    });
+    if (decision === 'handled') return null;
+
     expireSession();
     return null;
   }
@@ -204,16 +267,27 @@ const refreshAccessToken = async (): Promise<TokenPair | null> => {
 const AUTH_ENDPOINTS = ['/auth/login', '/auth/register', '/auth/refresh'];
 
 const request = async (endpoint: string, options: ApiRequestOptions = {}) => {
+  const sentToken = options.skipAuth ? null : getAccessToken();
   let response = await sendRequest(endpoint, options);
 
   // 401 UNAUTHORIZED means the access token is missing, invalid or expired.
   // 403 is a real permission error and is never retried.
   const canRefresh =
     response.status === 401 &&
+    Boolean(sentToken) &&
     Boolean(getAccessToken()) &&
     !AUTH_ENDPOINTS.includes(endpoint);
 
-  if (canRefresh && (await refreshAccessToken())) {
+  const decision =
+    response.status === 401
+      ? await judgeUnauthorized(response, {
+          endpoint,
+          sentToken,
+          isRefresh: false,
+        })
+      : 'default';
+
+  if (canRefresh && decision === 'default' && (await refreshAccessToken())) {
     response = await sendRequest(endpoint, options);
   }
 
